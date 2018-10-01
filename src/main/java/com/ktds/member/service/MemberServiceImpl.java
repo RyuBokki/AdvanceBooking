@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ktds.common.session.Session;
+import com.ktds.common.util.SHA256Util;
 import com.ktds.member.dao.MemberDao;
 import com.ktds.member.vo.MemberVO;
 
@@ -17,11 +18,18 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public boolean registOneMember(MemberVO memberVO) {
+		
+		String salt = SHA256Util.generateSalt();
+		
+		memberVO.setPassword(salt);
+		memberVO.setSalt(salt);
+		
 		return this.memberDao.insertOneMember(memberVO) > 0;
 	}
 
 	@Override
 	public MemberVO readOneMember(MemberVO memberVO) {
+		
 		return this.memberDao.selectOneMember(memberVO);
 	}
 

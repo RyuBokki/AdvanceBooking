@@ -17,7 +17,7 @@
 		VALUES ( 
 				#{name}
 				, #{password}
-				, ''
+				, #{salt}
 				, 0
 				, SYSDATE
 				, 'USER'
