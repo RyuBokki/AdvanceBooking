@@ -14,12 +14,14 @@ public interface MemberDao {
 	
 	public int updateOneMember(String email);
 	
-	public int isBlockUser(String email);
+	public boolean isBlockUser(String email);
 	
 	public int unBlockUser(String email);
 	
 	public int increaseLoginFailCount(String email);
 	
-	public int isDuplicatedEmail(String email);
+	public boolean isDuplicatedEmail(String email);
+	
+	public String getSaltByEmail(String email);
 	
 }

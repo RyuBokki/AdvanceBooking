@@ -74,7 +74,7 @@ public class MemberController {
 											  , Errors errors
 											  , HttpSession session) {
 		
-		ModelAndView view = new ModelAndView("redirect:/index");
+		ModelAndView view = new ModelAndView("redirect:/concert/list");
 		
 		
 		if ( errors.hasErrors() ) {
@@ -87,10 +87,11 @@ public class MemberController {
 		boolean isBlockAccount = this.memberService.isBlockUser(memberVO.getEmail());
 		
 		if ( !isBlockAccount ) {
-			boolean isSuccessLogin = this.memberService.isSuccessLogin(memberVO, session);
+			boolean isLoginSuccess = this.memberService.readOneMember(memberVO) != null;
 			
-			if ( isSuccessLogin ) {				
-				this.memberService.unBlockUser(memberVO.getEmail());
+			if ( isLoginSuccess ) {				
+				session.setAttribute(Session.USER, memberVO);
+				this.memberService.unBlockUser(memberVO.getEmail());				
 			}
 			else {
 				this.memberService.increaseLoginFailCount(memberVO.getEmail());
@@ -102,8 +103,8 @@ public class MemberController {
 			}
 		}
 		else {
-			
-			this.memberService.increaseLoginFailCount(memberVO.getEmail());
+						
+			System.out.println("block user");
 			
 			view.setViewName("member/login");
 			view.addObject("memberVO", memberVO);
@@ -114,8 +115,9 @@ public class MemberController {
 		return view;
 	}
 	
-	@GetMapping("/index")
+	
+	@GetMapping("/concert/list")
 	public String viewBoardIndexPage() {
-		return "board/index";
+		return "concert/list";
 	}
 }

@@ -21,7 +21,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		String salt = SHA256Util.generateSalt();
 		
-		memberVO.setPassword(salt);
+		memberVO.setPassword(SHA256Util.getEncrypt(memberVO.getPassword(), salt));
 		memberVO.setSalt(salt);
 		
 		return this.memberDao.insertOneMember(memberVO) > 0;
@@ -30,12 +30,15 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberVO readOneMember(MemberVO memberVO) {
 		
+		String salt = this.memberDao.getSaltByEmail(memberVO.getEmail());
+		memberVO.setPassword(SHA256Util.getEncrypt(memberVO.getPassword(), salt));
+				
 		return this.memberDao.selectOneMember(memberVO);
 	}
 
 	@Override
 	public boolean isBlockUser(String email) {
-		return this.memberDao.isBlockUser(email) > 4;
+		return this.memberDao.isBlockUser(email);
 	}
 
 	@Override
@@ -50,19 +53,8 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean isDuplicatedEmail(String email) {
-		return this.memberDao.isDuplicatedEmail(email) > 0;
+		return this.memberDao.isDuplicatedEmail(email);
 	}
 
-	@Override
-	public boolean isSuccessLogin(MemberVO memberVO, HttpSession session) {
-		
-		MemberVO loginMemberVO = this.memberDao.selectOneMember(memberVO);
-		
-		if ( loginMemberVO != null ) {
-			session.setAttribute(Session.USER, loginMemberVO);
-		}
-		
-		return loginMemberVO != null;
-	}
 
 }

@@ -40,10 +40,11 @@
 	
 	<select id="isBlockUser"
 			parameterType="string"
-			resultType="_int">
-		SELECT	LOGIN_FAIL_COUNT
+			resultType="_boolean">
+		SELECT	COUNT(1)
 		FROM	MEMBERS
 		WHERE	LATEST_LOGIN + 1/24 >= SYSDATE
+		AND		LOGIN_FAIL_COUNT > 4
 		AND		EMAIL = #{email}
 	</select>
 	
@@ -65,10 +66,20 @@
 	
 	<select id="isDuplicatedEmail"
 			parameterType="string"
-			resultType="_int">
+			resultType="_boolean">
 		SELECT	COUNT(1)
 		FROM	MEMBERS
 		WHERE	EMAIL = #{email}
 	</select>
+	
+	<select id="getSaltByEmail"
+			parameterType="string"
+			resultType="string">
+		SELECT	SALT
+		FROM	MEMBERS
+		WHERE	EMAIL = #{email}
+	</select>
+	
+	
 	
 </mapper>

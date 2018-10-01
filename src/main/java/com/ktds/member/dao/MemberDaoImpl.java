@@ -45,7 +45,7 @@ public class MemberDaoImpl extends SqlSessionDaoSupport
 	}
 
 	@Override
-	public int isBlockUser(String email) {
+	public boolean isBlockUser(String email) {
 		return getSqlSession().selectOne("MemberDao.isBlockUser", email);
 	}
 
@@ -56,12 +56,17 @@ public class MemberDaoImpl extends SqlSessionDaoSupport
 
 	@Override
 	public int increaseLoginFailCount(String email) {
-		return getSqlSession().update("MemberDao.iscreaseLoginFailCount", email);
+		return getSqlSession().update("MemberDao.increaseLoginFailCount", email);
 	}
 
 	@Override
-	public int isDuplicatedEmail(String email) {
+	public boolean isDuplicatedEmail(String email) {
 		return getSqlSession().selectOne("MemberDao.isDuplicatedEmail", email);
+	}
+
+	@Override
+	public String getSaltByEmail(String email) {
+		return getSqlSession().selectOne("MemberDao.getSaltByEmail", email);
 	}
 
 }

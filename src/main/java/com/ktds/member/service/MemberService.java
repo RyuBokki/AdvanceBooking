@@ -18,5 +18,5 @@ public interface MemberService {
 	
 	public boolean isDuplicatedEmail(String email);
 	
-	public boolean isSuccessLogin(MemberVO memberVO, HttpSession session);
+	public boolean isLoginSuccess(MemberVO memberVO, HttpSession session);
 }
