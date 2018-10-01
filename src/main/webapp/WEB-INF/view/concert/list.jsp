@@ -7,6 +7,7 @@
 <title>사전예매시스템</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/view/common/header.jsp"/>
 	<h1>
 		제목들
 		내용들

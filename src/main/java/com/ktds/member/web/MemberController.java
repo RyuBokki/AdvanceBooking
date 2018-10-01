@@ -87,11 +87,14 @@ public class MemberController {
 		boolean isBlockAccount = this.memberService.isBlockUser(memberVO.getEmail());
 		
 		if ( !isBlockAccount ) {
-			boolean isLoginSuccess = this.memberService.readOneMember(memberVO) != null;
+			MemberVO loginMember = this.memberService.readOneMember(memberVO);
 			
-			if ( isLoginSuccess ) {				
-				session.setAttribute(Session.USER, memberVO);
-				this.memberService.unBlockUser(memberVO.getEmail());				
+			if ( loginMember != null ) {				
+				
+				session.setAttribute(Session.USER, loginMember);
+				this.memberService.unBlockUser(loginMember.getEmail());
+				
+				MemberVO sessionMember = (MemberVO) session.getAttribute(Session.USER);				
 			}
 			else {
 				this.memberService.increaseLoginFailCount(memberVO.getEmail());
@@ -113,6 +116,11 @@ public class MemberController {
 		return view;
 	}
 	
+	@GetMapping("/member/logout")
+	public String doMemberLogoutAction(HttpSession session) {
+		session.invalidate();
+		return "redirect:/member/login";
+	}
 	
 	
 	@GetMapping("/concert/list")

@@ -9,7 +9,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.ktds.common.session.Session;
 import com.ktds.member.vo.MemberVO;
 
-public class PreventSessionInterceptor extends HandlerInterceptorAdapter{
+public class PreventSessionIntercepter extends HandlerInterceptorAdapter{
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)

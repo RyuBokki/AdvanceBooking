@@ -33,6 +33,7 @@
 				, LATEST_LOGIN
 				, AUTHORITY
 				, EMAIL
+				, PASSWORD
 		FROM	MEMBERS
 		WHERE	EMAIL = #{email}
 		AND		PASSWORD = #{password}
