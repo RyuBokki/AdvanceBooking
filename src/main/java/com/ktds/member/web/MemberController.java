@@ -103,9 +103,7 @@ public class MemberController {
 			}
 		}
 		else {
-						
-			System.out.println("block user");
-			
+									
 			view.setViewName("member/login");
 			view.addObject("memberVO", memberVO);
 			
@@ -114,6 +112,7 @@ public class MemberController {
 		
 		return view;
 	}
+	
 	
 	
 	@GetMapping("/concert/list")

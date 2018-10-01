@@ -30,10 +30,19 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberVO readOneMember(MemberVO memberVO) {
 		
+		
+		String password = memberVO.getPassword();
 		String salt = this.memberDao.getSaltByEmail(memberVO.getEmail());
+		
 		memberVO.setPassword(SHA256Util.getEncrypt(memberVO.getPassword(), salt));
-				
-		return this.memberDao.selectOneMember(memberVO);
+		
+		MemberVO loginMemberVO = this.memberDao.selectOneMember(memberVO);
+		
+		if ( loginMemberVO == null ) {
+			memberVO.setPassword(password);
+		}
+		
+		return loginMemberVO;
 	}
 
 	@Override
