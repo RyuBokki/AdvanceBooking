@@ -9,17 +9,6 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 	
-	<bean 	id = "daoParamAop"
-			class = "com.ktds.common.aop.DaoParamAop">
-	</bean>	
-	
-	<aop:config>
-		<aop:aspect	id = "daoAspect" ref = "daoParamAop">
-			<aop:pointcut 	expression="execution( * com.ktds..dao.*DaoImpl.*(..))" 
-							id="daoPointCut"/>
-			<aop:around method="getParam" pointcut-ref="daoPointCut"/>
-		</aop:aspect>
-	</aop:config>
 	
 	<context:component-scan base-package="com.ktds"></context:component-scan>	
 	<mvc:annotation-driven/>
@@ -28,27 +17,6 @@
 	<mvc:resources location="/WEB-INF/static/css/" mapping="/css/**"/>
 	<mvc:resources location="/WEB-INF/static/img/" mapping="/img/**"/>
 	
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/concert/**"/>
-			<bean 	id = "sessionIntercepter"
-					class = "com.ktds.common.SessionIntercepter">
-			</bean>
-		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/member/**"/>
-			<mvc:exclude-mapping path="/member/logout"/>
-			<bean 	id = "preventSessionIntercepter"
-					class = "com.ktds.common.PreventSessionInterceptor">
-			</bean>
-		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/**"/>
-			<bean id="xssInterceptor"
-				  class="com.ktds.common.XssInterceptor">
-			</bean>
-		</mvc:interceptor>		
-	</mvc:interceptors>
 	
 	<bean	id = "localValidatorBean"
 			class = "org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">

@@ -17,7 +17,7 @@ public class MemberVO {
 	@NotEmpty(message="비밀번호는 필수 입력값입니다."
 			  , groups= {MemberValidator.Regist.class
 		  	  , MemberValidator.Login.class})
-	@Pattern(message="숫자 영대소문자 특수 문자를 포함한 10~20자를 입력하세요."
+	@Pattern(message="숫자 영대소문자 특수 문자를 포함한 8~20자를 입력하세요."
 			 , groups= {MemberValidator.Regist.class
 				  	  , MemberValidator.Login.class}
 			 , regexp="((?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()]).{8,20})")
