@@ -122,9 +122,37 @@ public class MemberController {
 		return "redirect:/member/login";
 	}
 	
+	//회원정보 수정
+	@GetMapping("/member/update")
+	public String viewMemberUpdatePage() {
+		return "member/update";
+	}
+	
+	@PostMapping("/member/update")
+	public ModelAndView doMemberUpdateAction(@Validated({MemberValidator.Update.class}) @ModelAttribute MemberVO memberVO
+											  , Errors errors) {
+		
+		ModelAndView view = new ModelAndView("redirect:/member/Mypage");
+		
+		if ( errors.hasErrors() ) {
+			view.setViewName("member/update");
+			view.addObject("memberVO", memberVO);
+			
+			return view;
+		}
+		
+		boolean isUpdateSuccess = this.memberService.updateOneMember(memberVO);
+		
+		return view;
+	}
 	
 	@GetMapping("/concert/list")
 	public String viewBoardIndexPage() {
 		return "concert/list";
+	}
+	
+	@GetMapping("/member/myPage")
+	public String viewMyPage() {
+		return "member/myPage";
 	}
 }

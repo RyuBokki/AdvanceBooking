@@ -18,4 +18,6 @@ public interface MemberService {
 	
 	public boolean isDuplicatedEmail(String email);
 	
+	public boolean updateOneMember(MemberVO memberVO);
+	
 }

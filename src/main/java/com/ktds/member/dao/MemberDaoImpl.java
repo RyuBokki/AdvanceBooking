@@ -40,8 +40,8 @@ public class MemberDaoImpl extends SqlSessionDaoSupport
 	}
 
 	@Override
-	public int updateOneMember(String email) {
-		return getSqlSession().update("MemberDao.updateOneMember", email);
+	public int updateOneMember(MemberVO memberVO) {
+		return getSqlSession().update("MemberDao.updateOneMember", memberVO);
 	}
 
 	@Override

@@ -81,6 +81,12 @@
 		WHERE	EMAIL = #{email}
 	</select>
 	
-	
+	<update id="updateOneMember"
+			parameterType="MemberVO">
+		UPDATE	MEMBERS
+		SET		NAME = #{name}
+				, PASSWORD = #{password}
+		WHERE	EMAIL = #{email}
+	</update>
 	
 </mapper>

@@ -7,3 +7,7 @@
 <div>
 	<a href = "/AdvanceBooking/member/logout">Logout</a>
 </div>
+
+<div>
+	<a href = "/AdvanceBooking/member/myPage">MyPage</a>
+</div>

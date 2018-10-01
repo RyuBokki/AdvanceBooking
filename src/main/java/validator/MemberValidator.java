@@ -9,5 +9,9 @@ public class MemberValidator {
 	public static interface Login{
 		
 	}
+	
+	public static interface Update{
+		
+	}
 
 }

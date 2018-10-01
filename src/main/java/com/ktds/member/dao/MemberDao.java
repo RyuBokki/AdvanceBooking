@@ -12,7 +12,7 @@ public interface MemberDao {
 	
 	public List<MemberVO> selectAllMembers();
 	
-	public int updateOneMember(String email);
+	public int updateOneMember(MemberVO memberVO);
 	
 	public boolean isBlockUser(String email);
 	

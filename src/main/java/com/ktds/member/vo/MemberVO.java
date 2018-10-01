@@ -11,20 +11,24 @@ import validator.MemberValidator;
 public class MemberVO {
 
 	@NotEmpty(message="이름은 필수 입력값입니다."
-			  , groups= {MemberValidator.Regist.class})
+			  , groups= {MemberValidator.Regist.class
+					  	, MemberValidator.Update.class})
 	private String name;
 	
 	@NotEmpty(message="비밀번호는 필수 입력값입니다."
 			  , groups= {MemberValidator.Regist.class
-		  	  , MemberValidator.Login.class})
+		  	  , MemberValidator.Login.class
+		  	  , MemberValidator.Update.class})
 	@Pattern(message="숫자 영대소문자 특수 문자를 포함한 8~20자를 입력하세요."
 			 , groups= {MemberValidator.Regist.class
-				  	  , MemberValidator.Login.class}
+				  	  , MemberValidator.Login.class
+				  	  , MemberValidator.Update.class}
 			 , regexp="((?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()]).{8,20})")
 	private String password;
 	
 	@NotEmpty(message="비밀번호는 필수 입력값입니다."
-			  , groups= {MemberValidator.Regist.class})
+			  , groups= {MemberValidator.Regist.class
+					  , MemberValidator.Update.class})
 	private String passwordConfirm;
 	
 	@NotEmpty(message="아이디(이메일)은 필수 입력값입니다."

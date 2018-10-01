@@ -65,5 +65,10 @@ public class MemberServiceImpl implements MemberService {
 		return this.memberDao.isDuplicatedEmail(email);
 	}
 
+	@Override
+	public boolean updateOneMember(MemberVO memberVO) {
+		return this.memberDao.updateOneMember(memberVO) > 0;
+	}
+
 
 }
