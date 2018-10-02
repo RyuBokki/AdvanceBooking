@@ -59,16 +59,16 @@
 			회원 정보 수정
 		</h1>
 		<div>
-			<input type="email" val="${sessionScope._USER_.email}" />
+			<input type="email" id="email" name="email" value="${sessionScope._USER_.email}" readonly="readonly"/>
 		</div>
 		<div>
-			<input type="password" placeholder="변경할 비밀번호를 입력하세요." />
+			<input type="password" id="password" name="password" placeholder="변경할 비밀번호를 입력하세요." value="${memberVO.password}"/>
 			<div>
 				<form:errors path="password" id="passwordError" />
 			</div>
 		</div>
 		<div>
-			<input type="password" placeholder="비밀번호를 재입력하세요." />
+			<input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호를 재입력하세요." value="${memberVO.passwordConfirm}"/>
 			<div>
 				<form:errors path="passwordConfirm" id="passwordConfirmError" />
 			</div>
@@ -77,7 +77,7 @@
 			</div>
 		</div>
 		<div>
-			<input type="name" placeholder="변경할 이름을 입력하세요." />
+			<input type="name" id="name" name="name" placeholder="변경할 이름을 입력하세요." value="${memberVO.name}"/>
 			<div>
 				<form:errors path="name" id="nameError" />
 			</div>

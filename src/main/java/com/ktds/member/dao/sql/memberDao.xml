@@ -33,7 +33,6 @@
 				, LATEST_LOGIN
 				, AUTHORITY
 				, EMAIL
-				, PASSWORD
 		FROM	MEMBERS
 		WHERE	EMAIL = #{email}
 		AND		PASSWORD = #{password}
@@ -86,6 +85,7 @@
 		UPDATE	MEMBERS
 		SET		NAME = #{name}
 				, PASSWORD = #{password}
+				, SALT = #{salt}
 		WHERE	EMAIL = #{email}
 	</update>
 	

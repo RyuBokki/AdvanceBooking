@@ -94,7 +94,6 @@ public class MemberController {
 				session.setAttribute(Session.USER, loginMember);
 				this.memberService.unBlockUser(loginMember.getEmail());
 				
-				MemberVO sessionMember = (MemberVO) session.getAttribute(Session.USER);				
 			}
 			else {
 				this.memberService.increaseLoginFailCount(memberVO.getEmail());
@@ -132,7 +131,10 @@ public class MemberController {
 	public ModelAndView doMemberUpdateAction(@Validated({MemberValidator.Update.class}) @ModelAttribute MemberVO memberVO
 											  , Errors errors) {
 		
-		ModelAndView view = new ModelAndView("redirect:/member/Mypage");
+		ModelAndView view = new ModelAndView("redirect:/member/myPage");
+		
+		System.out.println(memberVO.getEmail());
+		System.out.println(memberVO.getName());
 		
 		if ( errors.hasErrors() ) {
 			view.setViewName("member/update");

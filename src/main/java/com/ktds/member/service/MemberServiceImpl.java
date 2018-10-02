@@ -67,7 +67,23 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean updateOneMember(MemberVO memberVO) {
-		return this.memberDao.updateOneMember(memberVO) > 0;
+		
+		String password = memberVO.getPassword();
+		
+		String salt = SHA256Util.generateSalt();
+		
+		memberVO.setPassword(SHA256Util.getEncrypt(memberVO.getPassword(), salt));
+		memberVO.setSalt(salt);
+		
+		System.out.println(salt);
+		
+		boolean isUpdateSuccess = this.memberDao.updateOneMember(memberVO) > 0;
+		
+		if (!isUpdateSuccess) {
+			memberVO.setPassword(password);
+		}
+		
+		return isUpdateSuccess;
 	}
 
 
