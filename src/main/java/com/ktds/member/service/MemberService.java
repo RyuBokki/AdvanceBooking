@@ -1,6 +1,6 @@
 package com.ktds.member.service;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 
 import com.ktds.member.vo.MemberVO;
 
@@ -19,5 +19,10 @@ public interface MemberService {
 	public boolean isDuplicatedEmail(String email);
 	
 	public boolean updateOneMember(MemberVO memberVO);
+		
+	public void sendEmail(MemberVO memerVO) throws Exception;
 	
+	public boolean findMemberPassword(HttpServletResponse response, MemberVO memberVO) throws Exception;
+	
+	public String makeRandomPassword();
 }

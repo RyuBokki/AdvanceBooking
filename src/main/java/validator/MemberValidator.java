@@ -13,5 +13,8 @@ public class MemberValidator {
 	public static interface Update{
 		
 	}
-
+	
+	public static interface FindEmail{
+		
+	}
 }

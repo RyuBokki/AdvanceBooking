@@ -15,6 +15,7 @@
 	
 	<mvc:resources location="/WEB-INF/static/js/" mapping="/js/**"/>
 	<mvc:resources location="/WEB-INF/static/css/" mapping="/css/**"/>
+	<mvc:resources location="/WEB-INF/static/fonts/" mapping="/fonts/**"/>	
 	<mvc:resources location="/WEB-INF/static/img/" mapping="/img/**"/>
 	
 	<mvc:interceptors>
@@ -29,6 +30,7 @@
 		<mvc:interceptor>
 			<mvc:mapping path="/member/**"/>
 			<mvc:exclude-mapping path="/member/logout"/>
+			<mvc:exclude-mapping path="/member/myPage"/>
 			<bean id="PreventSessionIntercepter"
 				  class="com.ktds.common.interceptor.PreventSessionIntercepter">
 			</bean>

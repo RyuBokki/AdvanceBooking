@@ -48,6 +48,19 @@
 		AND		EMAIL = #{email}
 	</select>
 	
+	<select id="selectOneMemberByEmail"
+			parameterType="string"
+			resultType="MemberVO">
+		SELECT	NAME
+				, LOGIN_FAIL_COUNT
+				, LATEST_LOGIN
+				, AUTHORITY
+				, EMAIL
+		FROM	MEMBERS
+		WHERE	EMAIL = #{email}
+	</select>
+	
+	
 	<update id="unBlockUser"
 			parameterType="string">
 		UPDATE	MEMBERS
@@ -88,5 +101,15 @@
 				, SALT = #{salt}
 		WHERE	EMAIL = #{email}
 	</update>
+	
+	<update id="updateMemberPassword"
+			parameterType="map">
+		UPDATE	MEMBERS
+		SET		PASSWORD = #{password}
+				, SALT = #{salt}
+		WHERE	EMAIL = #{email}
+	</update>
+	
+	
 	
 </mapper>

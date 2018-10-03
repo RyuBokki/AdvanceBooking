@@ -8,10 +8,10 @@
   </appender>
   
   <appender name="STDOUT_File" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>D:/stdout.log</file>
+    <file>C:/Users/82104/Desktop/Project/stdout.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- daily rollover -->
-      <fileNamePattern>C:/stdout.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <fileNamePattern>C:/Users/82104/Desktop/Project/stdout.%d{yyyy-MM-dd}.log</fileNamePattern>
     </rollingPolicy>
     
     <encoder>
@@ -20,10 +20,10 @@
   </appender>
   
   <appender name="statistics" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>D:/logFile.log</file>
+    <file>C:/Users/82104/Desktop/Project/logFile.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- daily rollover -->
-      <fileNamePattern>C:/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <fileNamePattern>C:/Users/82104/Desktop/Project/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
     </rollingPolicy>
     
     <encoder>
@@ -33,10 +33,10 @@
 
 <!-- class와 method -->
   <appender name="param" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>D:/param.log</file>
+    <file>C:/Users/82104/Desktop/Project/param.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- daily rollover -->
-      <fileNamePattern>C:/param.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <fileNamePattern>C:/Users/82104/Desktop/Project/param.%d{yyyy-MM-dd}.log</fileNamePattern>
     </rollingPolicy>
     
     <encoder>

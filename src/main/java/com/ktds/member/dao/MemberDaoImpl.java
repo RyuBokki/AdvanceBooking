@@ -1,6 +1,7 @@
 package com.ktds.member.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -67,6 +68,16 @@ public class MemberDaoImpl extends SqlSessionDaoSupport
 	@Override
 	public String getSaltByEmail(String email) {
 		return getSqlSession().selectOne("MemberDao.getSaltByEmail", email);
+	}
+
+	@Override
+	public int updateMemberPassword(Map<String, Object> params) {
+		return getSqlSession().update("MemberDao.updateMemberPassword", params);
+	}
+
+	@Override
+	public MemberVO selectOneMemberByEmail(String email) {
+		return getSqlSession().selectOne("MemberDao.selectOneMemberByEmail", email);
 	}
 
 }

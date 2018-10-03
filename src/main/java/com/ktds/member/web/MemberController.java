@@ -2,9 +2,8 @@ package com.ktds.member.web;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,10 +131,7 @@ public class MemberController {
 											  , Errors errors) {
 		
 		ModelAndView view = new ModelAndView("redirect:/member/myPage");
-		
-		System.out.println(memberVO.getEmail());
-		System.out.println(memberVO.getName());
-		
+				
 		if ( errors.hasErrors() ) {
 			view.setViewName("member/update");
 			view.addObject("memberVO", memberVO);
@@ -144,6 +140,37 @@ public class MemberController {
 		}
 		
 		boolean isUpdateSuccess = this.memberService.updateOneMember(memberVO);
+		
+		return view;
+	}
+	
+	@GetMapping("/member/findPassword")
+	public String viewFindPasswordPage() {	
+		return "member/findPassword";
+	}
+	
+	@PostMapping("/member/findPassword")
+	public ModelAndView doFindMemberPassword(@Validated({MemberValidator.FindEmail.class})	@ModelAttribute MemberVO memberVO
+											  , Errors errors
+											  , HttpServletResponse response) throws Exception {
+		
+		ModelAndView view = new ModelAndView("redirect:/member/login");
+		
+		if ( errors.hasErrors() ) {
+			view.setViewName("member/findPassword");
+			view.addObject("memberVO", memberVO);
+			
+			return view;
+		}
+		
+		boolean isFindEmailSuccess = this.memberService.findMemberPassword(response, memberVO);
+		
+		if ( !isFindEmailSuccess ) {
+			view.setViewName("member/findPassword");
+			view.addObject("memberVO", memberVO);
+			
+			return view;
+		}
 		
 		return view;
 	}

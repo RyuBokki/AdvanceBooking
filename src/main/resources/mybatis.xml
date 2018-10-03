@@ -2,9 +2,10 @@
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
-
+  
 <configuration>
 	<typeAliases>
+	    <!-- type에는 패키지를 포함한 클래스명 -->
 		<typeAlias type="com.ktds.member.vo.MemberVO" alias="MemberVO"/>
 	</typeAliases>
 </configuration>
