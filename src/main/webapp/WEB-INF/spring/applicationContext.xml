@@ -20,16 +20,20 @@
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/concert/**"/>
-			<mvc:mapping path="/member/myPage"/>
-			<mvc:mapping path="/member/update"/>			
+			<mvc:mapping path="/concert/**"/>			
+			<mvc:mapping path="/member/logout"/>			
+			<mvc:mapping path="/member/myPage"/>			
+			<mvc:mapping path="/member/update"/>
+			<mvc:exclude-mapping path="/main"/>
 			<bean id="sessionIntercepter"
 				  class="com.ktds.common.interceptor.SessionIntercepter">
 			</bean>
 		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/member/**"/>
+			<mvc:mapping path="/main"/>
 			<mvc:exclude-mapping path="/member/logout"/>
+			<mvc:exclude-mapping path="/member/update"/>
 			<mvc:exclude-mapping path="/member/myPage"/>
 			<bean id="PreventSessionIntercepter"
 				  class="com.ktds.common.interceptor.PreventSessionIntercepter">

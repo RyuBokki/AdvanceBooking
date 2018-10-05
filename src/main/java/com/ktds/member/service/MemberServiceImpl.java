@@ -40,6 +40,8 @@ public class MemberServiceImpl implements MemberService {
 		String password = memberVO.getPassword();
 		String salt = this.memberDao.getSaltByEmail(memberVO.getEmail());
 		
+		System.out.println("패스워드");
+		
 		memberVO.setPassword(SHA256Util.getEncrypt(memberVO.getPassword(), salt));
 		
 		MemberVO loginMemberVO = this.memberDao.selectOneMember(memberVO);
@@ -105,7 +107,7 @@ public class MemberServiceImpl implements MemberService {
 		String subject = "";
 		String msg = "";
 		
-		subject = "Spring Homepage 임시 비밀번호 입니다.";
+		subject = "Concert Advance Booking 임시 비밀번호 입니다.";
 		msg += "<div align='center' style='border:1px solid black; font-family:verdana'>";
 		msg += "<h3 style='color: blue;'>";
 		msg += memberVO.getName() + "님의 임시 비밀번호 입니다. 비밀번호를 변경하여 사용하세요.</h3>";
@@ -208,6 +210,11 @@ public class MemberServiceImpl implements MemberService {
 			randomPassword += passwordArray[selectRandomPw]; 
 		} 
 		return randomPassword; 
+	}
+
+	@Override
+	public MemberVO selectOneMemberByEmail(String email) {
+		return this.memberDao.selectOneMemberByEmail(email);
 	} 
 
 }

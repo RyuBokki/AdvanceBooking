@@ -75,8 +75,13 @@
 	})
 </script>
 <style type="text/css">
+
 	#wrapperbox {
+		position: absolute;
 		width: 400px;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
 	}
 	
 	#title {
@@ -91,6 +96,9 @@
 	#registBtn {
 		margin-top:24px;
 	}
+	.inputbox {
+		margin-top:5px;
+	}
 </style>
 </head>
 <body>
@@ -102,29 +110,33 @@
 					회원가입
 				</h1>
 			</div>
-			<div>
-				<label for="email"><span class="glyphicon glyphicon-envelope"></span>Email</label>
-				<div>
+			<div class="inputbox">
+				<label for="email">Email</label>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>				
 					<input type="email" id="email" class="form-control" name="email" placeholder="아이디(이메일)을 입력하세요" value="${memberVO.email}"/>
 				</div>
 				<div>
 					<form:errors path="email" id="emailError"/>
 				</div>
 				<div id="email-duplicated" style="display:none;">
-					이미 존재하는 이메일이거나 사용할 수 없는 이메일입니다.				</div>
+					이미 존재하는 이메일이거나 사용할 수 없는 이메일입니다.				
+				</div>
 			</div>
-			<div>
-				<label for="pwd"><span class="glyphicon glyphicon-lock"></span>Password</label>
-				<div>										
+			<div class="inputbox">
+				<label for="pwd">Password</label>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>				
 					<input type="password" id="password" class="form-control" name="password" placeholder="비밀번호를 입력하세요" value="${memberVO.password}"/>
 				</div>
 				<div>
 					<form:errors path="password" id="passwordError"/>
 				</div>
 			</div>
-			<div>
-				<label for="pwdConfirm"><span class="glyphicon glyphicon-lock"></span>PasswordConfirm</label>
-				<div>
+			<div class="inputbox">
+				<label for="pwdConfirm">PasswordConfirm</label>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>				
 					<input type="password" id="passwordConfirm" class="form-control" name="passwordConfirm" placeholder="비밀번호를 재입력하세요" value="${memberVO.passwordConfirm}"/>				
 				</div>
 				<div>
@@ -134,10 +146,11 @@
 					비밀번호가 일치하지 않습니다.
 				</div>
 			</div>
-			<div>
-				<label for="name"><span class="glyphicon glyphicon-user"></span>Name</label>
-				<div>
-					<input type="text" id="name" name="name" class="form-control" placeholder="이름을 입력하세요" value="${memberVO.name}"/>				
+			<div class="inputbox">
+				<label for="name">Name</label>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>								
+					<input type="text" id="name" name="name" class="form-control" placeholder="이름을 입력하세요" value="${memberVO.name}"/>
 				</div>
 				<div>
 					<form:errors path="name" id="nameError"/>

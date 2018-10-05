@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ktds.common.session.Session;
 import com.ktds.member.service.MemberService;
 import com.ktds.member.vo.MemberVO;
+import com.ktds.member.vo.User;
 
 import validator.MemberValidator;
 
@@ -68,22 +70,42 @@ public class MemberController {
 		return "member/login";
 	}
 	
-	@PostMapping("/member/login")
-	public ModelAndView doMemberLoginAction( @Validated({MemberValidator.Login.class})@ModelAttribute MemberVO memberVO
+	@GetMapping("/member/loginSuccess")
+	public ModelAndView doMemberLoginAction( @ModelAttribute MemberVO memberVO
 											  , Errors errors
 											  , HttpSession session) {
 		
 		ModelAndView view = new ModelAndView("redirect:/concert/list");
 		
+		User user = ( User ) SecurityContextHolder.getContext()
+				  .getAuthentication()
+				  .getDetails();
+
+
+		memberVO.setEmail(user.getUsername());
+		memberVO.setPassword(user.getPassword());
 		
 		if ( errors.hasErrors() ) {
 			view.setViewName("member/login");
 			view.addObject("memberVO", memberVO);
-				
+			
+			System.out.println("errors" + errors.getAllErrors().get(0)); 
+			
+			System.out.println(memberVO.toString());
+			
 			return view;
 		}
-
-		boolean isBlockAccount = this.memberService.isBlockUser(memberVO.getEmail());
+		
+		boolean isLoginSuccess = this.memberService.readOneMember(memberVO) != null;
+		
+		if ( isLoginSuccess ) {
+			
+			session.setAttribute(Session.CSRF_TOKEN, user.getToken());
+			session.setAttribute(Session.USER, memberVO);
+			
+			view.addObject("message", "로그인 성공");
+		}
+		/*boolean isBlockAccount = this.memberService.isBlockUser(memberVO.getEmail());
 		
 		if ( !isBlockAccount ) {
 			MemberVO loginMember = this.memberService.readOneMember(memberVO);
@@ -102,11 +124,13 @@ public class MemberController {
 				
 				return view;
 			}
-		}
+		}*/
 		else {
 									
 			view.setViewName("member/login");
 			view.addObject("memberVO", memberVO);
+			
+			System.out.println("else");
 			
 			return view;
 		}		
@@ -114,7 +138,18 @@ public class MemberController {
 		return view;
 	}
 	
-	@GetMapping("/member/logout")
+	@GetMapping("/member/loginFailure")
+	public ModelAndView doMemberLoginFailAction(MemberVO memberVO) {
+		
+		ModelAndView view = new ModelAndView();
+				
+		view.setViewName("member/login");
+		view.addObject("message", "로그인 실패");
+		
+		return view;
+	}
+	
+	@GetMapping("/memberlogout")
 	public String doMemberLogoutAction(HttpSession session) {
 		session.invalidate();
 		return "redirect:/member/login";
@@ -184,4 +219,10 @@ public class MemberController {
 	public String viewMyPage() {
 		return "member/myPage";
 	}
+	
+	@GetMapping("/main")
+	public String viewMainPage() {
+		return "common/main";
+	}
+	
 }

@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,27 +15,32 @@
 <script src="/AdvanceBooking/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$().ready( function() {
-		$("#email").keyup( function(){
-			$.post("/AdvanceBooking/member/login"
+		/* $("#email").keyup( function(){
+			$.post("/AdvanceBooking/memberlogin"
 			,function(){
 				$("#emailError").slideUp(100);
 			})
-		})
+		}) */
 		
-		$("#password").keyup( function(){
-			$.post("/AdvanceBooking/member/login"
+		/* $("#password").keyup( function(){
+			$.post("/AdvanceBooking/memberlogin"
 			,function(){				
 				$("#passwordError").slideUp(100);
 			})
-		})
+		}) */
 		
 		$("#loginBtn").click( function(){
 			$("#loginForm").attr({
 				method:"post",
-				action:"/AdvanceBooking/member/login",
+				action:"/AdvanceBooking/memberlogin",
 				autocomplete:"false"
 			}).submit()
 		})
+		
+		var responseMessage = "<c:out value="${message}" />";
+        if(responseMessage != ""){
+            alert(responseMessage)
+        }		
 	})
 </script>
 <style type="text/css">
@@ -40,7 +48,11 @@
 		display:inline;
 	}
 	#wrapperbox {
+		position: absolute;
 		width: 400px;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
 	}
 	.login {
 		padding: 6px;
@@ -93,16 +105,22 @@
 					회원 로그인			
 				</h2>
 			</div>
-			<div >
-				<label for="email"><span class="glyphicon glyphicon-envelope"></span>Email</label>
-				<input type="email" class="form-control" id="email" name="email" placeholder="아이디(이메일)" value="${memberVO.email}"/>
+			<div>
+				<label for="email">Email</label>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+					<input type="email" class="form-control" id="email" name="email" placeholder="아이디(이메일)" value="${memberVO.email}"/>				
+				</div>
 				<div>
 					<form:errors path="email" id="emailError" class="error"/>
 				</div>
 			</div>
 			<div>
-				<label for="pwd"><span class="glyphicon glyphicon-lock"></span>Password</label>
-				<input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" value="${memberVO.password}"/>
+				<label for="pwd">Password</label>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+					<input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" value="${memberVO.password}"/>
+				</div>
 				<div>
 					<form:errors path="password" id="passwordError" class="error"/>
 				</div>

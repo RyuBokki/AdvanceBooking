@@ -9,7 +9,17 @@ import org.springframework.stereotype.Repository;
 import validator.MemberValidator;
 
 public class MemberVO {
-
+	
+	
+	
+	@Override
+	public String toString() {
+		return "MemberVO [name=" + name + ", password=" + password + ", passwordConfirm=" + passwordConfirm + ", email="
+				+ email + ", salt=" + salt + ", loginFailCount=" + loginFailCount + ", latestLogin=" + latestLogin
+				+ ", authority=" + authority + "]";
+	}
+	
+	
 	@NotEmpty(message="이름은 필수 입력값입니다."
 			  , groups= {MemberValidator.Regist.class
 					  	, MemberValidator.Update.class})

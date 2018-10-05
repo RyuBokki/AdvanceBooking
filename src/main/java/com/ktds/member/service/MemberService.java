@@ -10,6 +10,8 @@ public interface MemberService {
 	
 	public MemberVO readOneMember(MemberVO memberVO);
 	
+	public MemberVO selectOneMemberByEmail(String email);
+	
 	public boolean isBlockUser(String email);
 	
 	public boolean unBlockUser(String email);
