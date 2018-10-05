@@ -16,7 +16,7 @@ public class QnAVO {
 	
 	private String originFileName;
 	
-	private String email;
+	private MemberVO memberVO;
 
 	public int getId() {
 		return id;

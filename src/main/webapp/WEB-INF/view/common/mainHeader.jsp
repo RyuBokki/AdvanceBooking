@@ -43,6 +43,7 @@
 		top: 50%;
 		transform: translate(-50%, -50%);
     }
+    
 </style>
 <nav class="navbar">
   <div class="container-fluid">
@@ -52,10 +53,10 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">      
         <li>
-        	<a href="/AdvanceBooking/member/login"><span class="glyphicon glyphicon-log-in"></span> 로그인</a>
+        	<a href="#" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> Login</a>
       	</li> 
         <li>
-        	<a href="/AdvanceBooking/member/regist"><span class="glyphicon glyphicon-user"></span> 회원가입</a>
+        	<a href="#" data-toggle="modal" data-target="#registModal"><span class="glyphicon glyphicon-user"></span> Regist</a>
       	</li>
       </ul>
     </div>
