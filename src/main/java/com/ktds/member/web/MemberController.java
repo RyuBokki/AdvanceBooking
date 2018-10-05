@@ -22,6 +22,7 @@ import com.ktds.common.session.Session;
 import com.ktds.member.service.MemberService;
 import com.ktds.member.vo.MemberVO;
 import com.ktds.member.vo.User;
+import com.nhncorp.lucy.security.xss.XssFilter;
 
 import validator.MemberValidator;
 
@@ -59,6 +60,13 @@ public class MemberController {
 			
 			return view;
 		}
+		
+		XssFilter filter = XssFilter.getInstance("lucy-xss-superset.xml");
+		
+		memberVO.setEmail(filter.doFilter(memberVO.getEmail()));
+		memberVO.setPassword(filter.doFilter(memberVO.getPassword()));
+		memberVO.setName(filter.doFilter(memberVO.getName()));
+		
 		
 		boolean isSuccess = this.memberService.registOneMember(memberVO);
 		
@@ -173,6 +181,9 @@ public class MemberController {
 			
 			return view;
 		}
+		XssFilter filter = XssFilter.getInstance("lucy-xss-superset.xml");
+		memberVO.setPassword(filter.doFilter(memberVO.getPassword()));
+		memberVO.setName(filter.doFilter(memberVO.getName()));
 		
 		boolean isUpdateSuccess = this.memberService.updateOneMember(memberVO);
 		
@@ -197,6 +208,10 @@ public class MemberController {
 			
 			return view;
 		}
+		
+		XssFilter filter = XssFilter.getInstance("lucy-xss-superset.xml");
+		
+		memberVO.setEmail(filter.doFilter(memberVO.getEmail()));
 		
 		boolean isFindEmailSuccess = this.memberService.findMemberPassword(response, memberVO);
 		

@@ -44,7 +44,8 @@
   </style>
 </head>
 <body>
-<jsp:include page="/WEB-INF/view/common/header.jsp"/>
+
+<jsp:include page="/WEB-INF/view/common/mainHeader.jsp"></jsp:include>
   
 <div class="container-fluid text-center">    
   <div class="row content">
@@ -59,7 +60,7 @@
       	<a href="#">채팅</a>
       </div>      
       <div class="well">
-      	<a href="#">QnA</a>
+      	<a href="/AdvanceBooking/qna/write">QnA</a>
       </div>      
     </div>
     

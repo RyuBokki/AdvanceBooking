@@ -15,6 +15,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.ktds.member.vo.MemberVO;
 import com.ktds.member.vo.User;
+import com.nhncorp.lucy.security.xss.XssFilter;
 
 public class UserService implements AuthenticationProvider {
 	
@@ -28,19 +29,15 @@ public class UserService implements AuthenticationProvider {
 		String userEmail = authentication.getPrincipal().toString();
 		String userPassword = authentication.getCredentials().toString();
 		
-		// userEmail 값이 비어있음.
-		System.out.println(userEmail);
-		System.out.println(userPassword);
 		
 		MemberVO memberVO = new MemberVO();
+
+		XssFilter filter = XssFilter.getInstance("lucy-xss-superset.xml");
 		
-		memberVO.setEmail(userEmail);
+		memberVO.setEmail(filter.doFilter(userEmail));
 		
-		memberVO.setPassword(userPassword);
+		memberVO.setPassword(filter.doFilter(userPassword));
 		
-		System.out.println(memberVO.getEmail());
-		
-		System.out.println(memberService);
 		
 		boolean isBlockAccount = this.memberService.isBlockUser(memberVO.getEmail());
 		

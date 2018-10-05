@@ -21,6 +21,7 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/concert/**"/>			
+			<mvc:mapping path="/qna/**"/>			
 			<mvc:mapping path="/member/logout"/>			
 			<mvc:mapping path="/member/myPage"/>			
 			<mvc:mapping path="/member/update"/>
