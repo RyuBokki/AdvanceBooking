@@ -60,6 +60,7 @@
 			</div>
 			<div>
 				<input type="hidden" name="token" value="${sessionScope._CSRF_TOKEN_}" />
+				<input type="hidden" name="id" value="${qnaVO.id}" />				
 			</div>
 			<div class="form-group">
 				<label for="subject">Subject</label>

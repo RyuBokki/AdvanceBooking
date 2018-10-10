@@ -1,8 +1,9 @@
 package com.ktds.qna.service;
 
-import java.util.List;
-
+import com.ktds.qna.vo.QnASearchVO;
 import com.ktds.qna.vo.QnAVO;
+
+import io.github.seccoding.web.pager.explorer.PageExplorer;
 
 public interface QnAService {
 	
@@ -10,9 +11,9 @@ public interface QnAService {
 	
 	public QnAVO readOneQnA(String id);
 	
-	public List<QnAVO> readAllQnAs();
+	public PageExplorer readAllQnAs(QnASearchVO qnaSearchVO);
 	
-	public boolean updateOneQnA(String id);
+	public boolean updateOneQnA(QnAVO qnaVO);
 	
 	public boolean deleteOneQnA(String id);
 }

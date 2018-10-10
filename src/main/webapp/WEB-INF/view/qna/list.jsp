@@ -34,6 +34,15 @@
 		</c:otherwise>
 	</c:choose>
 	<div>
+		<form id="searchForm" onsubmit="javascript:movePage(0);">
+			${pagenation}
+			<div>
+				<input type="text" name="searchKeyword" value="${qnaSearchVO.searchKeyword}">
+				<a href="/AdvanceBooking/qna/list/init">검색초기화</a>
+			</div> 
+		</form>
+	</div>
+	<div>
 		<a href="/AdvanceBooking/qna/write">qna작성</a>
 	</div>
 <jsp:include page="/WEB-INF/view/common/mainFooter.jsp"></jsp:include>

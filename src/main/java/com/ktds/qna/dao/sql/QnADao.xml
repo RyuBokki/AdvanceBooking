@@ -41,7 +41,7 @@
 		<result property="originFileName" column="ORIGIN_FILE_NAME"/>
 		<result property="email" column="Q_EMAIL"/>
 		<association property="memberVO" javaType="MemberVO" >
-			<id property="email" column="EMAIL"/>
+			<id property="email" column="M_EMAIL"/>
 			<result property="name" column="NAME"/>
 			<result property="email" column="LOGIN_FAIL_COUNT"/>
 			<result property="latestLogin" column="LATEST_LOGIN"/>
@@ -74,24 +74,50 @@
 	</select>
 	
 	<select id="selectAllQnAs"
+			parameterType="QnASearchVO"
 		    resultMap="qnaResultMap">
-		SELECT	Q.ID
-				, Q.SUBJECT
-				, Q.CONTENT
-				, Q.CRT_DATE
-				, Q.MDF_DATE
-				, Q.FILE_NAME
-				, Q.ORIGIN_FILE_NAME
-				, Q.EMAIL Q_EMAIL
-				, M.EMAIL
-				, M.NAME
-				, M.LOGIN_FAIL_COUNT
-				, M.LATEST_LOGIN
-				, M.AUTHORITY
-				, M.LOGIN_FAIL_COUNT
-		FROM 	QNA Q
+		SELECT	B.*
+		FROM	(
+					SELECT	A.*
+							, ROWNUM RNUM
+					FROM	(
+								SELECT	Q.ID
+										, Q.SUBJECT
+										, Q.CONTENT
+										, Q.CRT_DATE
+										, Q.MDF_DATE
+										, Q.FILE_NAME
+										, Q.ORIGIN_FILE_NAME
+										, Q.EMAIL Q_EMAIL
+										, M.EMAIL M_EMAIL
+										, M.NAME
+										, M.LOGIN_FAIL_COUNT
+										, M.LATEST_LOGIN
+										, M.AUTHORITY
+										, M.LOGIN_FAIL_COUNT
+								FROM 	QNA Q
+										, MEMBERS M
+								WHERE	Q.EMAIL = M.EMAIL
+								<if test="searchKeyword != null and searchKeyword != ''">
+								AND		SUBJECT LIKE '%' || '${searchKeyword}' || '%'
+								</if>
+								ORDER	BY ID DESC
+							) A
+					WHERE	ROWNUM <![CDATA[<=]]> #{endRow}
+				) B
+		WHERE	RNUM >= #{startRow}		    
+	</select>
+	
+	<select	id="selectAllQnAsCount"
+			parameterType="QnASearchVO"
+			resultType="_int">
+		SELECT	COUNT(1)
+		FROM	QNA	Q
 				, MEMBERS M
 		WHERE	Q.EMAIL = M.EMAIL
+		<if test="searchKeyword != null and searchKeyword != ''">
+		AND		SUBJECT LIKE '%' || '${searchKeyword}' || '%'
+		</if>
 	</select>
 	
 	<delete id="deleteOneQnA"
@@ -102,10 +128,11 @@
 	</delete>
 	
 	<update id="updateOneQnA"
-			parameterType="string">
+			parameterType="QnAVO">
 		UPDATE	QNA
 		SET		SUBJECT = #{subject}
 				, CONTENT = #{content}
+				, MDFDATE = SYSDATE
 		WHERE	ID = #{id}
 	</update>
 </mapper>

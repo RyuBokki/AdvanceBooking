@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ktds.qna.vo.QnASearchVO;
 import com.ktds.qna.vo.QnAVO;
 
 @Repository
@@ -35,18 +36,23 @@ public class QnADaoImpl extends SqlSessionDaoSupport
 	}
 
 	@Override
-	public List<QnAVO> selectAllQnAs() {
-		return this.getSqlSession().selectList("QnADao.selectAllQnAs");
+	public List<QnAVO> selectAllQnAs(QnASearchVO qnaSearchVO) {
+		return this.getSqlSession().selectList("QnADao.selectAllQnAs", qnaSearchVO);
 	}
 
 	@Override
-	public int updateOneQnA(String id) {
-		return this.getSqlSession().update("QnADao.updateOneQnA", id);
+	public int updateOneQnA(QnAVO qnaVO) {
+		return this.getSqlSession().update("QnADao.updateOneQnA", qnaVO);
 	}
 
 	@Override
 	public int deleteOneQnA(String id) {
 		return this.getSqlSession().delete("QnADao.deleteOneQnA", id);
+	}
+
+	@Override
+	public int selectAllQnAsCount(QnASearchVO qnaSearchVO) {
+		return this.getSqlSession().selectOne("QnADao.selectAllQnAsCount", qnaSearchVO);
 	}
 
 }

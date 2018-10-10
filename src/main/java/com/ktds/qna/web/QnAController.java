@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,14 @@ import com.ktds.common.session.Session;
 import com.ktds.common.util.DownloadUtil;
 import com.ktds.member.vo.MemberVO;
 import com.ktds.qna.service.QnAService;
+import com.ktds.qna.vo.QnASearchVO;
 import com.ktds.qna.vo.QnAVO;
 import com.nhncorp.lucy.security.xss.XssFilter;
 
 import io.github.seccoding.web.mimetype.ExtFilter;
 import io.github.seccoding.web.mimetype.ExtensionFilter;
 import io.github.seccoding.web.mimetype.ExtensionFilterFactory;
+import io.github.seccoding.web.pager.explorer.PageExplorer;
 
 @Controller
 public class QnAController {
@@ -181,16 +184,38 @@ public class QnAController {
 		return view;
 	}
 	
+	@RequestMapping("/qna/list/init")
+	public String viewQnAListPageForInitiate(HttpSession session) {
+		session.removeAttribute(Session.SEARCH);
+		return "redirect:/qna/list";
+	}
+	
 	@RequestMapping("/qna/list")
-	public ModelAndView viewQnAListPage() {
+	public ModelAndView viewQnAListPage(@ModelAttribute QnASearchVO qnaSearchVO
+										, HttpServletRequest request
+										, HttpSession session) {
+		
+		if ( qnaSearchVO.getSearchKeyword() == null ) {
+			qnaSearchVO = (QnASearchVO)session.getAttribute(Session.SEARCH);
+			
+			if ( qnaSearchVO == null ) {
+				qnaSearchVO = new QnASearchVO();
+				qnaSearchVO.setPageNo(0);
+			}
+		}
+		
+		PageExplorer pageExplorer = this.qnaService.readAllQnAs(qnaSearchVO);
+		
+		session.setAttribute(Session.SEARCH, qnaSearchVO);
 		
 		ModelAndView view = new ModelAndView("qna/list");
 		
 		// csrf token check
-		
-		List<QnAVO> qnaVOList = this.qnaService.readAllQnAs();
-		
-		view.addObject("qnaVOList", qnaVOList);
+				
+		view.addObject("qnaVOList", pageExplorer.getList());
+		view.addObject("pagenation", pageExplorer.make());
+		view.addObject("size", pageExplorer.getTotalCount());
+		view.addObject("qnaSearchVO", qnaSearchVO);
 		
 		return view;
 	}
@@ -246,7 +271,9 @@ public class QnAController {
 		qnaVO.setSubject(filter.doFilter(qnaVO.getSubject()));
 		qnaVO.setContent(filter.doFilter(qnaVO.getContent()));
 		
-		boolean isUpdateSuccess = this.qnaService.updateOneQnA(qnaVO.getId());
+		System.out.println(qnaVO.getId());
+		
+		boolean isUpdateSuccess = this.qnaService.updateOneQnA(qnaVO);
 		
 		return view;
 	}
