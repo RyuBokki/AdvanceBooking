@@ -22,7 +22,7 @@
 	<div>
 		<a href="/AdvanceBooking/qna/list">목록</a>
 		<c:if test="${qnaVO.email eq sessionScope._USER_.email}">
-			<a href="/AdvanceBooking/qna/update">수정</a>
+			<a href="/AdvanceBooking/qna/update/${qnaVO.id}">수정</a>
 			<a href="/AdvanceBooking/qna/delete/${qnaVO.id}?token=${sessionScope._CSRF_TOKEN_}">삭제</a>		
 		</c:if>
 	</div>

@@ -101,7 +101,11 @@
 		WHERE	ID = #{id}
 	</delete>
 	
-	<!-- <update id="">
-	
-	</update> -->
+	<update id="updateOneQnA"
+			parameterType="string">
+		UPDATE	QNA
+		SET		SUBJECT = #{subject}
+				, CONTENT = #{content}
+		WHERE	ID = #{id}
+	</update>
 </mapper>

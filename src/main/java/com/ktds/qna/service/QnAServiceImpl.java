@@ -32,7 +32,7 @@ public class QnAServiceImpl implements QnAService {
 
 	@Override
 	public boolean updateOneQnA(String id) {
-		return false;
+		return this.qnaDao.updateOneQnA(id) > 0;
 	}
 
 	@Override

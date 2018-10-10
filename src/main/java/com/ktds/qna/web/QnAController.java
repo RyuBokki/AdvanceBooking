@@ -3,7 +3,6 @@ package com.ktds.qna.web;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -206,8 +205,49 @@ public class QnAController {
 			throw new RuntimeException("잘못된 접근입니다.");
 		}
 		
-		boolean isDelete = this.qnaService.deleteOneQnA(id);
+		boolean isDeleteSuccess = this.qnaService.deleteOneQnA(id);
 		
 		return "redirect:/qna/list";
+	}
+	
+	@GetMapping("/qna/update/{id}")
+	public ModelAndView viewUpdateQnAPage(@PathVariable String id) {
+		
+		
+		QnAVO qnaVO = this.qnaService.readOneQnA(id);
+		
+		ModelAndView view = new ModelAndView("qna/update");
+		
+		view.addObject("qnaVO", qnaVO);
+		
+		return view;
+	}
+	
+	@PostMapping("/qna/update")
+	public ModelAndView doUpdateQnAPage(@Valid@ModelAttribute QnAVO qnaVO
+										, @SessionAttribute(Session.CSRF_TOKEN) String sessionToken
+										, Errors errors) {
+		
+		ModelAndView view = new ModelAndView("redirect:/qna/list");
+		
+		if ( !qnaVO.getToken().equals(sessionToken) ) {
+			throw new RuntimeException("잘못된 인증");
+		}
+		
+		if ( errors.hasErrors() ) {
+			view.setViewName("qna/update");
+			view.addObject("qnaVO", qnaVO);
+		}
+		
+		System.out.println(qnaVO.getContent());
+		System.out.println(qnaVO.getSubject());
+		
+		XssFilter filter = XssFilter.getInstance("lucy-xss-superset.xml");
+		qnaVO.setSubject(filter.doFilter(qnaVO.getSubject()));
+		qnaVO.setContent(filter.doFilter(qnaVO.getContent()));
+		
+		boolean isUpdateSuccess = this.qnaService.updateOneQnA(qnaVO.getId());
+		
+		return view;
 	}
 }
