@@ -22,12 +22,12 @@ public class QnAServiceImpl implements QnAService {
 
 	@Override
 	public QnAVO readOneQnA(String id) {
-		return null;
+		return this.qnaDao.selectOneQnA(id);
 	}
 
 	@Override
 	public List<QnAVO> readAllQnAs() {
-		return null;
+		return this.qnaDao.selectAllQnAs();
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class QnAServiceImpl implements QnAService {
 
 	@Override
 	public boolean deleteOneQnA(String id) {
-		return false;
+		return this.qnaDao.deleteOneQnA(id) > 0;
 	}
 
 }

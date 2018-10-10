@@ -8,7 +8,7 @@ import com.ktds.member.vo.MemberVO;
 
 public class QnAVO {
 
-	private int id;
+	private String id;
 	
 	@NotEmpty(message="제목은 필수 입력값입니다.")
 	private String subject;
@@ -32,11 +32,11 @@ public class QnAVO {
 	
 	private MultipartFile file;
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

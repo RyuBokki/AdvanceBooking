@@ -19,6 +19,8 @@
       <s:intercept-url pattern="/member/regist" access="permitAll"/>
       <s:intercept-url pattern="/member/findPassword" access="permitAll"/>
       <s:intercept-url pattern="/qna/write" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
+      <s:intercept-url pattern="/qna/detail/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
+      <s:intercept-url pattern="/qna/list/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
 <!--       <s:intercept-url pattern="/member" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/> -->
       <!-- member 이하의 모든 url -->
       <!-- <s:intercept-url pattern="/member/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/> -->

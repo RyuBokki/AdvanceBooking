@@ -35,25 +35,13 @@
 	    		
    		$('#writeBtn').click(function(){
    			
+   			alert($('#subject').val());
+   			
    			$('#writeForm').attr({
    				method:"post",
    				action:"/AdvanceBooking/qna/write",
    				enctype: "multipart/form-data"
    			});
-   			
-   			
-   			$.post(
-				'/AdvanceBooking/qna/write'
-				, function(response) {
-					if ( response.isWriteSuccess ) {
-	   					alert("글쓰기 성공");
-	   					location.href = "/AdvanceBooking/concert/list";
-	   				}
-					else {
-						alert("글쓰기 실패");
-					}
-				}
-   			)
    			
    			$('#writeForm').submit();
    		})
@@ -75,6 +63,9 @@
 				<h2 id="title">
 					qna 작성		
 				</h2>
+			</div>
+			<div>
+				<input type="hidden" name="token" value="${sessionScope._CSRF_TOKEN_}" />
 			</div>
 			<div class="form-group">
 				<label for="subject">Subject</label>

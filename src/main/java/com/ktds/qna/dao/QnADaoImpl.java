@@ -1,5 +1,7 @@
 package com.ktds.qna.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.slf4j.Logger;
@@ -24,27 +26,27 @@ public class QnADaoImpl extends SqlSessionDaoSupport
 	
 	@Override
 	public int insertOneQnA(QnAVO qnaVO) {
-		return this.getSqlSession().insert("QnADao.insertOneBoard", qnaVO);
+		return this.getSqlSession().insert("QnADao.insertOneQnA", qnaVO);
 	}
 
 	@Override
 	public QnAVO selectOneQnA(String id) {
-		return this.getSqlSession().selectOne("QnADao.selectOneBoard", id);
+		return this.getSqlSession().selectOne("QnADao.selectOneQnA", id);
 	}
 
 	@Override
-	public QnAVO selectAllQnAs() {
-		return (QnAVO) this.getSqlSession().selectList("QnADao.selectAllBoards");
+	public List<QnAVO> selectAllQnAs() {
+		return this.getSqlSession().selectList("QnADao.selectAllQnAs");
 	}
 
 	@Override
 	public int updateOneQnA(String id) {
-		return this.getSqlSession().update("QnADao.updateOneBoard", id);
+		return this.getSqlSession().update("QnADao.updateOneQnA", id);
 	}
 
 	@Override
 	public int deleteOneQnA(String id) {
-		return this.getSqlSession().delete("QnADao.deleteOneBoard", id);
+		return this.getSqlSession().delete("QnADao.deleteOneQnA", id);
 	}
 
 }

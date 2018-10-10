@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="QnADao">
-  	<insert id="insertQnABoard" parameterType="QnAVO">
+  	<insert id="insertOneQnA" parameterType="QnAVO">
   		INSERT INTO QNA (
 						   ID
 						   , SUBJECT
@@ -18,7 +18,7 @@
 						   , EMAIL
 					    ) 
 		VALUES ( 
-					'QNA-' + TO_CHAR(SYSDATE, 'YYYYMMDDHH24') + '-' + LPAD(QNA_SEQ_ID.NEXTVAL, 6, '0')
+					'QN-' || TO_CHAR(SYSDATE, 'YYYYMMDDHH24') || '-' || LPAD(QNA_SEQ_ID.NEXTVAL, 6, '0')
 					, #{subject}
 			 		, #{content}
 			 		, SYSDATE
@@ -31,16 +31,77 @@
 		  		)
 	</insert>
 	
-	<!-- <resultMap type="" id="">
-		<id property="" column=""/>
-		<result/>
-		<association property=""></association>
+	<resultMap type="QnAVO" id="qnaResultMap">
+		<id property="id" column="ID"/>
+		<result property="subject" column="SUBJECT"/>
+		<result property="content" column="CONTENT"/>
+		<result property="crtDate" column="CRT_DATE"/>
+		<result property="mdfDate" column="MDF_DATE"/>
+		<result property="fileName" column="FILE_NAME"/>
+		<result property="originFileName" column="ORIGIN_FILE_NAME"/>
+		<result property="email" column="Q_EMAIL"/>
+		<association property="memberVO" javaType="MemberVO" >
+			<id property="email" column="EMAIL"/>
+			<result property="name" column="NAME"/>
+			<result property="email" column="LOGIN_FAIL_COUNT"/>
+			<result property="latestLogin" column="LATEST_LOGIN"/>
+			<result property="authority" column="AUTHORITY"/>
+			<result property="loginFailCount" column="LOGIN_FAIL_COUNT"/>
+		</association>
 	</resultMap>
 	
 	<select id="selectOneQnA"
 	        parameterType="string"
-	        resultMap="">
+	        resultMap="qnaResultMap">
+		SELECT	Q.ID
+				, Q.SUBJECT
+				, Q.CONTENT
+				, Q.CRT_DATE
+				, Q.MDF_DATE
+				, Q.FILE_NAME
+				, Q.ORIGIN_FILE_NAME
+				, Q.EMAIL Q_EMAIL
+				, M.EMAIL
+				, M.NAME
+				, M.LOGIN_FAIL_COUNT
+				, M.LATEST_LOGIN
+				, M.AUTHORITY
+				, M.LOGIN_FAIL_COUNT
+		FROM 	QNA Q
+				, MEMBERS M
+		WHERE	Q.EMAIL = M.EMAIL
+		AND		Q.ID = #{id}
+	</select>
 	
+	<select id="selectAllQnAs"
+		    resultMap="qnaResultMap">
+		SELECT	Q.ID
+				, Q.SUBJECT
+				, Q.CONTENT
+				, Q.CRT_DATE
+				, Q.MDF_DATE
+				, Q.FILE_NAME
+				, Q.ORIGIN_FILE_NAME
+				, Q.EMAIL Q_EMAIL
+				, M.EMAIL
+				, M.NAME
+				, M.LOGIN_FAIL_COUNT
+				, M.LATEST_LOGIN
+				, M.AUTHORITY
+				, M.LOGIN_FAIL_COUNT
+		FROM 	QNA Q
+				, MEMBERS M
+		WHERE	Q.EMAIL = M.EMAIL
+	</select>
 	
-	</select> -->
+	<delete id="deleteOneQnA"
+			parameterType="string">
+		DELETE	
+		FROM	QNA
+		WHERE	ID = #{id}
+	</delete>
+	
+	<!-- <update id="">
+	
+	</update> -->
 </mapper>
