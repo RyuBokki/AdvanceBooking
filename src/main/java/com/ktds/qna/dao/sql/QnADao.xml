@@ -18,13 +18,13 @@
 						   , EMAIL
 					    ) 
 		VALUES ( 
-					'QNA-' + TO_CHAR(SYSDATE, 'YYYYMMDDHH24') + '-' + LPAD(QNA_SEQ_ID, 6, '0')
+					'QNA-' + TO_CHAR(SYSDATE, 'YYYYMMDDHH24') + '-' + LPAD(QNA_SEQ_ID.NEXTVAL, 6, '0')
 					, #{subject}
 			 		, #{content}
 			 		, SYSDATE
 			        , SYSDATE
-			 		, #{fileName}
-			 		, #{originFileName}
+			 		, ''
+			 		, ''
 			 		, 'N'
 			 		, ''
 					, #{email}

@@ -44,9 +44,7 @@ public class UserService implements AuthenticationProvider {
 		MemberVO loginMember = null;
 		
 		if ( !isBlockAccount ) {
-				System.out.println("패스워드" + memberVO.getPassword());
 				loginMember = this.memberService.readOneMember(memberVO);
-				System.out.println(loginMember);
 			if ( loginMember == null ) {
 				memberService.increaseLoginFailCount(memberVO.getEmail());
 			}
@@ -83,10 +81,7 @@ public class UserService implements AuthenticationProvider {
 			result = new UsernamePasswordAuthenticationToken(userEmail, loginMember.getPassword(), roles);
 			
 			User user = new User(userEmail, userPassword, grade, isBlockAccount, token);
-			
-			System.out.println(user.toString());
-			
-			
+						
 			result.setDetails(user);
 		}
 		else {

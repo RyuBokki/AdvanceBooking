@@ -1,6 +1,9 @@
 package com.ktds.member.web;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -10,13 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import com.ktds.common.session.Session;
 import com.ktds.member.service.MemberService;
@@ -28,6 +34,8 @@ import validator.MemberValidator;
 
 @Controller
 public class MemberController {
+	
+	private int i = 1;
 	
 	@Autowired
 	private MemberService memberService;
@@ -49,29 +57,51 @@ public class MemberController {
 	}
 	
 	@PostMapping("/member/regist")
-	public ModelAndView doMemberRegistAction( @Validated({MemberValidator.Regist.class})@ModelAttribute MemberVO memberVO
-											   , Errors errors) {
-	
-		ModelAndView view = new ModelAndView("redirect:/member/login");
+	@ResponseBody
+	public Map<String, Object> doMemberRegistAction( @Validated({MemberValidator.Regist.class})@ModelAttribute MemberVO memberVO
+													  , Errors errors) {
+		
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		System.out.println(memberVO.getEmail());
 		
 		if ( errors.hasErrors() ) {
-			view.setViewName("member/regist");
-			view.addObject("memberVO", memberVO);
+			result.put("registMemberVO", memberVO);
 			
-			return view;
+			List<FieldError> errorList = new ArrayList<>();
+			for (FieldError error : errors.getFieldErrors()) {
+				errorList.add(error);
+				System.out.println(error);
+			}
+			
+			
+			
+			System.out.println("에러발생" + this.i);
+			
+			i++;
+			
+			result.put("validated", errorList.size() == 0);
+			
+			return result;
 		}
-		
-		XssFilter filter = XssFilter.getInstance("lucy-xss-superset.xml");
-		
-		memberVO.setEmail(filter.doFilter(memberVO.getEmail()));
-		memberVO.setPassword(filter.doFilter(memberVO.getPassword()));
-		memberVO.setName(filter.doFilter(memberVO.getName()));
-		
-		
-		boolean isSuccess = this.memberService.registOneMember(memberVO);
-		
-		return view;
+		else {
+			
+			XssFilter filter = XssFilter.getInstance("lucy-xss-superset.xml");
+			
+			memberVO.setEmail(filter.doFilter(memberVO.getEmail()));
+			memberVO.setPassword(filter.doFilter(memberVO.getPassword()));
+			memberVO.setName(filter.doFilter(memberVO.getName()));
+			
+			
+			boolean isSuccess = this.memberService.registOneMember(memberVO);
+			
+			result.put("success", isSuccess);
+			
+			return result;
+		}
 	}
+
 	
 	@GetMapping("/member/login")
 	public String viewMemberLoginPage() {
@@ -95,7 +125,7 @@ public class MemberController {
 		
 		if ( errors.hasErrors() ) {
 			view.setViewName("member/login");
-			view.addObject("memberVO", memberVO);
+			view.addObject("loginMemberVO", memberVO);
 			
 			System.out.println("errors" + errors.getAllErrors().get(0)); 
 			
@@ -104,6 +134,50 @@ public class MemberController {
 			return view;
 		}
 		
+		MemberVO loginMemberVO = this.memberService.readOneMember(memberVO);
+		
+		if ( loginMemberVO != null ) {
+			
+			session.setAttribute(Session.CSRF_TOKEN, user.getToken());
+			session.setAttribute(Session.USER, loginMemberVO);
+			
+			view.addObject("message", "로그인 성공");
+		}
+		else {
+									
+			view.setViewName("member/login");
+			view.addObject("memberVO", memberVO);
+						
+			return view;
+		}		
+		
+		return view;
+	}
+	
+	/*@GetMapping("/member/loginSuccess")
+	public Map<String, Object> doMemberLoginAction( @Validated({MemberValidator.Login.class})@ModelAttribute MemberVO memberVO
+			, Errors errors
+			, HttpSession session) {
+				
+		User user = ( User ) SecurityContextHolder.getContext()
+				.getAuthentication()
+				.getDetails();
+		
+		memberVO.setEmail(user.getUsername());
+		memberVO.setPassword(user.getPassword());
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		if ( errors.hasErrors() ) {
+			result.put("loginMemberVO", memberVO);
+			
+			System.out.println("errors" + errors.getAllErrors().get(0)); 
+			
+			System.out.println(memberVO.toString());
+			
+			return result;
+		}
+				
 		boolean isLoginSuccess = this.memberService.readOneMember(memberVO) != null;
 		
 		if ( isLoginSuccess ) {
@@ -111,56 +185,28 @@ public class MemberController {
 			session.setAttribute(Session.CSRF_TOKEN, user.getToken());
 			session.setAttribute(Session.USER, memberVO);
 			
-			view.addObject("message", "로그인 성공");
+			result.put("isLoginSuccess", isLoginSuccess);
+			
+			return result;
 		}
-		/*boolean isBlockAccount = this.memberService.isBlockUser(memberVO.getEmail());
-		
-		if ( !isBlockAccount ) {
-			MemberVO loginMember = this.memberService.readOneMember(memberVO);
-			
-			if ( loginMember != null ) {				
-				
-				session.setAttribute(Session.USER, loginMember);
-				this.memberService.unBlockUser(loginMember.getEmail());
-				
-			}
-			else {
-				this.memberService.increaseLoginFailCount(memberVO.getEmail());
-				
-				view.setViewName("member/login");
-				view.addObject("memberVO", memberVO);
-				
-				return view;
-			}
-		}*/
 		else {
-									
-			view.setViewName("member/login");
-			view.addObject("memberVO", memberVO);
 			
-			System.out.println("else");
-			
-			return view;
+			result.put("loginMemberVO", memberVO);
+			result.put("isLoginSuccess", isLoginSuccess);
+			return result;
 		}		
-		
-		return view;
-	}
+	}*/
 	
 	@GetMapping("/member/loginFailure")
-	public ModelAndView doMemberLoginFailAction(MemberVO memberVO) {
+	public Map<String, Object> doMemberLoginFailAction(MemberVO memberVO) {
 		
-		ModelAndView view = new ModelAndView();
+		Map<String, Object> result = new HashMap<String, Object>();
 				
-		view.setViewName("member/login");
-		view.addObject("message", "로그인 실패");
+		boolean isBlockAccount = this.memberService.isBlockUser(memberVO.getEmail());
 		
-		return view;
-	}
-	
-	@GetMapping("/memberlogout")
-	public String doMemberLogoutAction(HttpSession session) {
-		session.invalidate();
-		return "redirect:/member/login";
+		result.put("isBlockAccount", isBlockAccount);
+		
+		return result;
 	}
 	
 	//회원정보 수정

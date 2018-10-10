@@ -13,10 +13,12 @@
       <s:intercept-url pattern="/resources/**" access="permitAll"/>
       <s:intercept-url pattern="/" access="permitAll"/>
       <!-- spring security를 만들어주는 url -->
+      <s:intercept-url pattern="/main" access="permitAll"/>      
       <s:intercept-url pattern="/memberlogin" access="permitAll"/>
       <s:intercept-url pattern="/member/login" access="permitAll"/>
       <s:intercept-url pattern="/member/regist" access="permitAll"/>
       <s:intercept-url pattern="/member/findPassword" access="permitAll"/>
+      <s:intercept-url pattern="/qna/write" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
 <!--       <s:intercept-url pattern="/member" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/> -->
       <!-- member 이하의 모든 url -->
       <!-- <s:intercept-url pattern="/member/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/> -->
@@ -38,14 +40,14 @@
       
       <s:logout
          logout-url="/memberlogout"
-         logout-success-url="/member/login"
+         logout-success-url="/main"
          invalidate-session="true"
       />
       
-      <s:session-management invalid-session-url="/member/login">
+      <s:session-management invalid-session-url="/main">
          <s:concurrency-control
             max-sessions="1"
-            expired-url="/member/login"
+            expired-url="/main"
          />
       </s:session-management>
          

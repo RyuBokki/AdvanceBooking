@@ -16,6 +16,8 @@
 	<mvc:resources location="/WEB-INF/static/js/" mapping="/js/**"/>
 	<mvc:resources location="/WEB-INF/static/css/" mapping="/css/**"/>
 	<mvc:resources location="/WEB-INF/static/fonts/" mapping="/fonts/**"/>	
+	<mvc:resources location="/WEB-INF/static/ckeditor5classic/" mapping="/ckeditor5classic/**"/>	
+	<mvc:resources location="/WEB-INF/static/ckeditor/" mapping="/ckeditor/**"/>	
 	<mvc:resources location="/WEB-INF/static/img/" mapping="/img/**"/>
 	
 	<mvc:interceptors>
@@ -45,7 +47,7 @@
 	<bean	id = "localValidatorBean"
 			class = "org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
 	</bean>
-	
+		
 	<bean id="viewResolver"
 		  class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/view/"/>
