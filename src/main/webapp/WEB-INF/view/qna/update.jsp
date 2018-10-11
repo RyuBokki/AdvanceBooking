@@ -55,7 +55,7 @@
 				   modelAttribute="qnaVO">
 			<div class="form-group">
 				<h2 id="title">
-					qna 작성		
+					qna 수정		
 				</h2>
 			</div>
 			<div>

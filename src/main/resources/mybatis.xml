@@ -9,5 +9,6 @@
 		<typeAlias type="com.ktds.member.vo.MemberVO" alias="MemberVO"/>
 		<typeAlias type="com.ktds.qna.vo.QnAVO" alias="QnAVO"/>
 		<typeAlias type="com.ktds.qna.vo.QnASearchVO" alias="QnASearchVO"/>
+		<typeAlias type="com.ktds.qna.reply.vo.QnAReplyVO" alias="QnAReplyVO"/>
 	</typeAliases>
 </configuration>

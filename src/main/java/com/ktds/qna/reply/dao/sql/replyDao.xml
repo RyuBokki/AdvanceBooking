@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="QnAReplyDao">
+  
+  	<insert id="insertOneReply"
+  			parameterType="QnAReplyVO">
+	   INSERT	INTO REPLY (
+	   							REPLY_ID
+	   							, QNA_ID
+	   							, CONTENT
+	   							, CRT_DATE
+	   							, PARENT_REPLY_ID
+	   							, EMAIL
+   							) 
+		VALUES ( 
+					 'RP-' || TO_CHAR(SYSDATE, 'YYYYMMDDHH24') || '-' || LPAD(REPLY_ID_SEQ.NEXTVAL, 6, '0')
+					 , #{qnaId}
+					 , #{content}
+					 , SYSDATE
+					 , #{parentReplyId}
+					 , #{email} 
+				)
+  	</insert>
+  	
+  	<resultMap type="QnAReplyVO" id="qnaReplyResultMap">
+  		<id property="replyId" column="REPLY_ID"/>
+  		<result property="qnaId" column="QNA_ID"/>
+  		<result property="content" column="CONTENT"/>
+  		<result property="crtDate" column="CRT_DATE"/>
+  		<result property="parentReplyId" column="PARENT_REPLY_ID"/>
+  		<result property="email" column="EMAIL"/>
+  		<association property="qnaVO" javaType="QnAVO">
+  			<id property="id" column="ID"/>
+			<result property="subject" column="SUBJECT"/>
+			<result property="content" column="CONTENT"/>
+			<result property="crtDate" column="CRT_DATE"/>
+			<result property="mdfDate" column="MDF_DATE"/>
+			<result property="fileName" column="FILE_NAME"/>
+			<result property="originFileName" column="ORIGIN_FILE_NAME"/>
+			<result property="email" column="Q_EMAIL"/>
+  		</association>
+  		<association property="memberVO" javaType="MemberVO" >
+			<id property="email" column="M_EMAIL"/>
+			<result property="name" column="NAME"/>
+			<result property="email" column="LOGIN_FAIL_COUNT"/>
+			<result property="latestLogin" column="LATEST_LOGIN"/>
+			<result property="authority" column="AUTHORITY"/>
+			<result property="loginFailCount" column="LOGIN_FAIL_COUNT"/>
+		</association>
+  	</resultMap>
+  	
+  	<select id="selectAllReplies"
+  			resultMap="qnaReplyResultMap">
+  		SELECT	R.REPLY_ID
+				, R.QNA_ID
+				, R.CONTENT
+				, R.CRT_DATE
+				, R.PARENT_REPLY_ID
+				, R.EMAIL
+				, Q.ID
+				, Q.SUBJECT
+				, Q.CONTENT
+				, Q.CRT_DATE
+				, Q.MDF_DATE
+				, Q.FILE_NAME
+				, Q.ORIGIN_FILE_NAME
+				, Q.EMAIL Q_EMAIL
+				, R_M.EMAIL M_EMAIL
+				, R_M.NAME
+				, R_M.LOGIN_FAIL_COUNT
+				, R_M.LATEST_LOGIN
+				, R_M.AUTHORITY
+		FROM 	REPLY R
+				, QNA Q
+				, MEMBERS R_M
+				, MEMBERS Q_M
+		WHERE	Q.EMAIL = Q_M.EMAIL
+		AND		R.EMAIL = R_M.EMAIL
+		AND		R.QNA_ID = Q.ID
+		AND		Q.ID = #{id}
+		START	WITH R.PARENT_REPLY_ID = '0'
+		CONNECT	BY PRIOR R.REPLY_ID = R.PARENT_REPLY_ID
+  	</select>
+  	<select id="selectOneReply"
+  			parameterType="string"
+  			resultType="QnAReplyVO">
+  		SELECT	REPLY_ID replyId
+				, QNA_ID qnaId
+				, CONTENT
+				, CRT_DATE crtDate
+				, PARENT_REPLY_ID parentReplyId
+				, EMAIL
+  		FROM	REPLY
+  		WHERE	REPLY_ID = #{replyId}
+  	</select>
+  	
+  	<update id="updateOneReply"
+  			parameterType="string">
+  		UPDATE	REPLY
+		SET  	CONTENT = #{content}
+		WHERE	REPLY_ID = #{replyId}
+  	</update>
+  	
+  	<update id="updateParentReplyId"
+  			parameterType="string">
+  		UPDATE	REPLY
+		SET  	PARENT_REPLY_ID = #{parentReplyId}
+		WHERE	REPLY_ID = #{replyId}
+  	</update>
+  	
+  	<delete id="deleteOneReply"
+  			parameterType="string"
+  			>
+  		DELETE
+  		FROM	REPLY
+  		WHERE	REPLY_ID = #{replyId}
+  	</delete>
+  </mapper>

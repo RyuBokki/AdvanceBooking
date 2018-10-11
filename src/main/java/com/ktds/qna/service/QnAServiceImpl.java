@@ -1,9 +1,13 @@
 package com.ktds.qna.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ktds.qna.dao.QnADao;
+import com.ktds.qna.reply.dao.QnAReplyDao;
+import com.ktds.qna.reply.vo.QnAReplyVO;
 import com.ktds.qna.vo.QnASearchVO;
 import com.ktds.qna.vo.QnAVO;
 
@@ -19,6 +23,9 @@ public class QnAServiceImpl implements QnAService {
 	@Autowired
 	private QnADao qnaDao;
 	
+	@Autowired
+	private QnAReplyDao qnaReplyDao;
+	
 	@Override
 	public boolean createOneQnA(QnAVO qnaVO) {
 		return this.qnaDao.insertOneQnA(qnaVO) > 0;
@@ -26,7 +33,14 @@ public class QnAServiceImpl implements QnAService {
 
 	@Override
 	public QnAVO readOneQnA(String id) {
-		return this.qnaDao.selectOneQnA(id);
+		
+		QnAVO qnaVO = this.qnaDao.selectOneQnA(id);
+		
+		List<QnAReplyVO> replyList = this.qnaReplyDao.selectAllReplies(id);
+		
+		qnaVO.setReplyList(replyList);
+		
+		return qnaVO;
 	}
 
 	@Override

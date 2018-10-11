@@ -13,7 +13,7 @@
 <script src="/AdvanceBooking/ckeditor5classic/ckeditor.js" charset="utf-8"></script>
 <script type="text/javascript">
 	$().ready(function(){
-	    		
+		
    		ClassicEditor.create(
    			document.querySelector("#content"), {
    				
@@ -21,6 +21,7 @@
    					uploadUrl: 'http://localhost:8080/AdvanceBooking/qna/imageUpload'
    				}
    				
+   			
    			}		
    		
    		)

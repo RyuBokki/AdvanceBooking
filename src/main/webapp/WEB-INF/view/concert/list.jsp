@@ -58,7 +58,7 @@
       	<a href="#">채팅</a>
       </div>      
       <div class="well">
-      	<a href="/AdvanceBooking/qna/list">QnA</a>
+      	<a href="/AdvanceBooking/qna/list?token=${sessionScope._CSRF_TOKEN_}">QnA</a>
       </div>      
     </div>
     <div class="col-sm-8 text-left"> 

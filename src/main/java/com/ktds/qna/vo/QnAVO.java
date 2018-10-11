@@ -1,10 +1,13 @@
 package com.ktds.qna.vo;
 
+import java.util.List;
+
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktds.member.vo.MemberVO;
+import com.ktds.qna.reply.vo.QnAReplyVO;
 
 public class QnAVO {
 
@@ -31,6 +34,8 @@ public class QnAVO {
 	private String token;
 	
 	private MultipartFile file;
+	
+	private List<QnAReplyVO> replyList;
 	
 	public String getId() {
 		return id;
@@ -119,4 +124,13 @@ public class QnAVO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public List<QnAReplyVO> getReplyList() {
+		return replyList;
+	}
+
+	public void setReplyList(List<QnAReplyVO> replyList) {
+		this.replyList = replyList;
+	}
+	
 }

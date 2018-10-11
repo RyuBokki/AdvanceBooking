@@ -65,7 +65,7 @@ public class QnAController {
 										  , @SessionAttribute(Session.USER) MemberVO memberVO
 										  ) {
 		
-		ModelAndView view = new ModelAndView("redirect:/qna/list");
+		ModelAndView view = new ModelAndView("redirect:/qna/list" + "?token=" + sessionToken);
 		
 		if ( !qnaVO.getToken().equals(sessionToken) ) {
 			throw new RuntimeException("잘못된 접근입니다.");
@@ -187,13 +187,20 @@ public class QnAController {
 	@RequestMapping("/qna/list/init")
 	public String viewQnAListPageForInitiate(HttpSession session) {
 		session.removeAttribute(Session.SEARCH);
-		return "redirect:/qna/list";
+		return "redirect:/qna/list" + "?token=" + session.getAttribute(Session.CSRF_TOKEN);
 	}
 	
 	@RequestMapping("/qna/list")
 	public ModelAndView viewQnAListPage(@ModelAttribute QnASearchVO qnaSearchVO
+										, @RequestParam String token
 										, HttpServletRequest request
 										, HttpSession session) {
+		
+		String sessionToken = (String) session.getAttribute(Session.CSRF_TOKEN);
+		
+		if ( !sessionToken.equals(token) ) {
+			throw new RuntimeException("잘못된 인증");
+		}
 		
 		if ( qnaSearchVO.getSearchKeyword() == null ) {
 			qnaSearchVO = (QnASearchVO)session.getAttribute(Session.SEARCH);
@@ -209,9 +216,7 @@ public class QnAController {
 		session.setAttribute(Session.SEARCH, qnaSearchVO);
 		
 		ModelAndView view = new ModelAndView("qna/list");
-		
-		// csrf token check
-				
+						
 		view.addObject("qnaVOList", pageExplorer.getList());
 		view.addObject("pagenation", pageExplorer.make());
 		view.addObject("size", pageExplorer.getTotalCount());
@@ -234,7 +239,7 @@ public class QnAController {
 		
 		boolean isDeleteSuccess = this.qnaService.deleteOneQnA(id);
 		
-		return "redirect:/qna/list";
+		return "redirect:/qna/list" + "?token=" + sessionToken;
 	}
 	
 	@GetMapping("/qna/update/{id}")
@@ -255,7 +260,7 @@ public class QnAController {
 										, @SessionAttribute(Session.CSRF_TOKEN) String sessionToken
 										, Errors errors) {
 		
-		ModelAndView view = new ModelAndView("redirect:/qna/list");
+		ModelAndView view = new ModelAndView("redirect:/qna/list" + "?token=" + sessionToken);
 		
 		if ( !qnaVO.getToken().equals(sessionToken) ) {
 			throw new RuntimeException("잘못된 인증");

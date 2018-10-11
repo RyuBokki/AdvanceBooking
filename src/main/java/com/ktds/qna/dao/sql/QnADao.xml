@@ -18,7 +18,7 @@
 						   , EMAIL
 					    ) 
 		VALUES ( 
-					'QN-' || TO_CHAR(SYSDATE, 'YYYYMMDDHH24') || '-' || LPAD(QNA_SEQ_ID.NEXTVAL, 6, '0')
+					'QN-' || TO_CHAR(SYSDATE, 'YYYYMMDDHH24') || '-' || LPAD(QNA_ID_SEQ.NEXTVAL, 6, '0')
 					, #{subject}
 			 		, #{content}
 			 		, SYSDATE
@@ -130,7 +130,7 @@
 		UPDATE	QNA
 		SET		SUBJECT = #{subject}
 				, CONTENT = #{content}
-				, MDFDATE = SYSDATE
+				, MDF_DATE = SYSDATE
 		WHERE	ID = #{id}
 	</update>
 </mapper>

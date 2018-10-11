@@ -6,11 +6,51 @@
 <head>
 <meta charset="UTF-8">
 <title>QnA list</title>
+<style>
+    
+    .row.content {height: 450px}
+
+    .sidenav {
+      padding-top: 20px;
+      background-color: #ffffff;
+      height: 100%;
+    }
+    
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
+    
+    #mainBox {
+    	margin-bottom: 100px;
+    }
+    
+    section {
+    	margin-top: 20px;
+    }
+  </style>
 <jsp:include page="/WEB-INF/view/common/navbar.jsp"></jsp:include>
 </head>
 <body>
 <div>
-	<div class="container">
+	<div class="col-sm-2 sidenav">
+      <div class="well">
+      	<a href="#">사전 예매</a>
+      </div>
+      <div class="well">
+      	<a href="#">공연 추천</a>
+      </div>      
+      <div class="well">
+      	<a href="#">채팅</a>
+      </div>      
+      <div class="well">
+      	<a href="/AdvanceBooking/qna/list?token=${sessionScope._CSRF_TOKEN_}">QnA</a>
+      </div>      
+    </div>
+	<div id="mainBox" class="container col-sm-8">
 	  <h2><span class="glyphicon glyphicon-question-sign"></span>QnA</h2>
 	  <table class="table table-hover">
 	    <thead>
@@ -47,8 +87,7 @@
 				</c:otherwise>
 			</c:choose>
 	  </table>
-	</div>
-	<div>
+      <div>
 		<form id="searchForm" onsubmit="javascript:movePage(0);">
 			${pagenation}
 			<div>
@@ -56,8 +95,11 @@
 				<a href="/AdvanceBooking/qna/list/init">검색초기화</a>
 			</div> 
 		</form>
-	</div>
-	<div>
+	  </div>
+	  <div>
 		<a href="/AdvanceBooking/qna/write">qna작성</a>
+	  </div>
 	</div>
+	<div class="col-sm-2 sidenav">
+    </div>
 <jsp:include page="/WEB-INF/view/common/mainFooter.jsp"></jsp:include>
