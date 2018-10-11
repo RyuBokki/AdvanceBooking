@@ -10,29 +10,44 @@
 </head>
 <body>
 <div>
-	<c:choose>
-		<c:when test="${not empty qnaVOList}">
-			<!-- items는 list로 전달받은 EL -->
-			<c:forEach items = "${qnaVOList}" var = "qnaVO">
-			<div class = "contentWrapper">
-				<div class = "number  box">
-					${qnaVO.id} 
-					<div class = "subject  box">
-				 		<a href="/AdvanceBooking/qna/detail/${qnaVO.id}?token=${sessionScope._CSRF_TOKEN_}">
-				 			${qnaVO.subject}
-				 		</a>
-				 	</div> 
-				 <div class = "writer  box">${qnaVO.memberVO.name}</div> 
-				 <div class = "create-date  box">${qnaVO.crtDate}</div>
-			</div>
-			</c:forEach>
-		</c:when>
-		<c:otherwise>
-			<div id = "no-articles">
-			등록된 게시글이 없습니다.
-			</div>
-		</c:otherwise>
-	</c:choose>
+	<div class="container">
+	  <h2><span class="glyphicon glyphicon-question-sign"></span>QnA</h2>
+	  <table class="table table-hover">
+	    <thead>
+	      <tr>
+	        <th>subject</th>
+	        <th>name</th>
+	        <th>CreateDate</th>
+	      </tr>
+	    </thead>
+			<c:choose>
+				<c:when test="${not empty qnaVOList}">
+				    <c:forEach items = "${qnaVOList}" var = "qnaVO">
+					    <tbody>
+					      <tr>
+					        <td>
+					        	<a href="/AdvanceBooking/qna/detail/${qnaVO.id}?token=${sessionScope._CSRF_TOKEN_}">
+						 			${qnaVO.subject}
+						 		</a>
+					        </td>
+					        <td>
+					        	${qnaVO.memberVO.name}
+					        </td>
+					        <td>
+					        	${qnaVO.crtDate}
+					        </td>
+					      </tr>
+					    </tbody>
+				    </c:forEach>
+				</c:when>
+				<c:otherwise>
+					<tbody>
+				      	등록된 게시글이 없습니다.
+				    </tbody>
+				</c:otherwise>
+			</c:choose>
+	  </table>
+	</div>
 	<div>
 		<form id="searchForm" onsubmit="javascript:movePage(0);">
 			${pagenation}

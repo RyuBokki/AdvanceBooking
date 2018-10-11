@@ -65,7 +65,7 @@ public class QnAController {
 										  , @SessionAttribute(Session.USER) MemberVO memberVO
 										  ) {
 		
-		ModelAndView view = new ModelAndView("redirect:/concert/list");
+		ModelAndView view = new ModelAndView("redirect:/qna/list");
 		
 		if ( !qnaVO.getToken().equals(sessionToken) ) {
 			throw new RuntimeException("잘못된 접근입니다.");
@@ -216,6 +216,8 @@ public class QnAController {
 		view.addObject("pagenation", pageExplorer.make());
 		view.addObject("size", pageExplorer.getTotalCount());
 		view.addObject("qnaSearchVO", qnaSearchVO);
+		
+		System.out.println(pageExplorer.getTotalCount());
 		
 		return view;
 	}
