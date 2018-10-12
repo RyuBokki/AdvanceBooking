@@ -34,9 +34,4 @@ public class QnAReplyServiceImpl implements QnAReplyService{
 		return this.qnaReplyDao.updateOneReply(qnaReplyVO) > 0;
 	}
 
-	@Override
-	public boolean updateParentReplyId(String parentReplyId) {
-		return this.qnaReplyDao.updateParentReplyId(parentReplyId) > 0;
-	}
-
 }

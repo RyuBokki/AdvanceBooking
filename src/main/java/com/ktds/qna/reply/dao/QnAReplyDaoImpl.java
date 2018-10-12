@@ -43,9 +43,4 @@ public class QnAReplyDaoImpl extends SqlSessionDaoSupport implements QnAReplyDao
 		return this.getSqlSession().update("QnAReplyDao.updateOneReply", qnaReplyVO);
 	}
 
-	@Override
-	public int updateParentReplyId(String parentReplyId) {
-		return this.getSqlSession().update("QnAReplyDao.updateParentReplyId", parentReplyId);
-	}
-
 }

@@ -73,30 +73,4 @@ public class QnAReplyController {
 		return view;
 	}
 	
-	@RequestMapping("/reply/repl/{replyId}")
-	public ModelAndView doReplAction(@PathVariable String replyId
-											, @ModelAttribute QnAReplyVO qnaReplyVO
-											, @SessionAttribute(Session.USER) MemberVO memberVO
-											, @SessionAttribute(Session.CSRF_TOKEN) String sessionToken
-											, Errors errors) {
-		
-		ModelAndView view = new ModelAndView("redirect:/qna/detail/" + qnaReplyVO.getQnaId() + "?token=" + sessionToken);
-		
-		if ( errors.hasErrors() ) {
-			view.setViewName("qna/detail");
-			view.addObject("qnaReplVO", qnaReplyVO);
-		}
-		
-		qnaReplyVO.setEmail(memberVO.getEmail());
-		
-		XssFilter filter = XssFilter.getInstance("lucy-xss-superset.xml");
-		qnaReplyVO.setContent(filter.doFilter(qnaReplyVO.getContent()));
-		
-		qnaReplyVO.setParentReplyId(replyId);
-		
-		boolean isCreateReplySuccess = this.qnaReplyService.createOneReply(qnaReplyVO);
-		
-		return view;
-	}
-	
 }

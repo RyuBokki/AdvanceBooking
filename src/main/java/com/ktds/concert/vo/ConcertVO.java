@@ -2,7 +2,7 @@ package com.ktds.concert.vo;
 
 public class ConcertVO {
 	
-	private int id;
+	private String id;
 	
 	private String artist;
 	
@@ -13,12 +13,14 @@ public class ConcertVO {
 	private String advanceBookingDay;
 	
 	private String advanceBookingURL;
-
-	public int getId() {
+	
+	private String token;
+	
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -61,5 +63,12 @@ public class ConcertVO {
 	public void setAdvanceBookingURL(String advanceBookingURL) {
 		this.advanceBookingURL = advanceBookingURL;
 	}
-	
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
 }

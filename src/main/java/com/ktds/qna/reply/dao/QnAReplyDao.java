@@ -16,5 +16,4 @@ public interface QnAReplyDao {
 	
 	public int updateOneReply(QnAReplyVO qnaReplyVO);
 	
-	public int updateParentReplyId(String parentReplyId);
 }

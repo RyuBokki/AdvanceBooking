@@ -15,11 +15,7 @@
 		$('#replyEvent').click(function(){
 			$('#clickReply').show();
 		})
-		
-		$('#replEvent').click(function(){
-			$('#replyHidden').show();
-		})		
-		
+				
 		$('#content').keyup(function(){
 			
 			$.post('/AdvanceBooking/reply/write'
@@ -89,26 +85,11 @@
 			</div>
 			<div>
 				<c:forEach items="${qnaVO.replyList}" var="reply">
-					<div id="replies" style="margin-left: ${(reply.level - 1 ) * 30}px;">
+					<div id="replies">						
 						<div>${reply.memberVO.name}</div>
 						<div>${reply.crtDate}</div>
 						<div id="replyEvent">${reply.content}</div>
 						<div id="clickReply" style="display:none;">						
-							<a id="replEvent" href="#">답글</a>
-							<div id="replyHidden" style="display:none;">
-								<form:form id="replyForm"
-										   modelAttribute="qnaReplyVO"
-										   method="post"
-										   action="/AdvanceBooking/reply/repl/${reply.replyId}">
-									<div>
-										<textarea name="content" placeholder="대댓글을 입력하세요">${qnaReplVO.content}</textarea>
-										<form:errors path="content"></form:errors>
-									</div>
-									<div>
-										<input type="submit" id="replyBtn" value="Reply">
-									</div>
-								</form:form>
-							</div>
 							<c:if test="${reply.email eq sessionScope._USER_.email}">
 								<a href="/AdvanceBooking/reply/delete/${reply.replyId}">삭제</a>
 								<a id="updateEvent" href="#">수정</a>
@@ -118,16 +99,17 @@
 				</c:forEach>
 			</div>
 			<div>
-			<form:form id="replyWriteForm"
-					   modelAttribute="replyVO" >
-				<input type="hidden" name="qnaId" value="${qnaVO.id}"/>
-				<input type="hidden" name="parentReplyId" value="0"/>
-				<div>
-					<textarea name="content">${qnaReplyVO.content}</textarea>
-					<form:errors id="contentError" path="content"></form:errors>
-				</div>
-				<input type="button" id="writeBtn" value="write" />
-			</form:form>
+				<c:if test="${qnaVO.email eq sessionScope._USER_.email || sessionScope._USER_.authority eq 'ADMIN'}">
+					<form:form id="replyWriteForm"
+							   modelAttribute="replyVO" >
+						<input type="hidden" name="qnaId" value="${qnaVO.id}"/>
+						<div>
+							<textarea name="content">${qnaReplyVO.content}</textarea>
+							<form:errors id="contentError" path="content"></form:errors>
+						</div>
+						<input type="button" id="writeBtn" value="write" />
+					</form:form>
+				</c:if>
 			</div>
 		</div>
     </div>

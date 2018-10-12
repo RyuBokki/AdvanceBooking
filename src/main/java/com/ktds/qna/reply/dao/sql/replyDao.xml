@@ -12,7 +12,6 @@
 	   							, QNA_ID
 	   							, CONTENT
 	   							, CRT_DATE
-	   							, PARENT_REPLY_ID
 	   							, EMAIL
    							) 
 		VALUES ( 
@@ -20,7 +19,6 @@
 					 , #{qnaId}
 					 , #{content}
 					 , SYSDATE
-					 , #{parentReplyId}
 					 , #{email} 
 				)
   	</insert>
@@ -30,7 +28,6 @@
   		<result property="qnaId" column="QNA_ID"/>
   		<result property="content" column="CONTENT"/>
   		<result property="crtDate" column="CRT_DATE"/>
-  		<result property="parentReplyId" column="PARENT_REPLY_ID"/>
   		<result property="email" column="EMAIL"/>
   		<association property="qnaVO" javaType="QnAVO">
   			<id property="id" column="ID"/>
@@ -58,7 +55,6 @@
 				, R.QNA_ID
 				, R.CONTENT
 				, R.CRT_DATE
-				, R.PARENT_REPLY_ID
 				, R.EMAIL
 				, Q.ID
 				, Q.SUBJECT
@@ -81,9 +77,8 @@
 		AND		R.EMAIL = R_M.EMAIL
 		AND		R.QNA_ID = Q.ID
 		AND		Q.ID = #{id}
-		START	WITH R.PARENT_REPLY_ID = '0'
-		CONNECT	BY PRIOR R.REPLY_ID = R.PARENT_REPLY_ID
   	</select>
+  	
   	<select id="selectOneReply"
   			parameterType="string"
   			resultType="QnAReplyVO">
@@ -91,7 +86,6 @@
 				, QNA_ID qnaId
 				, CONTENT
 				, CRT_DATE crtDate
-				, PARENT_REPLY_ID parentReplyId
 				, EMAIL
   		FROM	REPLY
   		WHERE	REPLY_ID = #{replyId}
@@ -103,17 +97,9 @@
 		SET  	CONTENT = #{content}
 		WHERE	REPLY_ID = #{replyId}
   	</update>
-  	
-  	<update id="updateParentReplyId"
-  			parameterType="string">
-  		UPDATE	REPLY
-		SET  	PARENT_REPLY_ID = #{parentReplyId}
-		WHERE	REPLY_ID = #{replyId}
-  	</update>
-  	
+  	  	
   	<delete id="deleteOneReply"
-  			parameterType="string"
-  			>
+  			parameterType="string">
   		DELETE
   		FROM	REPLY
   		WHERE	REPLY_ID = #{replyId}

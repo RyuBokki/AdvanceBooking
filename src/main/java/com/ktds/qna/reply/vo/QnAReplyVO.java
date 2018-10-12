@@ -6,9 +6,7 @@ import com.ktds.member.vo.MemberVO;
 import com.ktds.qna.vo.QnAVO;
 
 public class QnAReplyVO {
-	
-	private int level;
-	
+		
 	private String replyId;
 	
 	private String qnaId;
@@ -19,20 +17,11 @@ public class QnAReplyVO {
 	private String content;
 	
 	private String crtDate;
-	
-	private String parentReplyId;
-	
+		
 	private QnAVO qnaVO;
 	
 	private MemberVO memberVO;
-	
-	
-	public int getLevel() {
-		return level;
-	}
-	public void setLevel(int level) {
-		this.level = level;
-	}
+		
 	public String getReplyId() {
 		return replyId;
 	}
@@ -56,12 +45,6 @@ public class QnAReplyVO {
 	}
 	public void setCrtDate(String crtDate) {
 		this.crtDate = crtDate;
-	}
-	public String getParentReplyId() {
-		return parentReplyId;
-	}
-	public void setParentReplyId(String parentReplyId) {
-		this.parentReplyId = parentReplyId;
 	}
 	public QnAVO getQnaVO() {
 		return qnaVO;
