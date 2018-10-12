@@ -17,8 +17,8 @@ public class ConcertDaoImpl extends SqlSessionDaoSupport implements ConcertDao {
 	}
 	
 	@Override
-	public ConcertVO insertOneConcert(ConcertVO concertVO) {
-		return this.getSqlSession().insert("", parameter);
+	public int insertOneConcert(ConcertVO concertVO) {
+		return this.getSqlSession().insert("ConcertDao.insertOneConcert", concertVO);
 	}
 
 }

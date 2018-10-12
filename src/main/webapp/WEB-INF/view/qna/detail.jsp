@@ -91,7 +91,7 @@
 						<div id="replyEvent">${reply.content}</div>
 						<div id="clickReply" style="display:none;">						
 							<c:if test="${reply.email eq sessionScope._USER_.email}">
-								<a href="/AdvanceBooking/reply/delete/${reply.replyId}">삭제</a>
+								<a href="/AdvanceBooking/reply/delete/${reply.replyId}?token=${sessionScope._CSRF_TOKEN_}">삭제</a>
 								<a id="updateEvent" href="#">수정</a>
 							</c:if>
 						</div>
@@ -103,6 +103,7 @@
 					<form:form id="replyWriteForm"
 							   modelAttribute="replyVO" >
 						<input type="hidden" name="qnaId" value="${qnaVO.id}"/>
+						<input type="hidden" name="token" value="${sessionScope._CSRF_TOKEN_}"/>
 						<div>
 							<textarea name="content">${qnaReplyVO.content}</textarea>
 							<form:errors id="contentError" path="content"></form:errors>

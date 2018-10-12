@@ -21,6 +21,8 @@ public class QnAReplyVO {
 	private QnAVO qnaVO;
 	
 	private MemberVO memberVO;
+	
+	private String token;
 		
 	public String getReplyId() {
 		return replyId;
@@ -63,5 +65,11 @@ public class QnAReplyVO {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

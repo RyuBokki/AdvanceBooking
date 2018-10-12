@@ -4,6 +4,6 @@ import com.ktds.concert.vo.ConcertVO;
 
 public interface ConcertDao {
 	
-	public ConcertVO insertOneConcert(ConcertVO concertVO);
+	public int insertOneConcert(ConcertVO concertVO);
 	
 }
