@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="/AdvanceBooking/css/main/main.css">
 <script src="/AdvanceBooking/js/jquery-3.3.1.min.js"></script>
 <script src="/AdvanceBooking/js/bootstrap.min.js"></script>
-<script src="/AdvanceBooking/js/main/main.js"></script>
 
 <nav class="navbar">
   <div class="container-fluid">

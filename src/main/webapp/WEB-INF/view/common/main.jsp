@@ -1,7 +1,172 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<jsp:include page="/WEB-INF/view/common/mainHeader.jsp"></jsp:include>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AdvanceBooking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/AdvanceBooking/css/bootstrap.min.css">
+  <script src="/AdvanceBooking/js/jquery-3.3.1.min.js"></script>
+  <script src="/AdvanceBooking/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+	  $().ready(function() {
+			
+			$("#loginEmail").keyup( function(){
+				$.post("/AdvanceBooking/member/loginSuccess"
+				,function(){				
+					$("#loginEmailError").slideUp(100);
+				})
+			})
+				
+			$("#loginPassword").keyup( function(){
+				$.post("/AdvanceBooking/member/loginSuccess"
+				,function(){
+					$("#loginPasswordError").slideUp(100);
+				})
+			})
+			
+			$("#loginBtn").click( function() {
+					
+				$.ajax({
+						url: "/AdvanceBooking/memberlogin"
+						, type: "POST"
+						, data: $('#loginForm').serialize()
+						, dataType: "json"
+						, success:function(response) {
+							if ( response.isLoginSuccess ) {
+								alert("로그인 성공");
+								$("#loginModal").modal();
+								return;							
+							}
+							else {
+								alert("로그인 실패");
+							}
+						}
+				})
+			})
+			
+			
+	//		regist javascript 처리
+			
+			$("#registEmail").keyup( function(){
+					$.post("/AdvanceBooking/member/regist"
+					,function(){				
+						var registEmail = document.getElementById("registEmail");
+					    if ( registEmail.validity.valueMissing ) {
+					        document.getElementById("registEmailError2").innerHTML = "이메일은 필수 입력값입니다.";
+					        
+					    } else {
+					        if ( registEmail.validity.typeMismatch ) {
+					        	document.getElementById("registEmailError2").innerHTML = "이메일 형식으로 입력해 주세요.";
+					        }
+					        else {
+						        document.getElementById("registEmailError2").innerHTML = "";
+					        }
+					    } 
+					})
+					
+					$.post("/AdvanceBooking/member/check/duplicate"
+							, {
+								"email":$(this).val()				
+							}
+							, function(response) {
+								if ( response.duplicated ) {
+									$("#email-duplicated").show()
+								}
+								else {
+									$("#email-duplicated").hide()
+								}
+							}
+					)
+			})
+				
+			$("#registPassword").keyup( function(){
+				$.post("/AdvanceBooking/member/regist"
+				,function(){
+					var registPassword = document.getElementById("registPassword");
+				    if ( registPassword.validity.valueMissing ) {
+				        document.getElementById("registPasswordError2").innerHTML = "비밀번호는 필수 입력값입니다.";
+				    } else {
+				        if ( registPassword.validity.patternMismatch ) {
+				        	document.getElementById("registPasswordError2").innerHTML = "숫자 영대소문자 특수 문자를 포함한 8~20자를 입력하세요.";
+				        }
+				        else {
+					        document.getElementById("registPasswordError2").innerHTML = "";
+				        }
+				    } 
+				})
+			})
+				
+			$("#registPasswordConfirm").keyup( function(){
+				$.post("/AdvanceBooking/member/regist"
+				,function(){				
+					var registPasswordConfirm = document.getElementById("registPasswordConfirm");
+				    if (!registPasswordConfirm.checkValidity()) {
+				        document.getElementById("registPasswordConfirmError2").innerHTML = "비밀번호 재입력은 필수 입력값입니다.";
+				    } else {
+				        document.getElementById("registPasswordConfirmError2").innerHTML = "";
+				    }
+					
+					if( $("#registPassword").val() != $("#registPasswordConfirm").val() ) {
+						$("#notEqualPassword").show();
+						$("#registPasswordConfirm").focus();
+					}
+					else {					
+						$("#notEqualPassword").hide();
+					}
+					
+				})
+			})
+	
+			$("#name").keyup( function(){
+				$.post("/AdvanceBooking/member/regist"
+				,function(){
+					var name = document.getElementById("name");
+				    if (!name.checkValidity()) {
+				        document.getElementById("nameError2").innerHTML = "이름은 필수 입력값입니다.";
+				    } else {
+				        document.getElementById("nameError2").innerHTML = "";
+				    }
+				})
+			})
+	
+			$("#registBtn").click( function() {
+				
+				registValidationFunction();
+					
+				$.ajax({
+						url: "/AdvanceBooking/member/regist"
+						, type: "POST"
+						, data: $('#registForm').serialize()
+						, dataType: "json"
+						, success:function(response) {
+							if ( response.success ) {
+								location.href='/AdvanceBooking/main';
+								alert("회원가입 성공");
+								$("#loginModal").modal("show");
+								return;							
+							}
+							else {
+								alert("회원가입 실패");
+							}
+						}
+				})
+			})
+			
+			$('.dropdown a.test').on("click", function(e){
+			    $(this).next('ul').toggle();
+			    e.stopPropagation();
+			    e.preventDefault();
+		    });
+			
+		})
+  </script>
+<jsp:include page="/WEB-INF/view/common/navbar.jsp"></jsp:include>
+</head>
+<body>
+<div>
 	<div id="image">
 	</div>
 		
@@ -68,15 +233,17 @@
 	        	<div class="modal-body">
 	          		<div id="wrapperbox">	
 						<form:form id="registForm"
-								   modelAttribute="memberVO">
+								   modelAttribute="memberVO" >
 							<div class="inputbox">
 								<label for="registEmail">Email</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>				
-									<input type="email" id="registEmail" class="form-control" name="email" placeholder="아이디(이메일)을 입력하세요" value="${registMemberVO.email}"/>
+									<input type="email" id="registEmail" class="form-control" name="email" placeholder="아이디(이메일)을 입력하세요" value="${registMemberVO.email}" required/>
 								</div>
 								<div>
 									<form:errors path="email" id="registEmailError"/>
+								</div>
+								<div id="registEmailError2">
 								</div>
 								<div id="email-duplicated" style="display:none;">
 									이미 존재하는 이메일이거나 사용할 수 없는 이메일입니다.				
@@ -86,20 +253,24 @@
 								<label for="registPwd">Password</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>				
-									<input type="password" id="registPassword" class="form-control" name="password" placeholder="비밀번호를 입력하세요" value="${registMemberVO.password}"/>
+									<input type="password" id="registPassword" class="form-control" name="password" placeholder="비밀번호를 입력하세요" value="${registMemberVO.password}" pattern="(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*()]).{8,20}" min="8" max="20" required/>
 								</div>
 								<div>
 									<form:errors path="password" id="registPasswordError"/>
+								</div>
+								<div id="registPasswordError2">
 								</div>
 							</div>
 							<div class="inputbox">
 								<label for="registPwdConfirm">PasswordConfirm</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>				
-									<input type="password" id="registPasswordConfirm" class="form-control" name="passwordConfirm" placeholder="비밀번호를 재입력하세요" value="${registMemberVO.passwordConfirm}"/>				
+									<input type="password" id="registPasswordConfirm" class="form-control" name="passwordConfirm" placeholder="비밀번호를 재입력하세요" value="${registMemberVO.passwordConfirm}" required/>				
 								</div>
 								<div>
 									<form:errors path="passwordConfirm" id="registPasswordConfirmError"/>
+								</div>
+								<div id="registPasswordConfirmError2">
 								</div>
 								<div id="notEqualPassword" style="display:none;">
 									비밀번호가 일치하지 않습니다.
@@ -109,10 +280,12 @@
 								<label for="name">Name</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>								
-									<input type="text" id="name" name="name" class="form-control" placeholder="이름을 입력하세요" value="${registMemberVO.name}"/>
+									<input type="text" id="name" name="name" class="form-control" placeholder="이름을 입력하세요" value="${registMemberVO.name}" required/>
 								</div>
 								<div>
 									<form:errors path="name" id="nameError"/>
+								</div>
+								<div id="nameError2">
 								</div>
 							</div>
 							<div>

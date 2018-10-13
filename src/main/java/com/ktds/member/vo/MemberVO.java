@@ -26,7 +26,7 @@ public class MemberVO {
 			 , regexp="((?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()]).{8,20})")
 	private String password;
 	
-	@NotEmpty(message="비밀번호는 필수 입력값입니다."
+	@NotEmpty(message="비밀번호 확인은 필수 입력값입니다."
 			  , groups= {MemberValidator.Regist.class
 					  , MemberValidator.Update.class})
 	private String passwordConfirm;

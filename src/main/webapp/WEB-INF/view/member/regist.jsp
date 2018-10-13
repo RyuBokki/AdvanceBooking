@@ -64,6 +64,8 @@
 		})
 		
 		$("#registBtn").click( function() {
+			
+			
 			$("#registForm").attr({
 				action:"/AdvanceBooking/member/regist",
 				method:"post",
