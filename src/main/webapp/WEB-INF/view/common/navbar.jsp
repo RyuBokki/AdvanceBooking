@@ -30,10 +30,10 @@
       		</c:when>
       		<c:otherwise>
       			<li>
-		        	<a href="#" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+		        	<a href="#" data-toggle="modal" data-target="#loginModal" id="login"><span class="glyphicon glyphicon-log-in"></span> Login</a>
 		      	</li> 
 		        <li>
-		        	<a href="#" data-toggle="modal" data-target="#registModal"><span class="glyphicon glyphicon-user"></span> Regist</a>
+		        	<a href="#" data-toggle="modal" data-target="#registModal" id="regist"><span class="glyphicon glyphicon-user"></span> Regist</a>
 		      	</li>	
       		</c:otherwise>
       	</c:choose>

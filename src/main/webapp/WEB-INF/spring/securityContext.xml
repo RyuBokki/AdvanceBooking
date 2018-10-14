@@ -31,12 +31,12 @@
       <s:csrf disabled="true"/>
       
       <s:form-login 
-         login-page="/member/login"
+         login-page="/main"
          username-parameter="email"
          password-parameter="password"
          login-processing-url="/memberlogin"
          default-target-url="/member/loginSuccess"
-         authentication-failure-url="/member/loginFailure"
+         authentication-failure-forward-url="/member/loginFail"
          always-use-default-target="true"
       />
       

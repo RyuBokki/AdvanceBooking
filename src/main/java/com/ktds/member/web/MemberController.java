@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,11 +40,6 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
-	
-	@GetMapping("/member/regist")
-	public String viewMemberRegistPage() {
-		return "member/regist";
-	}
 	
 	@PostMapping("/member/check/duplicate")
 	@ResponseBody
@@ -101,16 +97,9 @@ public class MemberController {
 			return result;
 		}
 	}
-
-	
-	@GetMapping("/member/login")
-	public String viewMemberLoginPage() {
-		return "member/login";
-	}
 	
 	@GetMapping("/member/loginSuccess")
-	public ModelAndView doMemberLoginAction( @ModelAttribute MemberVO memberVO
-											  , Errors errors
+	public ModelAndView doMemberLoginAction( MemberVO memberVO
 											  , HttpSession session) {
 		
 		ModelAndView view = new ModelAndView("redirect:/concert/list");
@@ -123,17 +112,6 @@ public class MemberController {
 		memberVO.setEmail(user.getUsername());
 		memberVO.setPassword(user.getPassword());
 		
-		if ( errors.hasErrors() ) {
-			view.setViewName("member/login");
-			view.addObject("loginMemberVO", memberVO);
-			
-			System.out.println("errors" + errors.getAllErrors().get(0)); 
-			
-			System.out.println(memberVO.toString());
-			
-			return view;
-		}
-		
 		MemberVO loginMemberVO = this.memberService.readOneMember(memberVO);
 		
 		if ( loginMemberVO != null ) {
@@ -145,8 +123,8 @@ public class MemberController {
 		}
 		else {
 									
-			view.setViewName("member/login");
-			view.addObject("memberVO", memberVO);
+			view.setViewName("common/main");
+			view.addObject("loginMemberVO", memberVO);
 						
 			return view;
 		}		
@@ -154,59 +132,16 @@ public class MemberController {
 		return view;
 	}
 	
-	/*@GetMapping("/member/loginSuccess")
-	public Map<String, Object> doMemberLoginAction( @Validated({MemberValidator.Login.class})@ModelAttribute MemberVO memberVO
-			, Errors errors
-			, HttpSession session) {
+	@RequestMapping("/member/loginFail")
+	public ModelAndView doMemberLoginFailAction(@ModelAttribute MemberVO memberVO) {
+		
+		ModelAndView view = new ModelAndView("common/main");
 				
-		User user = ( User ) SecurityContextHolder.getContext()
-				.getAuthentication()
-				.getDetails();
+		view.addObject("loginMemberVO", memberVO);
+								
+		view.addObject("isLoginFail", true);
 		
-		memberVO.setEmail(user.getUsername());
-		memberVO.setPassword(user.getPassword());
-		
-		Map<String, Object> result = new HashMap<String, Object>();
-		
-		if ( errors.hasErrors() ) {
-			result.put("loginMemberVO", memberVO);
-			
-			System.out.println("errors" + errors.getAllErrors().get(0)); 
-			
-			System.out.println(memberVO.toString());
-			
-			return result;
-		}
-				
-		boolean isLoginSuccess = this.memberService.readOneMember(memberVO) != null;
-		
-		if ( isLoginSuccess ) {
-			
-			session.setAttribute(Session.CSRF_TOKEN, user.getToken());
-			session.setAttribute(Session.USER, memberVO);
-			
-			result.put("isLoginSuccess", isLoginSuccess);
-			
-			return result;
-		}
-		else {
-			
-			result.put("loginMemberVO", memberVO);
-			result.put("isLoginSuccess", isLoginSuccess);
-			return result;
-		}		
-	}*/
-	
-	@GetMapping("/member/loginFailure")
-	public Map<String, Object> doMemberLoginFailAction(MemberVO memberVO) {
-		
-		Map<String, Object> result = new HashMap<String, Object>();
-				
-		boolean isBlockAccount = this.memberService.isBlockUser(memberVO.getEmail());
-		
-		result.put("isBlockAccount", isBlockAccount);
-		
-		return result;
+		return view;
 	}
 	
 	//회원정보 수정

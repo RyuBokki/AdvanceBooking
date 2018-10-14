@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,42 +15,78 @@
 	  $().ready(function() {
 			
 			$("#loginEmail").keyup( function(){
-				$.post("/AdvanceBooking/member/loginSuccess"
+				$.get("/AdvanceBooking/member/loginSuccess"
 				,function(){				
-					$("#loginEmailError").slideUp(100);
+					var loginEmail = document.getElementById("loginEmail");
+				    if ( loginEmail.validity.valueMissing ) {
+				        document.getElementById("loginEmailError2").innerHTML = "이메일은 필수 입력값입니다.";
+				        
+				    } else {
+				        if ( loginEmail.validity.typeMismatch ) {
+				        	document.getElementById("loginEmailError2").innerHTML = "이메일 형식으로 입력해 주세요.";
+				        }
+				        else {
+					        document.getElementById("loginEmailError2").innerHTML = "";
+				        }
+				    } 
 				})
 			})
 				
 			$("#loginPassword").keyup( function(){
-				$.post("/AdvanceBooking/member/loginSuccess"
+				$.get("/AdvanceBooking/member/loginSuccess"
 				,function(){
-					$("#loginPasswordError").slideUp(100);
+					var loginPassword = document.getElementById("loginPassword");
+				    if ( loginPassword.validity.valueMissing ) {
+				        document.getElementById("loginPasswordError2").innerHTML = "비밀번호는 필수 입력값입니다.";
+				    } else {
+				        if ( loginPassword.validity.patternMismatch ) {
+				        	document.getElementById("loginPasswordError2").innerHTML = "숫자 영대소문자 특수 문자를 포함한 8~20자를 입력하세요.";
+				        }
+				        else {
+					        document.getElementById("loginPasswordError2").innerHTML = "";
+				        }
+				    } 
 				})
 			})
 			
 			$("#loginBtn").click( function() {
+				var loginEmail = document.getElementById("loginEmail");
+				var loginPassword = document.getElementById("loginPassword");
+				
+				if ( !loginEmail.validity.valueMissing && !loginEmail.validity.typeMismatch
+						&& !loginPassword.validity.valueMissing && !loginPassword.validity.patternMismatch 
+						&& !loginPassword.validity.rangeOverflow && !loginPassword.validity.rangeUnderflow ) {
 					
-				$.ajax({
-						url: "/AdvanceBooking/memberlogin"
-						, type: "POST"
-						, data: $('#loginForm').serialize()
-						, dataType: "json"
-						, success:function(response) {
-							if ( response.isLoginSuccess ) {
-								alert("로그인 성공");
-								$("#loginModal").modal();
-								return;							
-							}
-							else {
-								alert("로그인 실패");
-							}
-						}
-				})
+					$("#loginForm").attr({
+						method:"post",
+						action:"/AdvanceBooking/memberlogin"
+					});
+					
+					$("#loginForm").submit();
+					
+					var isLoginFail = $("#isLoginFail").val();
+					
+					if ( isLoginFail != "" ) {
+						
+						alert("비밀번호 또는 아이디가 일치하지 않습니다.");
+						
+						$.ajax({
+							    type: "POST",
+							    url: "/AdvanceBooking/member/loginFail",
+							    complete: function(){$("#loginModal").modal();}
+						});
+					}
+					
+				}
+				else {
+					alert("로그인 실패");
+				}
 			})
 			
 			
-	//		regist javascript 처리
 			
+	//		regist javascript 처리
+	
 			$("#registEmail").keyup( function(){
 					$.post("/AdvanceBooking/member/regist"
 					,function(){				
@@ -133,9 +170,7 @@
 			})
 	
 			$("#registBtn").click( function() {
-				
-				registValidationFunction();
-					
+									
 				$.ajax({
 						url: "/AdvanceBooking/member/regist"
 						, type: "POST"
@@ -143,10 +178,10 @@
 						, dataType: "json"
 						, success:function(response) {
 							if ( response.success ) {
-								location.href='/AdvanceBooking/main';
 								alert("회원가입 성공");
-								$("#loginModal").modal("show");
-								return;							
+								$("#registModal").modal("hide");
+								location.href = '/AdvanceBooking/main';
+																
 							}
 							else {
 								alert("회원가입 실패");
@@ -177,33 +212,48 @@
       	<!-- Modal content-->
 	      	<div class="modal-content">
 	        	<div class="modal-header">
-	          		<button type="button" class="close" data-dismiss="modal">&times;</button>
+	          		<button type="button" class="close" id="" data-dismiss="modal">&times;</button>
 	          		<h4 class="modal-title">Login</h4>
 	        	</div>
 	        	<div class="modal-body">
 	          		<form:form id="loginForm"
 				   			   modelAttribute="memberVO">
 		   			    <div class="wrapperModal">
+		   			    	<div>
+		   			    		<input type="hidden" id="isLoginFail" value="${isLoginFail}" />
+		   			    	</div>
 							<div>
 								<label for="loginEmail">Email</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-									<input type="email" class="form-control" id="loginEmail" name="email" placeholder="아이디(이메일)" value="${loginMemberVO.email}"/>				
+									<input type="email" class="form-control" id="loginEmail" name="email" placeholder="아이디(이메일)" value="${loginMemberVO.email}" required/>				
 								</div>
 								<div>
 									<form:errors path="email" id="loginEmailError" class="error"/>
+								</div>
+								<div id="loginEmailError2">
 								</div>
 							</div>
 							<div>
 								<label for="loginPwd">Password</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-									<input type="password" class="form-control" id="loginPassword" name="password" placeholder="비밀번호" value="${loginMemberVO.password}"/>
+									<input type="password" class="form-control" id="loginPassword" name="password" placeholder="비밀번호" value="${loginMemberVO.password}" pattern="(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*()]).{8,20}" min="8" max="20" required/>
 								</div>
 								<div>
 									<form:errors path="password" id="loginPasswordError" class="error"/>
 								</div>
+								<div id="loginPasswordError2">
+								</div>
 							</div>
+							<c:if test="${not empty securityexceptionmsg}">
+								<div>
+									로그인에 실패하였습니다. 다시 시도해 주세요.
+								</div>
+								<div>
+									${securityexceptionmsg}
+								</div>
+							</c:if>
 							<input type="button" class="form-control login" id="loginBtn" value="Login"/>
 		   			    </div>
 					</form:form>
