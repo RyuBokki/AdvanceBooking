@@ -14,6 +14,13 @@
   <script type="text/javascript">
 	  $().ready(function() {
 			
+		  	$("#registMove").click(function(){
+		  		
+		  		$("#loginModal").modal("hide");
+		  		$("#registModal").modal("show");
+		  		
+		  	});
+		  
 			$("#loginEmail").keyup( function(){
 				$.get("/AdvanceBooking/member/loginSuccess"
 				,function(){				
@@ -64,19 +71,27 @@
 					
 					$("#loginForm").submit();
 					
+					var isBlockAccount = $("#isBlockAccount").val();
 					var isLoginFail = $("#isLoginFail").val();
 					
-					if ( isLoginFail != "" ) {
-						
-						alert("비밀번호 또는 아이디가 일치하지 않습니다.");
-						
+					if ( isBlockAccount ) {
+						alert("계정이 잠겼습니다. 1시간 뒤에 로그인해주세요.");
 						$.ajax({
 							    type: "POST",
 							    url: "/AdvanceBooking/member/loginFail",
 							    complete: function(){$("#loginModal").modal();}
 						});
 					}
-					
+					else {						
+						if ( isLoginFail ) {
+							alert("비밀번호 또는 아이디가 일치하지 않습니다.");
+							$.ajax({
+								    type: "POST",
+								    url: "/AdvanceBooking/member/loginFail",
+								    complete: function(){$("#loginModal").modal();}
+							});
+						}
+					}
 				}
 				else {
 					alert("로그인 실패");
@@ -181,7 +196,6 @@
 								alert("회원가입 성공");
 								$("#registModal").modal("hide");
 								location.href = '/AdvanceBooking/main';
-																
 							}
 							else {
 								alert("회원가입 실패");
@@ -221,6 +235,7 @@
 		   			    <div class="wrapperModal">
 		   			    	<div>
 		   			    		<input type="hidden" id="isLoginFail" value="${isLoginFail}" />
+		   			    		<input type="hidden" id="isBlockAccount" value="${isBlockAccount}" />
 		   			    	</div>
 							<div>
 								<label for="loginEmail">Email</label>
@@ -246,24 +261,16 @@
 								<div id="loginPasswordError2">
 								</div>
 							</div>
-							<c:if test="${not empty securityexceptionmsg}">
-								<div>
-									로그인에 실패하였습니다. 다시 시도해 주세요.
-								</div>
-								<div>
-									${securityexceptionmsg}
-								</div>
-							</c:if>
 							<input type="button" class="form-control login" id="loginBtn" value="Login"/>
 		   			    </div>
 					</form:form>
 	        	</div>
 	        	<div class="modal-footer">
          			<div class="behindLogin left">
-						<a href="/AdvanceBooking/member/regist" >회원 가입</a>
+						<a id="registMove" href="#" >회원 가입</a>
 					</div>
 					<div class="behindLogin right">
-						<a href="/AdvanceBooking/member/findPassword">Password 찾기</a>
+						<a href="/AdvanceBooking/member/findPassword" >Password 찾기</a>
 					</div>
         		</div>
 	      	</div>

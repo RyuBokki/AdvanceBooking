@@ -184,7 +184,7 @@ public class MemberServiceImpl implements MemberService {
 
 				this.memberDao.updateMemberPassword(params);		    	
 		    	
-		    	out.print("<script>alert('이메일로 임시 비밀번호를 발송하였습니다.'); location.href='/AdvanceBooking/member/login';</script>");
+		    	out.print("<script>alert('이메일로 임시 비밀번호를 발송하였습니다.'); location.href='/AdvanceBooking/main';</script>");
 		    	out.close();		    	
 		    }
 		    else {

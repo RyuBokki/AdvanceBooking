@@ -137,9 +137,16 @@ public class MemberController {
 		
 		ModelAndView view = new ModelAndView("common/main");
 				
+		boolean isBlockAccount = this.memberService.isBlockUser(memberVO.getEmail());
+		
+		boolean isLoginFail = this.memberService.readOneMember(memberVO) == null;
+		
+		view.addObject("isBlockAccount", isBlockAccount);
+		
+		view.addObject("isLoginFail", isLoginFail);
+				
 		view.addObject("loginMemberVO", memberVO);
 								
-		view.addObject("isLoginFail", true);
 		
 		return view;
 	}
@@ -181,12 +188,11 @@ public class MemberController {
 											  , Errors errors
 											  , HttpServletResponse response) throws Exception {
 		
-		ModelAndView view = new ModelAndView("redirect:/member/login");
+		ModelAndView view = new ModelAndView("redirect:/main");
 		
 		if ( errors.hasErrors() ) {
 			view.setViewName("member/findPassword");
 			view.addObject("memberVO", memberVO);
-			
 			return view;
 		}
 		
@@ -199,7 +205,6 @@ public class MemberController {
 		if ( !isFindEmailSuccess ) {
 			view.setViewName("member/findPassword");
 			view.addObject("memberVO", memberVO);
-			
 			return view;
 		}
 		

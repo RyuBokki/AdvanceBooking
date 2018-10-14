@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="ConcertDao">
+  	<insert id="insertOneConcert"
+  			parameterType="ConcertVO">
+  		INSERT INTO CONCERT (
+		   						CONCERT_ID
+		   						, ARTIST
+		   						, LOCATION
+		   						, CONCERT_DAY
+		   						, ADVANCE_BOOKING_DAY
+		   						, ADVANCE_BOOKING_URL
+		   					 ) 
+		VALUES ( 
+					'CC-' || TO_CHAR(SYSDATE, 'YYYYMMDDHH24') || '-' || LPAD(CONCERT_ID_SEQ, 6, '0')
+					, #{artist}
+					, #{location}
+					, #{concertDay}
+					, #{advanceBookingDay}
+					, #{advanceBookingURL}
+		  		)
+  	</insert>
+  	
+  </mapper>
