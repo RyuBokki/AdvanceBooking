@@ -12,6 +12,18 @@
 <script type="text/javascript">
 	$().ready(function(){
 		
+		$('.dropdown a.dropdown-toggle').on("click", function(e){
+  		    $(this).next('ul').toggle();
+  		    e.stopPropagation();
+  		    e.preventDefault();
+  	    });
+  		
+  		$('a.test').click(function(e) {
+  			$(this).next('ul').toggle();
+  		    e.stopPropagation();
+  		    e.preventDefault();
+  		});
+		
 		$('#replyEvent').click(function(){
 			$('#clickReply').show();
 		})
@@ -44,74 +56,72 @@
 	})
 </script>
 <style type="text/css">
-	#mainBox {
+	.sidenav {
+		margin-top: 100px;
+	}
+	
+	#wrapperbox {
+		margin-top: 100px;
 		margin-bottom: 100px;
+	}
+	
+	.inline {
+		display:inline-block;
+		margin-right: 10px;
 	}
 </style>
 </head>
 <body>
-<div class="row content">
-	<div class="col-sm-2 sidenav">
-      <div class="well">
-      	<a href="#">사전 예매</a>
-      </div>
-      <div class="well">
-      	<a href="#">공연 추천</a>
-      </div>      
-      <div class="well">
-      	<a href="#">채팅</a>
-      </div>      
-      <div class="well">
-      	<a href="/AdvanceBooking/qna/list?token=${sessionScope._CSRF_TOKEN_}">QnA</a>
-      </div>      
+<div class="container-fluid">
+	<div class="col-sm-2 sidenav">      
     </div>
-    <div id="mainBox" class="col-sm-8">
-		<h1>
+    <div id="wrapperbox" class="col-sm-8">
+		<h1 class="form-group">
 			${qnaVO.subject}
 		</h1>
-		<h2>
+		<h2 class="form-group">
 			${qnaVO.content}
 		</h2>
-		<div>
+		<div class="form-group text-right">
 			작성자 : ${qnaVO.memberVO.name}
 		</div>
-		<div>
-			<div>
-				<a href="/AdvanceBooking/qna/list?token=${sessionScope._CSRF_TOKEN_}">목록</a>
-				<c:if test="${qnaVO.email eq sessionScope._USER_.email}">
-					<a href="/AdvanceBooking/qna/update/${qnaVO.id}">수정</a>
-					<a href="/AdvanceBooking/qna/delete/${qnaVO.id}?token=${sessionScope._CSRF_TOKEN_}">삭제</a>		
-				</c:if>
-			</div>
-			<div>
-				<c:forEach items="${qnaVO.replyList}" var="reply">
-					<div id="replies">						
-						<div>${reply.memberVO.name}</div>
-						<div>${reply.crtDate}</div>
-						<div id="replyEvent">${reply.content}</div>
-						<div id="clickReply" style="display:none;">						
-							<c:if test="${reply.email eq sessionScope._USER_.email}">
-								<a href="/AdvanceBooking/reply/delete/${reply.replyId}?token=${sessionScope._CSRF_TOKEN_}">삭제</a>
-								<a id="updateEvent" href="#">수정</a>
-							</c:if>
-						</div>
+		<div class="form-group text-right">
+			<a href="/AdvanceBooking/qna/list?token=${sessionScope._CSRF_TOKEN_}">목록</a>
+			<c:if test="${qnaVO.email eq sessionScope._USER_.email}">
+				<a href="/AdvanceBooking/qna/update/${qnaVO.id}">수정</a>
+				<a href="/AdvanceBooking/qna/delete/${qnaVO.id}?token=${sessionScope._CSRF_TOKEN_}">삭제</a>		
+			</c:if>
+		</div>
+		<div class="form-group">
+			<c:forEach items="${qnaVO.replyList}" var="reply">
+				<div id="replies">
+					<div>
+						<div class="inline">${reply.memberVO.name}</div>
+						<div class="inline">${reply.crtDate}</div>
+					</div>						
+					<div id="replyEvent">${reply.content}</div>
+					<div id="clickReply" style="display:none;">						
+						<c:if test="${reply.email eq sessionScope._USER_.email}">
+							<a href="/AdvanceBooking/reply/delete/${reply.replyId}?token=${sessionScope._CSRF_TOKEN_}">삭제</a>
+							<a id="updateEvent" href="#">수정</a>
+						</c:if>
 					</div>
-				</c:forEach>
-			</div>
-			<div>
-				<c:if test="${qnaVO.email eq sessionScope._USER_.email || sessionScope._USER_.authority eq 'ADMIN'}">
-					<form:form id="replyWriteForm"
-							   modelAttribute="replyVO" >
-						<input type="hidden" name="qnaId" value="${qnaVO.id}"/>
-						<input type="hidden" name="token" value="${sessionScope._CSRF_TOKEN_}"/>
-						<div>
-							<textarea name="content">${qnaReplyVO.content}</textarea>
-							<form:errors id="contentError" path="content"></form:errors>
-						</div>
-						<input type="button" id="writeBtn" value="write" />
-					</form:form>
-				</c:if>
-			</div>
+				</div>
+			</c:forEach>
+		</div>
+		<div class="form-group">
+			<c:if test="${qnaVO.email eq sessionScope._USER_.email || sessionScope._USER_.authority eq 'ADMIN'}">
+				<form:form id="replyWriteForm"
+						   modelAttribute="replyVO" >
+					<input type="hidden" name="qnaId" value="${qnaVO.id}"/>
+					<input type="hidden" name="token" value="${sessionScope._CSRF_TOKEN_}"/>
+					<div>
+						<textarea name="content">${qnaReplyVO.content}</textarea>
+						<form:errors id="contentError" path="content"></form:errors>
+					</div>
+					<input type="button" id="writeBtn" value="write" />
+				</form:form>
+			</c:if>
 		</div>
     </div>
     <div class="col-sm-2 sidenav">

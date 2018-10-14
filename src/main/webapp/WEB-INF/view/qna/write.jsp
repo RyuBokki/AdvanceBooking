@@ -20,8 +20,6 @@
    				ckfinder: {
    					uploadUrl: 'http://localhost:8080/AdvanceBooking/qna/imageUpload'
    				}
-   				
-   			
    			}		
    		
    		)
@@ -32,6 +30,12 @@
   		    e.stopPropagation();
   		    e.preventDefault();
   	    });
+  		
+  		$('a.test').click(function(e) {
+  			$(this).next('ul').toggle();
+  		    e.stopPropagation();
+  		    e.preventDefault();
+  		});
 	    		
 	    		
    		$('#writeBtn').click(function(){
@@ -49,14 +53,22 @@
 	})
 </script>
 <style type="text/css">
+	.sidenav {
+		margin-top: 100px;
+	}
+	
 	#wrapperbox {
+		margin-top: 100px;
+		margin-bottom: 100px;
 	}
 </style>
 <jsp:include page="/WEB-INF/view/common/navbar.jsp"></jsp:include>
 </head>
 <body>
 <div class="container-fluid">
-	<div id="wrapperbox" class="col-6">
+	<div class="col-sm-2 sidenav">
+	</div>
+	<div id="wrapperbox" class="col-sm-8">
 		<form:form id="writeForm"
 				   modelAttribute="qnaVO"
 				   enctype="multipart/form-data">
@@ -84,8 +96,12 @@
 			</div>
 			<div class="form-group">
 				<input type="button" class="form-control" id="writeBtn" value="write"/>
-				<a href = '/AdvanceBooking/qna/list'>목록</a>
+			</div>
+			<div class="form-group text-right">
+				<a href='/AdvanceBooking/qna/list?token=${sessionScope._CSRF_TOKEN_}'>목록</a>
 			</div>
 		</form:form>
+	</div>
+	<div class="col-sm-2 sidenav">
 	</div>
 <jsp:include page="/WEB-INF/view/common/mainFooter.jsp"></jsp:include>

@@ -16,6 +16,18 @@
       <ul class="nav navbar-nav navbar-right">      
       	<c:choose>
       		<c:when test="${not empty sessionScope._USER_}">
+      			<li>
+		        	<a href="#">AdvanceBooking</a>
+		      	</li> 
+      			<li>
+		        	<a href="#">Recommend</a>
+		      	</li> 
+      			<li>
+		        	<a href="#">chatting</a>
+		      	</li> 
+      			<li>
+		        	<a href="/AdvanceBooking/qna/list?token=${sessionScope._CSRF_TOKEN_}">QnA</a>
+		      	</li> 
 		      	<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span>(${sessionScope._USER_.name})님 <span class="caret"></span></a>
 			        <ul class="dropdown-menu">
 			          <li><a tabindex="-1" href="/AdvanceBooking/memberlogout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>

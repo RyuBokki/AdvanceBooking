@@ -19,6 +19,12 @@
   		    e.preventDefault();
   	    });
   		
+  		$('a.test').click(function(e) {
+  			$(this).next('ul').toggle();
+  		    e.stopPropagation();
+  		    e.preventDefault();
+  		});
+  		
   	})
   </script>
   <style>
@@ -48,18 +54,6 @@
 <div class="container-fluid text-center">    
   <div class="row content">
     <div class="col-sm-2 sidenav">
-      <div class="well">
-      	<a href="#">사전 예매</a>
-      </div>
-      <div class="well">
-      	<a href="#">공연 추천</a>
-      </div>      
-      <div class="well">
-      	<a href="#">채팅</a>
-      </div>      
-      <div class="well">
-      	<a href="/AdvanceBooking/qna/list?token=${sessionScope._CSRF_TOKEN_}">QnA</a>
-      </div>      
     </div>
     <div class="col-sm-8 text-left"> 
       <h1>Concert page</h1>

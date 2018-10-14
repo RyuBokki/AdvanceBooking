@@ -6,6 +6,30 @@
 <head>
 <meta charset="UTF-8">
 <title>QnA list</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/AdvanceBooking/css/bootstrap.min.css">
+<script src="/AdvanceBooking/js/jquery-3.3.1.min.js" charset="utf-8"></script>
+<script src="/AdvanceBooking/js/bootstrap.min.js" charset="utf-8"></script>
+<script src="/AdvanceBooking/ckeditor5classic/ckeditor.js" charset="utf-8"></script>
+<script type="text/javascript">
+	$().ready(function(){
+	
+		$('.dropdown a.dropdown-toggle').on("click", function(e){
+  		    $(this).next('ul').toggle();
+  		    e.stopPropagation();
+  		    e.preventDefault();
+  	    });
+  		
+  		$('a.test').click(function(e) {
+  			$(this).next('ul').toggle();
+  		    e.stopPropagation();
+  		    e.preventDefault();
+  		});
+		
+		
+		
+	})
+</script>
 <style>
     
     .row.content {height: 450px}
@@ -31,32 +55,56 @@
     section {
     	margin-top: 20px;
     }
+    
+    .inline {
+    	display:inline-block;
+    	margin-right: 5px;
+    }
+    
+    .myform-control {
+    display: inline-block;
+    width: 30%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	}
+    
+    #abs {
+    	position: absolute;
+    	display: inline-block;
+    	top: 0px;
+    	right: 0px;
+    }
+    
+    #rel {
+    	position: relative;
+    }
+    
   </style>
 <jsp:include page="/WEB-INF/view/common/navbar.jsp"></jsp:include>
 </head>
 <body>
 <div>
-	<div class="col-sm-2 sidenav">
-      <div class="well">
-      	<a href="#">사전 예매</a>
-      </div>
-      <div class="well">
-      	<a href="#">공연 추천</a>
-      </div>      
-      <div class="well">
-      	<a href="#">채팅</a>
-      </div>      
-      <div class="well">
-      	<a href="/AdvanceBooking/qna/list?token=${sessionScope._CSRF_TOKEN_}">QnA</a>
-      </div>      
+	<div class="col-sm-2 sidenav">      
     </div>
 	<div id="mainBox" class="container col-sm-8">
-	  <h2><span class="glyphicon glyphicon-question-sign"></span>QnA</h2>
+	  <h2><span class="glyphicon glyphicon-question-sign"></span> QnA</h2>
 	  <table class="table table-hover">
 	    <thead>
 	      <tr>
-	        <th>subject</th>
-	        <th>name</th>
+	        <th>Subject</th>
+	        <th>Writer</th>
 	        <th>CreateDate</th>
 	      </tr>
 	    </thead>
@@ -71,7 +119,7 @@
 						 		</a>
 					        </td>
 					        <td>
-					        	${qnaVO.memberVO.name}
+					        	${qnaVO.memberVO.name} (${qnaVO.email})
 					        </td>
 					        <td>
 					        	${qnaVO.crtDate}
@@ -87,17 +135,19 @@
 				</c:otherwise>
 			</c:choose>
 	  </table>
+	  <div id="rel">
+		<a href="/AdvanceBooking/qna/write" id="abs" class="btn btn-primary" role="button">QnA Write</a>	  
+	  </div>
       <div>
 		<form id="searchForm" onsubmit="javascript:movePage(0);">
-			${pagenation}
+			<ul class="pagination">
+				<li>${pagenation}</li>			
+			</ul>
 			<div>
-				<input type="text" name="searchKeyword" value="${qnaSearchVO.searchKeyword}">
-				<a href="/AdvanceBooking/qna/list/init">검색초기화</a>
+				<input type="text" name="searchKeyword" class="myform-control inline" value="${qnaSearchVO.searchKeyword}">
+				<a href="/AdvanceBooking/qna/list/init" class="btn btn-primary inline" role="button">검색초기화</a>
 			</div> 
 		</form>
-	  </div>
-	  <div>
-		<a href="/AdvanceBooking/qna/write">qna작성</a>
 	  </div>
 	</div>
 	<div class="col-sm-2 sidenav">

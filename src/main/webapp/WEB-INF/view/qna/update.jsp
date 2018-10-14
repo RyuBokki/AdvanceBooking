@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>qna 수정</title>
+<title>QnA Update</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="/AdvanceBooking/css/bootstrap.min.css">
 <script src="/AdvanceBooking/js/jquery-3.3.1.min.js" charset="utf-8"></script>
@@ -28,6 +28,12 @@
   		    e.stopPropagation();
   		    e.preventDefault();
   	    });
+  		
+  		$('a.test').click(function(e) {
+  			$(this).next('ul').toggle();
+  		    e.stopPropagation();
+  		    e.preventDefault();
+  		});
 	    		
 	    		
    		$('#updateBtn').click(function(){
@@ -43,24 +49,32 @@
 	})
 </script>
 <style type="text/css">
+	.sidenav {
+		margin-top: 100px;
+	}
+	
 	#wrapperbox {
+		margin-top: 100px;
+		margin-bottom: 100px;
 	}
 </style>
 <jsp:include page="/WEB-INF/view/common/navbar.jsp"></jsp:include>
 </head>
 <body>
 <div class="container-fluid">
-	<div id="wrapperbox" class="col-6">
+	<div class="col-sm-2 sidenav">
+	</div>
+	<div id="wrapperbox" class="col-sm-8">
 		<form:form id="updateForm"
 				   modelAttribute="qnaVO">
-			<div class="form-group">
-				<h2 id="title">
-					qna 수정		
-				</h2>
-			</div>
 			<div>
 				<input type="hidden" name="token" value="${sessionScope._CSRF_TOKEN_}" />
 				<input type="hidden" name="id" value="${qnaVO.id}" />				
+			</div>
+			<div class="form-group text-center">
+				<h2>
+					QnA Update
+				</h2>
 			</div>
 			<div class="form-group">
 				<label for="subject">Subject</label>
@@ -78,8 +92,12 @@
 			</div>
 			<div class="form-group">
 				<input type="button" class="form-control" id="updateBtn" value="update"/>
-				<a href = '/AdvanceBooking/qna/list'>목록</a>
+			</div>
+			<div class="form-group text-right">
+				<a href = '/AdvanceBooking/qna/list?token=${sessionScope._CSRF_TOKEN_}'>목록</a>
 			</div>
 		</form:form>
+	</div>
+	<div class="col-sm-2 sidenav">
 	</div>
 <jsp:include page="/WEB-INF/view/common/mainFooter.jsp"></jsp:include>
