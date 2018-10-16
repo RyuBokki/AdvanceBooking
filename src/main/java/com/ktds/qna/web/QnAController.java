@@ -186,7 +186,7 @@ public class QnAController {
 	
 	@RequestMapping("/qna/list/init")
 	public String viewQnAListPageForInitiate(HttpSession session) {
-		session.removeAttribute(Session.SEARCH);
+		session.removeAttribute(Session.QNASEARCH);
 		return "redirect:/qna/list" + "?token=" + session.getAttribute(Session.CSRF_TOKEN);
 	}
 	

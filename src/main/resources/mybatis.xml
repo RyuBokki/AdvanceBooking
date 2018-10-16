@@ -12,5 +12,6 @@
 		<typeAlias type="com.ktds.qna.reply.vo.QnAReplyVO" alias="QnAReplyVO"/>
 		<typeAlias type="com.ktds.concert.vo.ConcertVO" alias="ConcertVO"/>
 		<typeAlias type="com.ktds.concert.vo.ConcertSearchVO" alias="ConcertSearchVO"/>
+		<typeAlias type="com.ktds.concert.reply.vo.ConcertReplyVO" alias="ConcertReplyVO"/>
 	</typeAliases>
 </configuration>

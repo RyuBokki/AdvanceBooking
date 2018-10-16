@@ -9,19 +9,19 @@
   			resultType="ConcertVO">
   		SELECT	SUBJECT
   				, CONTENTS
-  				, CONCERT_ID
-  				, ADVANCE_BOOKING_URL
-  				, ADVANCE_BOOKING_DAY
+  				, CONCERT_ID concertId
+  				, ADVANCE_BOOKING_URL advanceBookingUrl
+  				, ADVANCE_BOOKING_DAY advanceBookingDay
   		FROM	CONCERT
   		WHERE	CONCERT_ID = #{concertId}
   	</select>
   	
   	<resultMap type="CONCERTVO" id="concertResultMap">
-  		<id property="concertId" column="CONCERT_ID"/>
+  		<id property="concertId" column="concertId"/>
   		<result property="contents" column="CONTENTS"/>
   		<result property="subject" column="SUBJECT"/>
-  		<result property="advanceBookingUrl" column="ADVANCE_BOOKING_URL"/>
-  		<result property="advanceBookingDay" column="ADVANCE_BOOKING_DAY"/>
+  		<result property="advanceBookingUrl" column="advanceBookingUrl"/>
+  		<result property="advanceBookingDay" column="advanceBookingDay"/>
   	</resultMap>
   	
   	<select id="selectAllConcerts"
@@ -34,9 +34,9 @@
 					FROM	(
 								SELECT	SUBJECT
 						  				, CONTENTS
-						  				, CONCERT_ID
-						  				, ADVANCE_BOOKING_URL
-						  				, ADVANCE_BOOKING_DAY
+						  				, CONCERT_ID concertId
+						  				, ADVANCE_BOOKING_URL advanceBookingUrl
+						  				, ADVANCE_BOOKING_DAY advanceBookingDay
 								FROM 	CONCERT
 								<if test="searchKeyword != null and searchKeyword != ''">
 								WHERE	SUBJECT LIKE '%' || '${searchKeyword}' || '%'

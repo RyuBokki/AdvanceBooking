@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>qna detail</title>
+<title>concert detail</title>
 <jsp:include page="/WEB-INF/view/common/navbar.jsp"></jsp:include>
 <script src="/AdvanceBooking/js/jquery-3.3.1.min.js" charset="utf-8" ></script>
 <script type="text/javascript">
@@ -30,7 +30,7 @@
 				
 		$('#content').keyup(function(){
 			
-			$.post('/AdvanceBooking/reply/write'
+			$.post('/AdvanceBooking/concert/reply/write'
 					, function(){
 				if ( $(this).val() == '' ) {
 					$('#contentError').show();	
@@ -46,7 +46,7 @@
 			
 			$('#replyWriteForm').attr({
 				method:'post',
-				action:'/AdvanceBooking/reply/write'
+				action:'/AdvanceBooking/concert/reply/write'
 			})
 			
 			$('#replyWriteForm').submit();
@@ -77,23 +77,21 @@
     </div>
     <div id="wrapperbox" class="col-sm-8">
 		<h1 class="form-group">
-			${qnaVO.subject}
+			${concertVO.subject}
 		</h1>
 		<h2 class="form-group">
-			${qnaVO.content}
+			${concertVO.contents}
 		</h2>
 		<div class="form-group text-right">
-			작성자 : ${qnaVO.memberVO.name}
-		</div>
-		<div class="form-group text-right">
-			<a href="/AdvanceBooking/qna/list?token=${sessionScope._CSRF_TOKEN_}">목록</a>
-			<c:if test="${qnaVO.email eq sessionScope._USER_.email}">
-				<a href="/AdvanceBooking/qna/update/${qnaVO.id}">수정</a>
-				<a href="/AdvanceBooking/qna/delete/${qnaVO.id}?token=${sessionScope._CSRF_TOKEN_}">삭제</a>		
+			<a href="/AdvanceBooking/concert/list">목록</a>
+			<a href="${concertVO.advanceBookingUrl}">go Interpark</a>
+			<c:if test="${sessionScope._USER_.authority eq 'ADMIN'}">
+				<a href="/AdvanceBooking/qna/update/${concertVO.concertId}">수정</a>
+				<a href="/AdvanceBooking/qna/delete/${concertVO.concertId}?token=${sessionScope._CSRF_TOKEN_}">삭제</a>		
 			</c:if>
 		</div>
 		<div class="form-group">
-			<c:forEach items="${qnaVO.replyList}" var="reply">
+			<c:forEach items="${concertVO.replyList}" var="reply">
 				<div id="replies">
 					<div>
 						<div class="inline">${reply.memberVO.name}</div>
@@ -102,7 +100,7 @@
 					<div id="replyEvent">${reply.content}</div>
 					<div id="clickReply" style="display:none;">						
 						<c:if test="${reply.email eq sessionScope._USER_.email || sessionScope._USER_.authority eq 'ADMIN'}">
-							<a href="/AdvanceBooking/reply/delete/${reply.replyId}?token=${sessionScope._CSRF_TOKEN_}">삭제</a>
+							<a href="/AdvanceBooking/concert/reply/delete/${reply.replyId}?token=${sessionScope._CSRF_TOKEN_}">삭제</a>
 							<a id="updateEvent" href="#">수정</a>
 						</c:if>
 					</div>
@@ -110,18 +108,16 @@
 			</c:forEach>
 		</div>
 		<div class="form-group">
-			<c:if test="${qnaVO.email eq sessionScope._USER_.email || sessionScope._USER_.authority eq 'ADMIN'}">
-				<form:form id="replyWriteForm"
-						   modelAttribute="replyVO" >
-					<input type="hidden" name="qnaId" value="${qnaVO.id}"/>
-					<input type="hidden" name="token" value="${sessionScope._CSRF_TOKEN_}"/>
-					<div>
-						<textarea name="content">${qnaReplyVO.content}</textarea>
-						<form:errors id="contentError" path="content"></form:errors>
-					</div>
-					<input type="button" id="writeBtn" value="write" />
-				</form:form>
-			</c:if>
+			<form:form id="replyWriteForm"
+					   modelAttribute="concertReplyVO" >
+				<input type="hidden" name="concertId" value="${concertVO.concertId}"/>
+				<input type="hidden" name="token" value="${sessionScope._CSRF_TOKEN_}"/>
+				<div>
+					<textarea name="content">${concertReplyVO.content}</textarea>
+					<form:errors id="contentError" path="content"></form:errors>
+				</div>
+				<input type="button" id="writeBtn" value="write" />
+			</form:form>
 		</div>
     </div>
     <div class="col-sm-2 sidenav">

@@ -1,9 +1,13 @@
 package com.ktds.concert.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ktds.concert.dao.ConcertDao;
+import com.ktds.concert.reply.dao.ConcertReplyDao;
+import com.ktds.concert.reply.vo.ConcertReplyVO;
 import com.ktds.concert.vo.ConcertSearchVO;
 import com.ktds.concert.vo.ConcertVO;
 
@@ -17,6 +21,9 @@ public class ConcertServiceImpl implements ConcertService {
 
 	@Autowired
 	private ConcertDao concertDao;
+	
+	@Autowired
+	private ConcertReplyDao concertReplyDao;
 	
 
 	@Override
@@ -39,7 +46,14 @@ public class ConcertServiceImpl implements ConcertService {
 
 	@Override
 	public ConcertVO readOneConcert(String concertId) {
-		return this.concertDao.selectOneConcert(concertId);
+		
+		ConcertVO concertVO = this.concertDao.selectOneConcert(concertId);
+		
+		List<ConcertReplyVO> replyList = this.concertReplyDao.selectAllReplies(concertId);
+		
+		concertVO.setReplyList(replyList);
+		
+		return concertVO;
 	}
 
 }

@@ -98,7 +98,7 @@
 					    <tbody>
 					      <tr>
 					        <td>
-					        	<a href="/AdvanceBooking/qna/detail/${concertVO.concertId}?token=${sessionScope._CSRF_TOKEN_}">
+					        	<a href="/AdvanceBooking/concert/detail/${concertVO.concertId}?token=${sessionScope._CSRF_TOKEN_}">
 						 			${concertVO.subject}
 						 		</a>
 					        </td>

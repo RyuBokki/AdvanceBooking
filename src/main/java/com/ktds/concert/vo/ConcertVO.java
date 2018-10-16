@@ -1,6 +1,8 @@
 package com.ktds.concert.vo;
 
-import javax.validation.constraints.NotEmpty;
+import java.util.List;
+
+import com.ktds.concert.reply.vo.ConcertReplyVO;
 
 public class ConcertVO {
 	
@@ -15,6 +17,8 @@ public class ConcertVO {
 	private String advanceBookingDay;
 
 	private String token;
+	
+	private List<ConcertReplyVO> replyList;
 	
 	public String getSubject() {
 		return subject;
@@ -63,6 +67,13 @@ public class ConcertVO {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	
+
+	public List<ConcertReplyVO> getReplyList() {
+		return replyList;
+	}
+
+	public void setReplyList(List<ConcertReplyVO> replyList) {
+		this.replyList = replyList;
+	}
 	
 }
