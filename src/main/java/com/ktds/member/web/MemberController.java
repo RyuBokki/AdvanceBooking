@@ -211,11 +211,6 @@ public class MemberController {
 		return view;
 	}
 	
-	@GetMapping("/concert/list")
-	public String viewBoardIndexPage() {
-		return "concert/list";
-	}
-	
 	@GetMapping("/member/myPage")
 	public String viewMyPage() {
 		return "member/myPage";

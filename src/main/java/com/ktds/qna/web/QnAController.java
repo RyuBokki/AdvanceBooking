@@ -203,7 +203,7 @@ public class QnAController {
 		}
 		
 		if ( qnaSearchVO.getSearchKeyword() == null ) {
-			qnaSearchVO = (QnASearchVO)session.getAttribute(Session.SEARCH);
+			qnaSearchVO = (QnASearchVO)session.getAttribute(Session.QNASEARCH);
 			
 			if ( qnaSearchVO == null ) {
 				qnaSearchVO = new QnASearchVO();
@@ -213,7 +213,7 @@ public class QnAController {
 		
 		PageExplorer pageExplorer = this.qnaService.readAllQnAs(qnaSearchVO);
 		
-		session.setAttribute(Session.SEARCH, qnaSearchVO);
+		session.setAttribute(Session.QNASEARCH, qnaSearchVO);
 		
 		ModelAndView view = new ModelAndView("qna/list");
 						

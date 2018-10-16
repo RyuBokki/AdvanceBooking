@@ -4,55 +4,48 @@ import javax.validation.constraints.NotEmpty;
 
 public class ConcertVO {
 	
-	private String id;
+	private String subject;
 	
-	@NotEmpty(message="아티스트 명은 필수 입력값입니다.")
-	private String artist;
+	private String contents;
 	
-	@NotEmpty(message="공연장소는 필수 입력값입니다.")
-	private String location;
+	private String concertId;
 	
-	@NotEmpty(message="공연일자은 필수 입력값입니다.")
-	private String concertDay;
+	private String advanceBookingUrl;
 	
-	@NotEmpty(message="사전예매일은 필수 입력값입니다.")
 	private String advanceBookingDay;
-	
-	@NotEmpty(message="사전예매 url은 필수 입력값입니다.")
-	private String advanceBookingURL;
-	
+
 	private String token;
 	
-	public String getId() {
-		return id;
+	public String getSubject() {
+		return subject;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setSubject(String subject) {
+		this.subject = subject;
 	}
 
-	public String getArtist() {
-		return artist;
+	public String getContents() {
+		return contents;
 	}
 
-	public void setArtist(String artist) {
-		this.artist = artist;
+	public void setContents(String contents) {
+		this.contents = contents;
 	}
 
-	public String getLocation() {
-		return location;
+	public String getConcertId() {
+		return concertId;
 	}
 
-	public void setLocation(String location) {
-		this.location = location;
+	public void setConcertId(String concertId) {
+		this.concertId = concertId;
 	}
 
-	public String getConcertDay() {
-		return concertDay;
+	public String getAdvanceBookingUrl() {
+		return advanceBookingUrl;
 	}
 
-	public void setConcertDay(String concertDay) {
-		this.concertDay = concertDay;
+	public void setAdvanceBookingUrl(String advanceBookingUrl) {
+		this.advanceBookingUrl = advanceBookingUrl;
 	}
 
 	public String getAdvanceBookingDay() {
@@ -63,14 +56,6 @@ public class ConcertVO {
 		this.advanceBookingDay = advanceBookingDay;
 	}
 
-	public String getAdvanceBookingURL() {
-		return advanceBookingURL;
-	}
-
-	public void setAdvanceBookingURL(String advanceBookingURL) {
-		this.advanceBookingURL = advanceBookingURL;
-	}
-
 	public String getToken() {
 		return token;
 	}
@@ -78,4 +63,6 @@ public class ConcertVO {
 	public void setToken(String token) {
 		this.token = token;
 	}
+	
+	
 }

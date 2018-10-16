@@ -4,24 +4,58 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
   <mapper namespace="ConcertDao">
-  	<insert id="insertOneConcert"
-  			parameterType="ConcertVO">
-  		INSERT INTO CONCERT (
-		   						CONCERT_ID
-		   						, ARTIST
-		   						, LOCATION
-		   						, CONCERT_DAY
-		   						, ADVANCE_BOOKING_DAY
-		   						, ADVANCE_BOOKING_URL
-		   					 ) 
-		VALUES ( 
-					'CC-' || TO_CHAR(SYSDATE, 'YYYYMMDDHH24') || '-' || LPAD(CONCERT_ID_SEQ, 6, '0')
-					, #{artist}
-					, #{location}
-					, #{concertDay}
-					, #{advanceBookingDay}
-					, #{advanceBookingURL}
-		  		)
-  	</insert>
+  	<select id="selectOneConcert"
+  			parameterType="string"
+  			resultType="ConcertVO">
+  		SELECT	SUBJECT
+  				, CONTENTS
+  				, CONCERT_ID
+  				, ADVANCE_BOOKING_URL
+  				, ADVANCE_BOOKING_DAY
+  		FROM	CONCERT
+  		WHERE	CONCERT_ID = #{concertId}
+  	</select>
+  	
+  	<resultMap type="CONCERTVO" id="concertResultMap">
+  		<id property="concertId" column="CONCERT_ID"/>
+  		<result property="contents" column="CONTENTS"/>
+  		<result property="subject" column="SUBJECT"/>
+  		<result property="advanceBookingUrl" column="ADVANCE_BOOKING_URL"/>
+  		<result property="advanceBookingDay" column="ADVANCE_BOOKING_DAY"/>
+  	</resultMap>
+  	
+  	<select id="selectAllConcerts"
+  			parameterType="ConcertSearchVO"
+  			resultMap="concertResultMap">
+  		SELECT	*
+		FROM	(
+					SELECT	B.*
+							, ROWNUM RNUM
+					FROM	(
+								SELECT	SUBJECT
+						  				, CONTENTS
+						  				, CONCERT_ID
+						  				, ADVANCE_BOOKING_URL
+						  				, ADVANCE_BOOKING_DAY
+								FROM 	CONCERT
+								<if test="searchKeyword != null and searchKeyword != ''">
+								WHERE	SUBJECT LIKE '%' || '${searchKeyword}' || '%'
+								</if>
+								ORDER	BY CONCERT_ID DESC
+							) B
+					WHERE	ROWNUM <![CDATA[<=]]> #{endRow}
+				) 
+		WHERE	RNUM >= #{startRow}
+  	</select>
+  	
+  	<select id="selectAllConcertsCount"
+  			parameterType="ConcertSearchVO"
+  			resultType="_int">
+  		SELECT	COUNT(1)
+  		FROM	CONCERT
+  		<if test="searchKeyword != null and searchKeyword != ''">
+  		WHERE	SUBJECT LIKE '%' || '${searchKeyword}' || '%'
+  		</if>
+  	</select>
   	
   </mapper>

@@ -17,7 +17,7 @@
       	<c:choose>
       		<c:when test="${not empty sessionScope._USER_}">
       			<li>
-		        	<a href="#">AdvanceBooking</a>
+		        	<a href="/AdvanceBooking/concert/list">AdvanceBooking</a>
 		      	</li> 
       			<li>
 		        	<a href="#">Recommend</a>

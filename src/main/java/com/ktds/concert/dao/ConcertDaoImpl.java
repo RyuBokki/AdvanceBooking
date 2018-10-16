@@ -1,10 +1,13 @@
 package com.ktds.concert.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ktds.concert.vo.ConcertSearchVO;
 import com.ktds.concert.vo.ConcertVO;
 
 @Repository
@@ -17,8 +20,18 @@ public class ConcertDaoImpl extends SqlSessionDaoSupport implements ConcertDao {
 	}
 	
 	@Override
-	public int insertOneConcert(ConcertVO concertVO) {
-		return this.getSqlSession().insert("ConcertDao.insertOneConcert", concertVO);
+	public ConcertVO selectOneConcert(String concertId) {
+		return this.getSqlSession().selectOne("ConcertDao.selectOneConcert", concertId);
+	}
+
+	@Override
+	public List<ConcertVO> selectAllConcerts(ConcertSearchVO concertSearchVO) {
+		return this.getSqlSession().selectList("ConcertDao.selectAllConcerts",concertSearchVO);
+	}
+
+	@Override
+	public int selectAllConcertsCount(ConcertSearchVO concertSearchVO) {
+		return this.getSqlSession().selectOne("ConcertDao.selectAllConcertsCount", concertSearchVO);
 	}
 
 }

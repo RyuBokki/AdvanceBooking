@@ -76,20 +76,20 @@
 					
 					if ( isBlockAccount ) {
 						alert("계정이 잠겼습니다. 1시간 뒤에 로그인해주세요.");
-						$.ajax({
+						/* $.ajax({
 							    type: "POST",
 							    url: "/AdvanceBooking/member/loginFail",
 							    complete: function(){$("#loginModal").modal();}
-						});
+						}); */
 					}
 					else {						
 						if ( isLoginFail ) {
 							alert("비밀번호 또는 아이디가 일치하지 않습니다.");
-							$.ajax({
+							/* $.ajax({
 								    type: "POST",
 								    url: "/AdvanceBooking/member/loginFail",
 								    complete: function(){$("#loginModal").modal();}
-							});
+							}); */
 						}
 					}
 				}
@@ -237,7 +237,7 @@
 		   			    		<input type="hidden" id="isLoginFail" value="${isLoginFail}" />
 		   			    		<input type="hidden" id="isBlockAccount" value="${isBlockAccount}" />
 		   			    	</div>
-							<div>
+							<div class="form-group">
 								<label for="loginEmail">Email</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -249,7 +249,7 @@
 								<div id="loginEmailError2">
 								</div>
 							</div>
-							<div>
+							<div class="form-group">
 								<label for="loginPwd">Password</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
@@ -261,7 +261,9 @@
 								<div id="loginPasswordError2">
 								</div>
 							</div>
-							<input type="button" class="form-control login" id="loginBtn" value="Login"/>
+							<div class="form-group">
+								<input type="button" class="form-control login" id="loginBtn" value="Login"/>							
+							</div>
 		   			    </div>
 					</form:form>
 	        	</div>
@@ -291,7 +293,7 @@
 	          		<div id="wrapperbox">	
 						<form:form id="registForm"
 								   modelAttribute="memberVO" >
-							<div class="inputbox">
+							<div class="inputbox form-group">
 								<label for="registEmail">Email</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>				
@@ -306,7 +308,7 @@
 									이미 존재하는 이메일이거나 사용할 수 없는 이메일입니다.				
 								</div>
 							</div>
-							<div class="inputbox">
+							<div class="inputbox form-group">
 								<label for="registPwd">Password</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>				
@@ -318,7 +320,7 @@
 								<div id="registPasswordError2">
 								</div>
 							</div>
-							<div class="inputbox">
+							<div class="inputbox form-group">
 								<label for="registPwdConfirm">PasswordConfirm</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>				
@@ -333,7 +335,7 @@
 									비밀번호가 일치하지 않습니다.
 								</div>
 							</div>
-							<div class="inputbox">
+							<div class="inputbox form-group">
 								<label for="name">Name</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>								
