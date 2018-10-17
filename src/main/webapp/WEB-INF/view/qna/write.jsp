@@ -41,10 +41,10 @@
    		$('#writeBtn').click(function(){
    			   			
    			
-   			var content = document.getElementById("content");
+   			var content = $('#content').parent().children('div');
 			var subject = document.getElementById("subject");
 			
-			if ( !subject.validity.valueMissing && !content.validity.valueMissing ) {
+			if ( !subject.validity.valueMissing && !content.text() == "" ) {
    			
 	   			$('#writeForm').attr({
 	   				method:"post",
@@ -95,7 +95,7 @@
 			<div class="form-group">
 				<label for="content">Content</label>
 				<div>
-					<textarea class="form-control" id="content" name="content" placeholder="내용" value="${qnaVO.content}" required></textarea>
+					<textarea class="form-control" id="content" name="content" placeholder="내용" value="${qnaVO.content}"></textarea>
 					<form:errors path="content"></form:errors>
 				</div>
 			</div>

@@ -46,7 +46,7 @@ import io.github.seccoding.web.pager.explorer.PageExplorer;
 @Controller
 public class QnAController {
 	
-	@Value("${upload.path}")
+	@Value("C:\\Users\\82104\\Desktop\\Project\\AdvanceBooking\\uploadFiles")
 	private String uploadPath;
 	
 	@Autowired
@@ -107,7 +107,6 @@ public class QnAController {
 		if ( !uploadFile.isEmpty() ) {
 						
 			String fileName = UUID.randomUUID().toString();
-			
 			File uploadDir = new File(this.uploadPath);
 			
 			if ( !uploadDir.exists() ) {
