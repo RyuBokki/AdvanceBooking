@@ -39,17 +39,22 @@
 	    		
 	    		
    		$('#writeBtn').click(function(){
+   			   			
    			
-   			alert($('#subject').val());
+   			var content = document.getElementById("content");
+			var subject = document.getElementById("subject");
+			
+			if ( !subject.validity.valueMissing && !content.validity.valueMissing ) {
    			
-   			$('#writeForm').attr({
-   				method:"post",
-   				action:"/AdvanceBooking/qna/write",
-   				enctype: "multipart/form-data"
-   			});
-   			
-   			$('#writeForm').submit();
-   		})
+	   			$('#writeForm').attr({
+	   				method:"post",
+	   				action:"/AdvanceBooking/qna/write",
+	   				enctype: "multipart/form-data"
+	   			});
+	   			
+	   			$('#writeForm').submit();			
+   			}
+   		});
 	})
 </script>
 <style type="text/css">
@@ -83,14 +88,14 @@
 			<div class="form-group">
 				<label for="subject">Subject</label>
 				<div>
-					<input type="subject" class="form-control" id="subject" name="subject" placeholder="제목" value="${qnaVO.subject}"/>
+					<input type="subject" class="form-control" id="subject" name="subject" placeholder="제목" value="${qnaVO.subject}" required/>
 					<form:errors path="subject"></form:errors>				
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="content">Content</label>
 				<div>
-					<textarea class="form-control" id="content" name="content" placeholder="내용" value="${qnaVO.content}"></textarea>
+					<textarea class="form-control" id="content" name="content" placeholder="내용" value="${qnaVO.content}" required></textarea>
 					<form:errors path="content"></form:errors>
 				</div>
 			</div>

@@ -56,7 +56,7 @@ public class ConcertController {
 	}
 	
 	@RequestMapping("/concert/list/init")
-	public String viewQnAListPageForInitiate(HttpSession session) {
+	public String viewConcertListPageForInitiate(HttpSession session) {
 		session.removeAttribute(Session.CONCERTSEARCH);
 		return "redirect:/concert/list" + "?token=" + session.getAttribute(Session.CSRF_TOKEN);
 	}

@@ -72,9 +72,6 @@ public class QnAController {
 		}
 		
 		if ( errors.hasErrors() ) {
-			for (FieldError error : errors.getFieldErrors()) {
-				String errorMessage =  error.getDefaultMessage();
-			}
 			
 			view.setViewName("concert/list");
 			view.addObject("qnaVO", qnaVO);

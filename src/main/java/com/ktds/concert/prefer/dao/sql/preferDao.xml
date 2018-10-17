@@ -19,4 +19,99 @@
 				)
   	</insert>
   	
+  	<delete id="deleteOnePrefer"
+  			parameterType="string">
+  		DELETE	
+  		FROM	PREFER
+  		WHERE	PREFER_ID = #{preferId}
+  	</delete>
+  	
+  	<select id="isDuplicatedPrefer"
+  			parameterType="string"
+  			resultType="PreferVO">
+		SELECT	PREFER_ID preferId
+			    , EMAIL email
+			    , CONCERT_ID concertId
+		FROM	PREFER
+		WHERE	CONCERT_ID = #{concertId}
+  	</select>
+  	
+  	<resultMap type="PreferVO" id="preferSearchMap">
+  		<id property="preferId" column="preferId"/>
+  		<result property="email" column="email"/>
+  		<result property="concertId" column="concertId"/>
+  		<association property="concertVO" javaType="ConcertVO">
+ 			<id property="concertId" column="concertId"/>
+	  		<result property="contents" column="CONTENTS"/>
+	  		<result property="subject" column="SUBJECT"/>
+	  		<result property="advanceBookingUrl" column="advanceBookingUrl"/>
+	  		<result property="advanceBookingDay" column="advanceBookingDay"/>
+  		</association>
+  		<association property="memberVO" javaType="MemberVO" >
+			<id property="email" column="M_EMAIL"/>
+			<result property="name" column="NAME"/>
+			<result property="email" column="LOGIN_FAIL_COUNT"/>
+			<result property="latestLogin" column="LATEST_LOGIN"/>
+			<result property="authority" column="AUTHORITY"/>
+			<result property="loginFailCount" column="LOGIN_FAIL_COUNT"/>
+		</association>
+  	</resultMap>
+  	
+  	<select id="selectAllPrefers"
+  			parameterType="PreferSearchVO"
+  			resultMap="preferSearchMap">
+  		SELECT	*
+		FROM	(
+					SELECT	B.*
+							, ROWNUM RNUM
+					FROM	(
+								SELECT	P.PREFER_ID preferId
+									    , P.EMAIL email
+									    , P.CONCERT_ID concertId
+									    , C.SUBJECT
+									    , C.CONTENTS
+									    , C.C_concertId
+									    , C.advanceBookingUrl
+									    , C.advanceBookingDay
+										, M.EMAIL M_EMAIL
+										, M.NAME
+										, M.LOGIN_FAIL_COUNT
+										, M.LATEST_LOGIN
+										, M.AUTHORITY
+								FROM 	PREFER P
+										, MEMBERS M
+										, (
+								            SELECT  SUBJECT
+								                    , CONTENTS
+								                    , CONCERT_ID C_concertId
+								                    , ADVANCE_BOOKING_URL advanceBookingUrl
+								                    , TO_DATE(ADVANCE_BOOKING_DAY,'YYYY/MM/DD/HH24') advanceBookingDay
+								            FROM    CONCERT
+								            WHERE   ADVANCE_BOOKING_DAY NOT LIKE '티켓오픈일추후공지'
+								        ) C
+								WHERE	P.EMAIL = M.EMAIL
+								AND		P.CONCERT_ID = C.C_concertId
+								AND		advanceBookingDay >= SYSDATE
+								<if test="searchKeyword != null and searchKeyword != ''">
+								AND		C.SUBJECT LIKE '%' || '${searchKeyword}' || '%'
+								</if>
+								ORDER	BY C_concertId DESC
+							) B
+					WHERE	ROWNUM <![CDATA[<=]]> #{endRow}
+				) 
+		WHERE	RNUM >= #{startRow}
+  	</select>
+  	
+  	<select id="selectAllPrefersCount"
+  			parameterType="PreferSearchVO"
+  			resultType="_int">
+  		SELECT	COUNT(1)
+  		FROM	PREFER P
+  				, MEMBERS M
+  		WHERE	P.EMAIL = M.EMAIL
+  		<if test="searchKeyword != null and searchKeyword != ''">
+		AND		SUBJECT LIKE '%' || '${searchKeyword}' || '%'
+		</if>
+  	</select>
+  	
   </mapper>

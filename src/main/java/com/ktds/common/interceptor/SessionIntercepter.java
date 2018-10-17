@@ -21,7 +21,7 @@ public class SessionIntercepter extends HandlerInterceptorAdapter {
 		MemberVO memberVO = (MemberVO) session.getAttribute(Session.USER);
 		
 		if ( memberVO == null ) {
-			response.sendRedirect("/AdvanceBooking/member/login?message="+URLEncoder.encode("로그인이 필요합니다", "UTF-8"));
+			response.sendRedirect("/AdvanceBooking/main?message="+URLEncoder.encode("로그인이 필요합니다", "UTF-8"));
 			return false;
 		}
 		

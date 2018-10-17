@@ -1,5 +1,8 @@
 package com.ktds.concert.prefer.vo;
 
+import com.ktds.concert.vo.ConcertVO;
+import com.ktds.member.vo.MemberVO;
+
 public class PreferVO {
 	
 	private String preferId;
@@ -9,6 +12,10 @@ public class PreferVO {
 	private String concertId;
 	
 	private String token;
+	
+	private ConcertVO concertVO;
+	
+	private MemberVO memberVO; 
 	
 	public String getPreferId() {
 		return preferId;
@@ -40,6 +47,22 @@ public class PreferVO {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public ConcertVO getConcertVO() {
+		return concertVO;
+	}
+
+	public void setConcertVO(ConcertVO concertVO) {
+		this.concertVO = concertVO;
+	}
+
+	public MemberVO getMemberVO() {
+		return memberVO;
+	}
+
+	public void setMemberVO(MemberVO memberVO) {
+		this.memberVO = memberVO;
 	}
 
 }

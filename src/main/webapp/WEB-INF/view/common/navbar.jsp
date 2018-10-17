@@ -35,6 +35,7 @@
 			          	<a class="test" tabindex="-1" href="#">MyPage <span class="caret"></a>
 			          	<ul class="dropdown-menu">
    				            <li><a  href="/AdvanceBooking/member/update">회원정보 수정</a></li>
+   				            <li><a  href="/AdvanceBooking/concert/prefer/list"><span class="glyphicon glyphicon-thumbs-up"></span> Like</a></li>   				            
 			          	</ul>
 		          	  </li>
 			        </ul>

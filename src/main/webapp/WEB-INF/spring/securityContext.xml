@@ -15,19 +15,23 @@
       <!-- spring security를 만들어주는 url -->
       <s:intercept-url pattern="/main" access="permitAll"/>      
       <s:intercept-url pattern="/memberlogin" access="permitAll"/>
-      <s:intercept-url pattern="/member/login" access="permitAll"/>
+      <s:intercept-url pattern="/member/loginSuccess" access="permitAll"/>
+      <s:intercept-url pattern="/member/check/duplicate" access="permitAll"/>
+      <s:intercept-url pattern="/member/loginFail" access="permitAll"/>
       <s:intercept-url pattern="/member/regist" access="permitAll"/>
       <s:intercept-url pattern="/member/findPassword" access="permitAll"/>
+      <s:intercept-url pattern="/member/update" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
+      <s:intercept-url pattern="/member/myPage" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
       <s:intercept-url pattern="/qna/write" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
       <s:intercept-url pattern="/qna/detail/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
       <s:intercept-url pattern="/qna/list/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
-<!--       <s:intercept-url pattern="/member" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/> -->
-      <!-- member 이하의 모든 url -->
-      <!-- <s:intercept-url pattern="/member/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/> -->
+      <s:intercept-url pattern="/qna/imageUpload" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
+      <s:intercept-url pattern="/qna/imageDownload/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
+      <s:intercept-url pattern="/qna/detail/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
+      <s:intercept-url pattern="/qna/delete/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
+      <s:intercept-url pattern="/qna/update/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
       <s:intercept-url pattern="/concert/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
       
-      <!-- csrf 비활성화 -->
-      <!-- csrf는 check하지 않겠다 -->
       <s:csrf disabled="true"/>
       
       <s:form-login 
@@ -55,12 +59,10 @@
          
    </s:http>
    
-   <!-- Spring Security가 처리할 인증 객체 생성 -->
    <bean id="userService"
         class="com.ktds.member.service.UserService">
    </bean>
    
-   <!-- UserService 객체를 Spring Security authenticationManager에 등록 -->
    <s:authentication-manager>
       <s:authentication-provider ref="userService"/>
    </s:authentication-manager>

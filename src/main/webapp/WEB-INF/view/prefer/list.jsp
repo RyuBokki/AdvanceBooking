@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>사전예매시스템</title>
+<title>Prefer List</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/AdvanceBooking/css/bootstrap.min.css">
   <script src="/AdvanceBooking/js/jquery-3.3.1.min.js"></script>
@@ -28,35 +28,22 @@
 		
   		$('.like').closest('.likeClosest').find('.like').click(function(){
   			
-  			var concertId = $(this).parent().find('.concertId').val();
-  			var that = this;
-  			var url = '/AdvanceBooking/concert/prefer/regist/' + concertId
+  			var question = confirm("관심 목록에서 제거하시겠습니까?");
   			
-  			$.ajax({
-				url: '/AdvanceBooking/concert/prefer/regist'
-				, type: "POST"
-				, data: $(this).parent().find('.likeForm').serialize()
-				, dataType: "json"
-				, success:function(response) {
-					if ( response.isDuplicatedPrefer ) {
-						
-						if ( response.isDeleteSuccess ) {
-							alert("관심 목록에서 삭제되었습니다.");
-							$(that).children().removeClass('glyphicon-heart');
-   							$(that).children().addClass('glyphicon-heart-empty');
-						}
-						
-					}
-					else {
-						if ( response.isRegistSuccess ) {
-							
-							alert("관심 목록에 추가되었습니다.");
-							$(that).children().removeClass('glyphicon-heart-empty')
-              				$(that).children().addClass('glyphicon-heart');
-						}
-					}
-				}
-			});  			
+  			var preferId = $(this).parent().children('input').val();
+  			var token = $('#token').val();
+  			var that = this;
+  			var url = '/AdvanceBooking/concert/prefer/delete/' + preferId + "?token=" + token;
+  			
+  			if ( question ) {  				
+	  			$.post(url
+	  				   , function(response) {
+	  				if ( response.isDeleteSuccess ) {
+	  					alert("해당 콘서트를 관심 목록에서 제거합니다.");
+	  					location.href = "/AdvanceBooking/concert/prefer/list";
+	  				}
+	  			})  			
+  			}  			
   		});
   		
   	})
@@ -126,32 +113,24 @@
 	      </tr>
 	    </thead>
 			<c:choose>
-				<c:when test="${not empty concertVOList}">
-				    <c:forEach items = "${concertVOList}" var = "concertVO">
+				<c:when test="${not empty preferVOList}">
+				    <c:forEach items = "${preferVOList}" var = "preferVO">
 					    <tbody>
 					      <tr class="likeClosest">
 					        <td>
-					        	<a href="/AdvanceBooking/concert/detail/${concertVO.concertId}?token=${sessionScope._CSRF_TOKEN_}">
-						 			${concertVO.subject}
+					        	<a href="/AdvanceBooking/concert/detail/${preferVO.concertId}?token=${sessionScope._CSRF_TOKEN_}">
+						 			${preferVO.concertVO.subject}
 						 		</a>
 					        </td>
 					        <td id="replace">
-					        	${concertVO.advanceBookingDay}
+					        	${preferVO.concertVO.advanceBookingDay}
 					        </td>
 					        <td>
-					        	<a href="${concertVO.advanceBookingUrl}">사전예매</a>
+					        	<a href="${preferVO.concertVO.advanceBookingUrl}">사전예매</a>
 					        </td>
 					        <td>
-					        	<a class="like" href="#"><span class="glyphicon glyphicon-heart-empty"></span></a>
-					        	<div>
-					        		<form class="likeForm"
-					        			  method="post"
-					        			  action="/AdvanceBooking/concert/prefer/regist">
-					        			<input type="hidden" class="concertId" name="concertId" value="${concertVO.concertId}"/>
-					        			<input type="hidden" class="token" name="token" value="${sessionScope._CSRF_TOKEN_}"/>
-					        			<input type="hidden" name="email" value="${sessionScope._USER_.email}"/>
-					        		</form>
-					        	</div>
+					        	<input type="hidden" value="${preferVO.preferId}">
+					        	<a class="like" href="/AdvanceBooking/concert/prefer/delete/${preferVO.preferId}?token=${sessionScope._CSRF_TOKEN_}"><span class="glyphicon glyphicon-heart"></span></a>
 					        </td>
 					      </tr>
 					    </tbody>
@@ -170,11 +149,11 @@
 				<li>${pagenation}</li>			
 			</ul>
 			<div>
-				<input type="hidden" name="token" value="${sessionScope._CSRF_TOKEN_}">
+				<input type="hidden" id="token" name="token" value="${sessionScope._CSRF_TOKEN_}">
 			</div>
 			<div>
-				<input type="text" name="searchKeyword" class="myform-control inline" value="${concertSearchVO.searchKeyword}">
-				<a href="/AdvanceBooking/concert/list/init" class="btn btn-primary inline" role="button">검색초기화</a>
+				<input type="text" name="searchKeyword" class="myform-control inline" value="${preferSearchVO.searchKeyword}">
+				<a href="/AdvanceBooking/concert/prefer/list/init" class="btn btn-primary inline" role="button">검색초기화</a>
 			</div> 
 		</form>
 	  </div>

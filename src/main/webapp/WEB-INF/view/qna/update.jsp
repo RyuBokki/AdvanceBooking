@@ -38,13 +38,21 @@
 	    		
    		$('#updateBtn').click(function(){
    			   			
-   			$('#updateForm').attr({
-   				method:"post",
-   				action:"/AdvanceBooking/qna/update",
-   				enctype: "multipart/form-data"
-   			});
    			
-   			$('#updateForm').submit();
+   			var content = document.getElementById("content");
+			var subject = document.getElementById("subject");
+			
+			if ( !subject.validity.valueMissing && !content.validity.valueMissing ) {
+   			
+	   			$('#updateForm').attr({
+	   				method:"post",
+	   				action:"/AdvanceBooking/qna/update",
+	   				enctype: "multipart/form-data"
+	   			});
+	   			
+	   			$('#updateForm').submit();
+	   					
+   			}
    		})
 	})
 </script>
@@ -79,14 +87,14 @@
 			<div class="form-group">
 				<label for="subject">Subject</label>
 				<div>
-					<input type="subject" class="form-control" id="subject" name="subject" placeholder="제목" value="${qnaVO.subject}"/>
+					<input type="subject" class="form-control" id="subject" name="subject" placeholder="제목" value="${qnaVO.subject}" required/>
 					<form:errors path="subject"></form:errors>				
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="content">Content</label>
 				<div>
-					<textarea class="form-control" id="content" name="content" placeholder="내용">${qnaVO.content}</textarea>
+					<textarea class="form-control" id="content" name="content" placeholder="내용" required>${qnaVO.content}</textarea>
 					<form:errors path="content"></form:errors>
 				</div>
 			</div>
