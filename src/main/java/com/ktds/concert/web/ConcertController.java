@@ -1,5 +1,7 @@
 package com.ktds.concert.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -51,6 +53,12 @@ public class ConcertController {
 		view.addObject("concertSearchVO", concertSearchVO);
 		
 		return view;
+	}
+	
+	@RequestMapping("/concert/list/init")
+	public String viewQnAListPageForInitiate(HttpSession session) {
+		session.removeAttribute(Session.CONCERTSEARCH);
+		return "redirect:/concert/list" + "?token=" + session.getAttribute(Session.CSRF_TOKEN);
 	}
 	
 	@RequestMapping("/concert/detail/{concertId}")

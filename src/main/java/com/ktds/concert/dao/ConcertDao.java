@@ -12,4 +12,6 @@ public interface ConcertDao {
 	public int selectAllConcertsCount(ConcertSearchVO concertSearchVO);
 	
 	public List<ConcertVO> selectAllConcerts(ConcertSearchVO concertSearchVO);
+	
+	public int deleteOneConcert(String concertId);
 }

@@ -139,14 +139,18 @@ public class MemberController {
 				
 		boolean isBlockAccount = this.memberService.isBlockUser(memberVO.getEmail());
 		
-		boolean isLoginFail = this.memberService.readOneMember(memberVO) == null;
-		
-		view.addObject("isBlockAccount", isBlockAccount);
-		
-		view.addObject("isLoginFail", isLoginFail);
+		if ( isBlockAccount ) {
+			view.addObject("isBlockAccount", isBlockAccount);
+		}
+		else {
+			boolean isLoginFail = this.memberService.readOneMember(memberVO) == null;
+			if ( isLoginFail ) {
 				
-		view.addObject("loginMemberVO", memberVO);
-								
+				view.addObject("isLoginFail", isLoginFail);
+			}
+		}
+			
+		view.addObject("loginMemberVO", memberVO);					
 		
 		return view;
 	}

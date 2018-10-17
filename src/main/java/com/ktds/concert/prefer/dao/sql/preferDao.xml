@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="PreferDao">
+  	
+  	<insert id="insertOnePrefer"
+  			parameterType="PreferVO">
+  		INSERT	INTO PREFER (
+							   PREFER_ID
+							   , EMAIL
+							   , CONCERT_ID
+							   ) 
+		VALUES (
+				'PR-' || TO_CHAR(SYSDATE, 'YYYYMMDDHH24') || '-' || LPAD(PREFER_ID_SEQ.NEXTVAL, 6, '0') 
+				, #{email}
+				, #{concertId}
+				)
+  	</insert>
+  	
+  </mapper>

@@ -32,14 +32,21 @@
 					SELECT	B.*
 							, ROWNUM RNUM
 					FROM	(
-								SELECT	SUBJECT
-						  				, CONTENTS
-						  				, CONCERT_ID concertId
-						  				, ADVANCE_BOOKING_URL advanceBookingUrl
-						  				, ADVANCE_BOOKING_DAY advanceBookingDay
-								FROM 	CONCERT
+								SELECT	D.*
+								FROM 	CONCERT C
+								        , (
+								            SELECT  SUBJECT
+								                    , CONTENTS
+								                    , CONCERT_ID concertId
+								                    , ADVANCE_BOOKING_URL advanceBookingUrl
+								                    , TO_DATE(ADVANCE_BOOKING_DAY,'YYYY/MM/DD/HH24') advanceBookingDay
+								            FROM    CONCERT
+								            WHERE   ADVANCE_BOOKING_DAY NOT LIKE '티켓오픈일추후공지'
+								        ) D
+								WHERE   C.CONCERT_ID = D.concertId
+								AND		advanceBookingDay >= SYSDATE
 								<if test="searchKeyword != null and searchKeyword != ''">
-								WHERE	SUBJECT LIKE '%' || '${searchKeyword}' || '%'
+								AND	SUBJECT LIKE '%' || '${searchKeyword}' || '%'
 								</if>
 								ORDER	BY CONCERT_ID DESC
 							) B

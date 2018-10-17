@@ -24,8 +24,34 @@
   		    e.stopPropagation();
   		    e.preventDefault();
   		});
- 		
-  		$.post
+		
+  		$('.like').closest('.likeClosest').find('.like').click(function(){
+  			
+  			var token = $(this).parent().find('.token').val();
+  			
+  			alert(token);
+  			
+  			var concertId = $(this).parent().find('.concertId').val();
+  			
+  			var url = '/AdvanceBooking/concert/prefer/regist/' + concertId
+  			
+  			
+  			$.ajax({
+				url: url
+				, type: "POST"
+				, data: $(this).parent().find('.likeForm').serialize()
+				, dataType: "json"
+				, success:function(response) {
+					if ( response.isRegistSuccess ) {
+						alert("관심 목록에 추가되었습니다.");
+						location.href = '/AdvanceBooking/concert/list';
+					}
+					else {
+						alert("관심 목록 추가 실패");
+					}
+				}
+			})  			
+  		});
   		
   	})
   </script>
@@ -90,23 +116,36 @@
 	        <th>Subject</th>
 	        <th>BookingDay</th>
 	        <th>Go Interpark</th>
+	        <th>Like</th>
 	      </tr>
 	    </thead>
 			<c:choose>
 				<c:when test="${not empty concertVOList}">
 				    <c:forEach items = "${concertVOList}" var = "concertVO">
 					    <tbody>
-					      <tr>
+					      <tr class="likeClosest">
 					        <td>
 					        	<a href="/AdvanceBooking/concert/detail/${concertVO.concertId}?token=${sessionScope._CSRF_TOKEN_}">
 						 			${concertVO.subject}
 						 		</a>
 					        </td>
-					        <td>
+					        <td id="replace">
 					        	${concertVO.advanceBookingDay}
 					        </td>
 					        <td>
 					        	<a href="${concertVO.advanceBookingUrl}">사전예매</a>
+					        </td>
+					        <td>
+					        	<a class="like" href="#">좋아요</a>
+					        	<div>
+					        		<form class="likeForm"
+					        			  method="post"
+					        			  action="/AdvanceBooking/concert/prefer/regist/${concertVO.concertId}">
+					        			<input type="hidden" class="concertId" name="concertId" value="${concertVO.concertId}"/>
+					        			<input type="hidden" class="token" name="token" value="${sessionScope._CSRF_TOKEN_}"/>
+					        			<input type="hidden" name="email" value="${sessionScope._USER_.email}"/>
+					        		</form>
+					        	</div>
 					        </td>
 					      </tr>
 					    </tbody>
