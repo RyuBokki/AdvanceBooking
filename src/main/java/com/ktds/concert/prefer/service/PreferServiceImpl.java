@@ -1,11 +1,15 @@
 package com.ktds.concert.prefer.service;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ktds.common.session.Session;
 import com.ktds.concert.prefer.dao.PreferDao;
 import com.ktds.concert.prefer.vo.PreferSearchVO;
 import com.ktds.concert.prefer.vo.PreferVO;
+import com.ktds.member.vo.MemberVO;
 
 import io.github.seccoding.web.pager.Pager;
 import io.github.seccoding.web.pager.PagerFactory;
@@ -34,7 +38,12 @@ public class PreferServiceImpl implements PreferService {
 	}
 
 	@Override
-	public PageExplorer readAllPrefers(PreferSearchVO preferSearchVO) {
+	public PageExplorer readAllPrefers(PreferSearchVO preferSearchVO
+										, HttpSession session) {
+		
+		MemberVO memberVO = (MemberVO) session.getAttribute(Session.USER);
+		
+		preferSearchVO.setEmail(memberVO.getEmail());
 		
 		int totalCount = this.preferDao.selectAllPrefersCount(preferSearchVO);
 		

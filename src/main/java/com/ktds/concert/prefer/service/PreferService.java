@@ -1,5 +1,7 @@
 package com.ktds.concert.prefer.service;
 
+import javax.servlet.http.HttpSession;
+
 import com.ktds.concert.prefer.vo.PreferSearchVO;
 import com.ktds.concert.prefer.vo.PreferVO;
 
@@ -13,5 +15,5 @@ public interface PreferService {
 	
 	public PreferVO isDuplicatedPrefer(String concertId);
 	
-	public PageExplorer readAllPrefers(PreferSearchVO preferSearchVO);
+	public PageExplorer readAllPrefers(PreferSearchVO preferSearchVO, HttpSession session);
 }

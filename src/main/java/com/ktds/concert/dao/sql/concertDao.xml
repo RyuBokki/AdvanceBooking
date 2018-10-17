@@ -46,9 +46,9 @@
 								WHERE   C.CONCERT_ID = D.concertId
 								AND		advanceBookingDay >= SYSDATE
 								<if test="searchKeyword != null and searchKeyword != ''">
-								AND	SUBJECT LIKE '%' || '${searchKeyword}' || '%'
+								AND		D.SUBJECT LIKE '%' || '${searchKeyword}' || '%'
 								</if>
-								ORDER	BY CONCERT_ID DESC
+								ORDER	BY D.concertId DESC
 							) B
 					WHERE	ROWNUM <![CDATA[<=]]> #{endRow}
 				) 

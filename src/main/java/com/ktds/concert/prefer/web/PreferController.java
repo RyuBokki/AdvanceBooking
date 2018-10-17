@@ -21,6 +21,7 @@ import com.ktds.common.session.Session;
 import com.ktds.concert.prefer.service.PreferService;
 import com.ktds.concert.prefer.vo.PreferSearchVO;
 import com.ktds.concert.prefer.vo.PreferVO;
+import com.ktds.member.vo.MemberVO;
 
 import io.github.seccoding.web.pager.explorer.PageExplorer;
 
@@ -72,6 +73,8 @@ public class PreferController {
 										, HttpServletRequest request
 										, HttpSession session) {
 		
+		System.out.println(preferSearchVO.getEmail());
+		
 		if ( preferSearchVO.getSearchKeyword() == null ) {
 			preferSearchVO = (PreferSearchVO)session.getAttribute(Session.PREFERSEARCH);
 			
@@ -81,9 +84,11 @@ public class PreferController {
 			}
 		}
 		
-		PageExplorer pageExplorer = this.preferService.readAllPrefers(preferSearchVO);
+		PageExplorer pageExplorer = this.preferService.readAllPrefers(preferSearchVO, session);
 		
 		session.setAttribute(Session.PREFERSEARCH, preferSearchVO);
+		
+		
 		
 		ModelAndView view = new ModelAndView("prefer/list");
 						

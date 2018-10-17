@@ -91,11 +91,12 @@
 								        ) C
 								WHERE	P.EMAIL = M.EMAIL
 								AND		P.CONCERT_ID = C.C_concertId
-								AND		advanceBookingDay >= SYSDATE
+								AND		C.advanceBookingDay >= SYSDATE
+								AND		M.EMAIL = #{email}
 								<if test="searchKeyword != null and searchKeyword != ''">
 								AND		C.SUBJECT LIKE '%' || '${searchKeyword}' || '%'
 								</if>
-								ORDER	BY C_concertId DESC
+								ORDER	BY C.C_concertId DESC
 							) B
 					WHERE	ROWNUM <![CDATA[<=]]> #{endRow}
 				) 
@@ -108,7 +109,19 @@
   		SELECT	COUNT(1)
   		FROM	PREFER P
   				, MEMBERS M
+  				, (
+			            SELECT  SUBJECT
+			                    , CONTENTS
+			                    , CONCERT_ID C_concertId
+			                    , ADVANCE_BOOKING_URL advanceBookingUrl
+			                    , TO_DATE(ADVANCE_BOOKING_DAY,'YYYY/MM/DD/HH24') advanceBookingDay
+			            FROM    CONCERT
+			            WHERE   ADVANCE_BOOKING_DAY NOT LIKE '티켓오픈일추후공지'
+			       ) C
   		WHERE	P.EMAIL = M.EMAIL
+  		AND		P.CONCERT_ID = C.C_concertId
+  		AND		C.advanceBookingDay >= SYSDATE
+  		AND		M.EMAIL = #{email}
   		<if test="searchKeyword != null and searchKeyword != ''">
 		AND		SUBJECT LIKE '%' || '${searchKeyword}' || '%'
 		</if>

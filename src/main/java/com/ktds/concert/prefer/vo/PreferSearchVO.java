@@ -5,7 +5,7 @@ import io.github.seccoding.web.pager.annotations.StartRow;
 
 public class PreferSearchVO {
 
-private int pageNo;
+	private int pageNo;
 	
 	private String searchKeyword;
 	
@@ -16,6 +16,8 @@ private int pageNo;
 	private int endRow;
 	
 	private String token;
+	
+	private String email;
 	
 	public int getPageNo() {
 		return pageNo;
@@ -55,6 +57,14 @@ private int pageNo;
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }
