@@ -38,7 +38,9 @@ public class QnAServiceImpl implements QnAService {
 		
 		List<QnAReplyVO> replyList = this.qnaReplyDao.selectAllReplies(id);
 		
-		qnaVO.setReplyList(replyList);
+		if ( replyList != null ) {
+			qnaVO.setReplyList(replyList);
+		}
 		
 		return qnaVO;
 	}

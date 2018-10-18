@@ -37,14 +37,23 @@
   		    e.preventDefault();
   		});
 	    		
+  		$('#subject').keyup(function(){
+  			var subject = document.getElementById("subject");
+  			if ( subject.validity.valueMissing ) {
+  				document.getElementById("subjectError2").innerHTML = "제목은 필수 입력값입니다.";
+  			}
+  			else {
+  				document.getElementById("subjectError2").innerHTML = "";
+  			}
+  		});
+  		
 	    		
    		$('#writeBtn').click(function(){
-   			   			
    			
    			var content = $('#content').parent().children('div');
 			var subject = document.getElementById("subject");
 			
-			if ( !subject.validity.valueMissing && !content.text() == "" ) {
+			if ( !subject.validity.valueMissing && !content.text() == ""  ) {
    			
 	   			$('#writeForm').attr({
 	   				method:"post",
@@ -89,14 +98,22 @@
 				<label for="subject">Subject</label>
 				<div>
 					<input type="subject" class="form-control" id="subject" name="subject" placeholder="제목" value="${qnaVO.subject}" required/>
+				</div>
+				<div>
 					<form:errors path="subject"></form:errors>				
+				</div>
+				<div id="subjectError2">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="content">Content</label>
 				<div>
-					<textarea class="form-control" id="content" name="content" placeholder="내용" value="${qnaVO.content}"></textarea>
+					<textarea class="form-control" id="content" name="content" placeholder="내용" required>${qnaVO.content}</textarea>
+				</div>
+				<div>
 					<form:errors path="content"></form:errors>
+				</div>
+				<div id="contentError2">
 				</div>
 			</div>
 			<div class="form-group">

@@ -13,7 +13,7 @@
 		이 페이지가 계속 보인다면, 사이트 관리자에게 문의해 주세요.
 	</p>
 	<p>
-		<a href="/AdvanceBooking/concert/list">홈으로 돌아가기</a>
+		<a href="/AdvanceBooking/main">홈으로 돌아가기</a>
 	</p>
 </body>
 </html>

@@ -185,23 +185,32 @@
 			})
 	
 			$("#registBtn").click( function() {
-									
-				$.ajax({
-						url: "/AdvanceBooking/member/regist"
-						, type: "POST"
-						, data: $('#registForm').serialize()
-						, dataType: "json"
-						, success:function(response) {
-							if ( response.success ) {
-								alert("회원가입 성공");
-								$("#registModal").modal("hide");
-								location.href = '/AdvanceBooking/main';
+				
+				var registEmail = document.getElementById("registEmail");
+				var registPassword = document.getElementById("registPassword");
+				var registPasswordConfirm = document.getElementById("registPasswordConfirm");
+				var name = document.getElementById("name");
+				
+				if ( !registEmail.validity.valueMissing && !registEmail.validity.typeMismatch
+						&& !registPassword.validity.valueMissing && !registPassword.validity.patternMismatch
+						&& registPasswordConfirm.checkValidity() && name.checkValidity()) {
+					$.ajax({
+							url: "/AdvanceBooking/member/regist"
+							, type: "POST"
+							, data: $('#registForm').serialize()
+							, dataType: "json"
+							, success:function(response) {
+								if ( response.success ) {
+									alert("회원가입 성공");
+									$("#registModal").modal("hide");
+									location.href = '/AdvanceBooking/main';
+								}
+								else {
+									alert("회원가입 실패");
+								}
 							}
-							else {
-								alert("회원가입 실패");
-							}
-						}
-				})
+					})
+				}
 			})
 			
 			$('.dropdown a.test').on("click", function(e){
@@ -304,7 +313,7 @@
 								</div>
 								<div id="registEmailError2" style="color:red;">
 								</div>
-								<div id="email-duplicated" style="display:none;">
+								<div id="email-duplicated" style="display:none;color:red;">
 									이미 존재하는 이메일이거나 사용할 수 없는 이메일입니다.				
 								</div>
 							</div>

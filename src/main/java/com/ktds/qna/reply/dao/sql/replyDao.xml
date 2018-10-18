@@ -92,7 +92,7 @@
   	</select>
   	
   	<update id="updateOneReply"
-  			parameterType="string">
+  			parameterType="QnAReplyVO">
   		UPDATE	REPLY
 		SET  	CONTENT = #{content}
 		WHERE	REPLY_ID = #{replyId}
