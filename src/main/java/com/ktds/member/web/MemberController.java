@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -163,7 +164,12 @@ public class MemberController {
 	
 	@PostMapping("/member/update")
 	public ModelAndView doMemberUpdateAction(@Validated({MemberValidator.Update.class}) @ModelAttribute MemberVO memberVO
-											  , Errors errors) {
+											, Errors errors  
+											, @SessionAttribute(Session.CSRF_TOKEN) String sessionToken ) {
+		
+		if ( !sessionToken.equals(memberVO.getToken()) ) {
+			throw new RuntimeException("잘못된 인증");
+		}
 		
 		ModelAndView view = new ModelAndView("redirect:/member/myPage");
 				
@@ -173,6 +179,7 @@ public class MemberController {
 			
 			return view;
 		}
+
 		XssFilter filter = XssFilter.getInstance("lucy-xss-superset.xml");
 		memberVO.setPassword(filter.doFilter(memberVO.getPassword()));
 		memberVO.setName(filter.doFilter(memberVO.getName()));

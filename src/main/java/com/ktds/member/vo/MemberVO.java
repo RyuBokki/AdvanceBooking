@@ -47,6 +47,8 @@ public class MemberVO {
 	
 	private String authority;
 	
+	private String token;
+	
 	public String getName() {
 		return name;
 	}
@@ -95,4 +97,12 @@ public class MemberVO {
 	public void setPasswordConfirm(String passwordConfirm) {
 		this.passwordConfirm = passwordConfirm;
 	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
+	
+	
 }

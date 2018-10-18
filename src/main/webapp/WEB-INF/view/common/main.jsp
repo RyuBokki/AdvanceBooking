@@ -246,7 +246,7 @@
 								<div>
 									<form:errors path="email" id="loginEmailError" class="error"/>
 								</div>
-								<div id="loginEmailError2">
+								<div id="loginEmailError2" style="color:red;">
 								</div>
 							</div>
 							<div class="form-group">
@@ -258,7 +258,7 @@
 								<div>
 									<form:errors path="password" id="loginPasswordError" class="error"/>
 								</div>
-								<div id="loginPasswordError2">
+								<div id="loginPasswordError2" style="color:red;">
 								</div>
 							</div>
 							<div class="form-group">
@@ -302,7 +302,7 @@
 								<div>
 									<form:errors path="email" id="registEmailError"/>
 								</div>
-								<div id="registEmailError2">
+								<div id="registEmailError2" style="color:red;">
 								</div>
 								<div id="email-duplicated" style="display:none;">
 									이미 존재하는 이메일이거나 사용할 수 없는 이메일입니다.				
@@ -317,7 +317,7 @@
 								<div>
 									<form:errors path="password" id="registPasswordError"/>
 								</div>
-								<div id="registPasswordError2">
+								<div id="registPasswordError2" style="color:red;">
 								</div>
 							</div>
 							<div class="inputbox form-group">
@@ -329,9 +329,9 @@
 								<div>
 									<form:errors path="passwordConfirm" id="registPasswordConfirmError"/>
 								</div>
-								<div id="registPasswordConfirmError2">
+								<div id="registPasswordConfirmError2" style="color:red;">
 								</div>
-								<div id="notEqualPassword" style="display:none;">
+								<div id="notEqualPassword" style="display:none; color:red;">
 									비밀번호가 일치하지 않습니다.
 								</div>
 							</div>
@@ -344,7 +344,7 @@
 								<div>
 									<form:errors path="name" id="nameError"/>
 								</div>
-								<div id="nameError2">
+								<div id="nameError2" style="color:red;">
 								</div>
 							</div>
 							<div>
