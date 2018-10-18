@@ -46,7 +46,7 @@ import io.github.seccoding.web.pager.explorer.PageExplorer;
 @Controller
 public class QnAController {
 	
-	@Value("C:\\Users\\82104\\Desktop\\Project\\AdvanceBooking\\uploadFiles")
+	@Value("${upload.path}")
 	private String uploadPath;
 	
 	@Autowired

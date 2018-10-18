@@ -13,6 +13,8 @@
 	<context:component-scan base-package="com.ktds"></context:component-scan>	
 	<mvc:annotation-driven/>
 	
+	<context:property-placeholder location="/WEB-INF/spring/settings.properties"/>
+	
 	<mvc:resources location="/WEB-INF/static/js/" mapping="/js/**"/>
 	<mvc:resources location="/WEB-INF/static/css/" mapping="/css/**"/>
 	<mvc:resources location="/WEB-INF/static/fonts/" mapping="/fonts/**"/>	
