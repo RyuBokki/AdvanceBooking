@@ -38,7 +38,30 @@ public class ConcertServiceImpl implements ConcertService {
 		
 		PageExplorer pageExplorer = pager.makePageExplorer(ClassicPageExplorer.class, concertSearchVO);
 		
-		pageExplorer.setList(this.concertDao.selectAllConcerts(concertSearchVO));
+		List<String> preferConcertIdList = this.concertDao.selectAllPreferConcerts();
+		
+		List<ConcertVO> concertVOList = this.concertDao.selectAllConcerts(concertSearchVO);
+		
+		if ( preferConcertIdList != null ) {
+			
+			for (ConcertVO concertVO : concertVOList) {
+				
+				String concertId = concertVO.getConcertId();
+				
+				for (String preferConcertId : preferConcertIdList) {
+					if ( preferConcertId.equals(concertId) ) {
+						System.out.println("비교성공");
+						System.out.println(preferConcertId);
+						concertVO.setRegisteredPrefer(true);
+					}
+					else {
+						concertVO.setRegisteredPrefer(false);
+					}
+				}
+			}
+		}
+		
+		pageExplorer.setList(concertVOList);
 		
 		return pageExplorer;
 	}
@@ -54,6 +77,12 @@ public class ConcertServiceImpl implements ConcertService {
 		concertVO.setReplyList(replyList);
 		
 		return concertVO;
+	}
+
+
+	@Override
+	public List<String> readAllPreferConcerts() {
+		return this.concertDao.selectAllPreferConcerts();
 	}
 
 }

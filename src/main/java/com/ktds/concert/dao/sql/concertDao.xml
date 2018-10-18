@@ -65,4 +65,14 @@
   		</if>
   	</select>
   	
+  	<select id="selectAllPreferConcerts"
+  			resultType="string">
+  		SELECT	C.CONCERT_ID concertId
+  		FROM	CONCERT	C
+  				, PREFER P
+  				, MEMBERS M
+		WHERE	C.CONCERT_ID = P.CONCERT_ID
+		AND		P.EMAIL = M.EMAIL
+  	</select>
+  	
   </mapper>

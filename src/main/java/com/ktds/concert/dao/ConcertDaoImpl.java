@@ -39,4 +39,9 @@ public class ConcertDaoImpl extends SqlSessionDaoSupport implements ConcertDao {
 		return this.getSqlSession().delete("ConcertDao.deleteOneConcert", concertId);
 	}
 
+	@Override
+	public List<String> selectAllPreferConcerts() {
+		return this.getSqlSession().selectList("ConcertDao.selectAllPreferConcerts");
+	}
+
 }

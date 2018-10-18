@@ -8,11 +8,8 @@
                   http://www.springframework.org/schema/security/spring-security-4.2.xsd">
 
    <s:http auto-config="true" use-expressions="true">
-      <!-- url별 접근권한 설정 -->
-      <!-- 해당 url만 권한을 준다 -->
       <s:intercept-url pattern="/resources/**" access="permitAll"/>
       <s:intercept-url pattern="/" access="permitAll"/>
-      <!-- spring security를 만들어주는 url -->
       <s:intercept-url pattern="/main" access="permitAll"/>      
       <s:intercept-url pattern="/memberlogin" access="permitAll"/>
       <s:intercept-url pattern="/member/loginSuccess" access="permitAll"/>
@@ -31,6 +28,7 @@
       <s:intercept-url pattern="/qna/delete/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
       <s:intercept-url pattern="/qna/update/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
       <s:intercept-url pattern="/concert/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
+      <s:intercept-url pattern="/prefer/sendEmail/AdvanceBookingInfo/**" access="hasRole('ROLE_ADMIN')"/>
       
       <s:csrf disabled="true"/>
       

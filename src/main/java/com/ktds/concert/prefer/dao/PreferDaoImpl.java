@@ -25,13 +25,13 @@ public class PreferDaoImpl extends SqlSessionDaoSupport implements PreferDao {
 	}
 
 	@Override
-	public int deleteOnePrefer(String preferId) {
-		return this.getSqlSession().delete("PreferDao.deleteOnePrefer", preferId);
+	public int deleteOnePrefer(PreferVO preferVO) {
+		return this.getSqlSession().delete("PreferDao.deleteOnePrefer", preferVO);
 	}
 
 	@Override
-	public PreferVO isDuplicatedPrefer(String concertId) {
-		return this.getSqlSession().selectOne("PreferDao.isDuplicatedPrefer", concertId);
+	public PreferVO isDuplicatedPrefer(PreferVO preferVO) {
+		return this.getSqlSession().selectOne("PreferDao.isDuplicatedPrefer", preferVO);
 	}
 
 	@Override
@@ -42,6 +42,16 @@ public class PreferDaoImpl extends SqlSessionDaoSupport implements PreferDao {
 	@Override
 	public int selectAllPrefersCount(PreferSearchVO preferSearchVO) {
 		return this.getSqlSession().selectOne("PreferDao.selectAllPrefersCount", preferSearchVO);
+	}
+
+	@Override
+	public int updateEmailSendedPrefer(String preferId) {
+		return this.getSqlSession().update("PreferDao.updateEmailSendedPrefer", preferId);
+	}
+
+	@Override
+	public List<PreferVO> selectAllPrefersForMessage() {
+		return this.getSqlSession().selectList("PreferDao.selectAllPrefersForMessage");
 	}
 
 	

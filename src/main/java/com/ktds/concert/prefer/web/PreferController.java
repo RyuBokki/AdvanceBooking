@@ -31,10 +31,11 @@ public class PreferController {
 	@Autowired
 	private PreferService preferService;
 	
-	@PostMapping("/concert/prefer/regist")
+	@PostMapping("/prefer/regist")
 	@ResponseBody
 	public Map<String, Object> doRegistPreferAction(
 										@SessionAttribute(Session.CSRF_TOKEN) String sessionToken
+										, @SessionAttribute(Session.USER) MemberVO memberVO
 										, @ModelAttribute PreferVO preferVO) {
 		
 		if ( !sessionToken.equals( preferVO.getToken() ) ) {
@@ -45,7 +46,7 @@ public class PreferController {
 		
 		result.put("status", "OK");
 		
-		PreferVO duplicatedPreferVO = this.preferService.isDuplicatedPrefer(preferVO.getConcertId());
+		PreferVO duplicatedPreferVO = this.preferService.isDuplicatedPrefer(preferVO);
 		
 		result.put("isDuplicatedPrefer", duplicatedPreferVO != null);
 		
@@ -54,21 +55,25 @@ public class PreferController {
 			result.put("isRegistSuccess", isRegistSuccess);
 		}
 		else {
-			String preferId = duplicatedPreferVO.getPreferId();
 			
-			boolean isDeleteSuccess = this.preferService.deleteOnePrefer(preferId);
+			PreferVO deletePreferVO = new PreferVO();
+			
+			deletePreferVO.setPreferId(duplicatedPreferVO.getPreferId());
+			deletePreferVO.setEmail(memberVO.getEmail());
+			
+			boolean isDeleteSuccess = this.preferService.deleteOnePrefer(deletePreferVO);
 			result.put("isDeleteSuccess", isDeleteSuccess);
 		}
 		return result;
 	}
 	
-	@RequestMapping("/concert/prefer/list/init")
+	@RequestMapping("/prefer/list/init")
 	public String viewPreferListPageForInitiate(HttpSession session) {
 		session.removeAttribute(Session.CONCERTSEARCH);
-		return "redirect:/concert/prefer/list" + "?token=" + session.getAttribute(Session.CSRF_TOKEN);
+		return "redirect:/prefer/list" + "?token=" + session.getAttribute(Session.CSRF_TOKEN);
 	}
 	
-	@RequestMapping("/concert/prefer/list")
+	@RequestMapping("/prefer/list")
 	public ModelAndView viewConcertListPage( @ModelAttribute PreferSearchVO preferSearchVO
 										, HttpServletRequest request
 										, HttpSession session) {
@@ -100,9 +105,10 @@ public class PreferController {
 		return view;
 	}
 	
-	@PostMapping("/concert/prefer/delete/{preferId}")
+	@PostMapping("/prefer/delete/{preferId}")
 	@ResponseBody
 	public Map<String, Object> doDeletePreferAction(@SessionAttribute(Session.CSRF_TOKEN) String sessionToken
+													, @SessionAttribute(Session.USER) MemberVO memberVO
 													, @PathVariable String preferId
 													, @RequestParam String token) {
 		
@@ -110,15 +116,44 @@ public class PreferController {
 			throw new RuntimeException("잘못된 인증");
 		}
 		
+		PreferVO preferVO = new PreferVO();
+		
+		preferVO.setPreferId(preferId);
+		preferVO.setEmail(memberVO.getEmail());		
+		
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		boolean isDeleteSuccess = this.preferService.deleteOnePrefer(preferId);
+		boolean isDeleteSuccess = this.preferService.deleteOnePrefer(preferVO);
 		
 		result.put("status", "OK");
 		
 		result.put("isDeleteSuccess", isDeleteSuccess);
 		
 		return result; 
+	}
+	
+	@PostMapping("/prefer/sendEmail")
+	@ResponseBody
+	public Map<String, Object> doSendEmailPreferInfoAction(@RequestParam String token
+															, @SessionAttribute(Session.CSRF_TOKEN) String sessionToken) throws Exception {
+		
+		if ( !token.equals(sessionToken) ) {
+			throw new RuntimeException("잘못된 인증");
+		}
+		
+		Map<String,Object> result = new HashMap<String, Object>();
+		
+		System.out.println("실행됨");
+		
+		boolean isSendEmailSuccess = this.preferService.sendAdvanceBookingInfo();
+		
+		result.put("status", "OK");
+		
+		if ( isSendEmailSuccess ) {
+			result.put("isSendEmailSuccess", isSendEmailSuccess);
+		}
+		
+		return result;
 	}
 	
 }

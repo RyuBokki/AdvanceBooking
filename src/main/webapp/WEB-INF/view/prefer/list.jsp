@@ -33,16 +33,16 @@
   			var preferId = $(this).parent().children('input').val();
   			var token = $('#token').val();
   			var that = this;
-  			var url = '/AdvanceBooking/concert/prefer/delete/' + preferId + "?token=" + token;
+  			var url = '/AdvanceBooking/prefer/delete/' + preferId + "?token=" + token;
   			
   			if ( question ) {  				
 	  			$.post(url
 	  				   , function(response) {
 	  				if ( response.isDeleteSuccess ) {
 	  					alert("해당 콘서트를 관심 목록에서 제거합니다.");
-	  					location.href = "/AdvanceBooking/concert/prefer/list";
+	  					location.href = "/AdvanceBooking/prefer/list";
 	  				}
-	  			})  			
+	  			});			
   			}  			
   		});
   		

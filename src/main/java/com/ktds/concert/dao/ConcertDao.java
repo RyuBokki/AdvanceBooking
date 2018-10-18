@@ -14,4 +14,6 @@ public interface ConcertDao {
 	public List<ConcertVO> selectAllConcerts(ConcertSearchVO concertSearchVO);
 	
 	public int deleteOneConcert(String concertId);
+	
+	public List<String> selectAllPreferConcerts();
 }

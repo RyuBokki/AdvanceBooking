@@ -20,6 +20,8 @@ public class ConcertVO {
 	
 	private List<ConcertReplyVO> replyList;
 	
+	private boolean isRegisteredPrefer;
+	
 	public String getSubject() {
 		return subject;
 	}
@@ -75,5 +77,13 @@ public class ConcertVO {
 	public void setReplyList(List<ConcertReplyVO> replyList) {
 		this.replyList = replyList;
 	}
-	
+
+	public boolean isRegisteredPrefer() {
+		return isRegisteredPrefer;
+	}
+
+	public void setRegisteredPrefer(boolean isRegisteredPrefer) {
+		this.isRegisteredPrefer = isRegisteredPrefer;
+	}
+
 }

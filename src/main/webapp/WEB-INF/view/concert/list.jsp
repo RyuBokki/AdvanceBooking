@@ -29,11 +29,12 @@
   		$('.like').closest('.likeClosest').find('.like').click(function(){
   			
   			var concertId = $(this).parent().find('.concertId').val();
+  			
   			var that = this;
-  			var url = '/AdvanceBooking/concert/prefer/regist/' + concertId
+  			var url = '/AdvanceBooking/prefer/regist/' + concertId
   			
   			$.ajax({
-				url: '/AdvanceBooking/concert/prefer/regist'
+				url: '/AdvanceBooking/prefer/regist'
 				, type: "POST"
 				, data: $(this).parent().find('.likeForm').serialize()
 				, dataType: "json"
@@ -142,11 +143,25 @@
 					        	<a href="${concertVO.advanceBookingUrl}">사전예매</a>
 					        </td>
 					        <td>
-					        	<a class="like" href="#"><span class="glyphicon glyphicon-heart-empty"></span></a>
+				        		<c:choose>
+				        			<c:when test="${not empty preferConcertIdList}">
+				        				<c:choose>
+				        					<c:when test="${concertVO.isRegisteredPrefer()}">
+				        						<a class="like" href="#"><span class="glyphicon glyphicon-heart"></span></a>
+				        					</c:when>
+				        					<c:otherwise>
+				        						<a class="like" href="#"><span class="glyphicon glyphicon-heart-empty"></span></a>
+				        					</c:otherwise>
+				        				</c:choose>
+				        			</c:when>
+				        			<c:otherwise>
+										<a class="like" href="#"><span class="glyphicon glyphicon-heart-empty"></span></a>
+				        			</c:otherwise>
+				        		</c:choose>
 					        	<div>
 					        		<form class="likeForm"
 					        			  method="post"
-					        			  action="/AdvanceBooking/concert/prefer/regist">
+					        			  action="/AdvanceBooking/concert/prefer/regist">					        			  
 					        			<input type="hidden" class="concertId" name="concertId" value="${concertVO.concertId}"/>
 					        			<input type="hidden" class="token" name="token" value="${sessionScope._CSRF_TOKEN_}"/>
 					        			<input type="hidden" name="email" value="${sessionScope._USER_.email}"/>

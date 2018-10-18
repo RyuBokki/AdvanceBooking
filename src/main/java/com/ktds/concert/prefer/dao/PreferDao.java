@@ -9,12 +9,15 @@ public interface PreferDao {
 
 	public int insertOnePrefer(PreferVO preferVO);
 	
-	public int deleteOnePrefer(String preferId);
+	public int deleteOnePrefer(PreferVO preferVO);
 	
-	public PreferVO isDuplicatedPrefer(String concertId);
+	public PreferVO isDuplicatedPrefer(PreferVO preferVO);
 	
 	public List<PreferVO> selectAllPrefers(PreferSearchVO preferSearchVO);
 	
 	public int selectAllPrefersCount(PreferSearchVO preferSearchVO);
 	
+	public List<PreferVO> selectAllPrefersForMessage();
+	
+	public int updateEmailSendedPrefer(String preferId);
 }
