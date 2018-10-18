@@ -68,15 +68,29 @@ public class ConcertReplyController {
 	
 	@RequestMapping("concert/reply/update/{replyId}")
 	public ModelAndView doUpdateReplyAction(@PathVariable String replyId
-									   , @ModelAttribute QnAReplyVO qnaReplyVO 
+									   , @ModelAttribute ConcertReplyVO concertReplyVO 
 									   , Errors errors
 									   , @SessionAttribute(Session.CSRF_TOKEN) String sessionToken) {
 		
-		String qnaId = this.concertReplyService.readOneReply(replyId).getConcertId();
-
-		ModelAndView view = new ModelAndView("redirect:/concert/detail/" + qnaId + "?token=" + sessionToken);
+		if ( !sessionToken.equals(concertReplyVO.getToken()) ) {
+			throw new RuntimeException("잘못된 인증");
+		}
 		
-		boolean isDeleteSuccess = this.concertReplyService.deleteOneReply(replyId);
+		String concertId = this.concertReplyService.readOneReply(replyId).getConcertId();
+
+		ModelAndView view = new ModelAndView("redirect:/concert/detail/" + concertId + "?token=" + sessionToken);
+		
+		XssFilter filter = XssFilter.getInstance("lucy-xss-superset.xml");
+		concertReplyVO.setContent(filter.doFilter(concertReplyVO.getContent()));
+		
+		if ( errors.hasErrors() ) {
+			view.setViewName("concert/detail");
+			view.addObject("updateConcertReplyVO", concertReplyVO);
+			
+			return view;
+		}
+		
+		boolean isUpdateSuccess = this.concertReplyService.updateOneReply(concertReplyVO);
 		
 		return view;
 	}

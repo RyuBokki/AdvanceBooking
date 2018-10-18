@@ -74,11 +74,25 @@ public class QnAReplyController {
 									   , Errors errors
 									   , @SessionAttribute(Session.CSRF_TOKEN) String sessionToken) {
 		
+		if ( !sessionToken.equals(qnaReplyVO.getToken()) ) {
+			throw new RuntimeException("잘못된 인증");
+		}
+		
 		String qnaId = this.qnaReplyService.readOneReply(replyId).getQnaId();
 
 		ModelAndView view = new ModelAndView("redirect:/qna/detail/" + qnaId + "?token=" + sessionToken);
 		
-		boolean isDeleteSuccess = this.qnaReplyService.deleteOneReply(replyId);
+		if ( errors.hasErrors() ) {
+			view.setViewName("qna/detail");
+			view.addObject("updateQnaReplyVO", qnaReplyVO);
+			
+			return view;
+		}
+		
+		XssFilter filter = XssFilter.getInstance("lucy-xss-superset.xml");
+		qnaReplyVO.setContent(filter.doFilter(qnaReplyVO.getContent()));
+		
+		boolean isUpdateSuccess = this.qnaReplyService.updateOneReply(qnaReplyVO);
 		
 		return view;
 	}

@@ -26,15 +26,45 @@
   		});
 		
   		
-  		
   		$('.for-travelsing').closest('.reply-rel').mouseenter(function(){
-			$(this).find('.reply-right').show();
+  			
+				$(this).find('.reply-right').show(function(){
+					
+				});  				
+  			
 		});
 		
 		$('.for-travelsing').closest('.reply-rel').mouseleave(function(){
 			$(this).find('.reply-right').hide();
 		});
 				
+		$('.update-click').closest('.dropdown-menu').find('.update-click').click(function(){
+			$(this).closest('.for-travelsing').find('.replies').hide();
+			$(this).closest('.for-travelsing').find('.replyUpdateDiv').show();
+		});
+		
+		$('.updateBtn').closest('.replyUpdateDiv').find('.updateBtn').closest('.replyUpdateDiv').mouseenter(function(event){
+			
+			event.stopImmediatePropagation();
+			
+		});
+
+		$('.updateBtn').closest('.replyUpdateDiv').find('.updateBtn').parent().children().mouseenter(function(event){
+			
+			event.stopImmediatePropagation();
+			
+		});
+
+		$('.updateBtn').closest('.replyUpdateDiv').find('.updateBtn').click(function() {
+			
+			$(this).closest('.replyUpdateDiv').hide();
+			
+			$(this).closest('.replyUpdateForm').submit();
+			
+		});
+		
+		
+		
 		$('#content').keyup(function(){
 			
 			$.post('/AdvanceBooking/reply/write'
@@ -241,6 +271,25 @@
 							</div>						
 							<div class="replyEvent">${reply.content}</div>
 						</div>
+						<div class="replyUpdateDiv form-group" style="display:none;">
+							<c:if test="${qnaVO.email eq sessionScope._USER_.email || sessionScope._USER_.authority eq 'ADMIN'}">
+								<form:form class="replyUpdateForm"
+										   modelAttribute="replyVO" 
+										   method="post"
+										   action="/AdvanceBooking/reply/update/${reply.replyId}">
+									<input type="hidden" name="qnaId" value="${qnaVO.id}"/>
+									<input type="hidden" name="token" value="${sessionScope._CSRF_TOKEN_}"/>
+									<input type="hidden" name="replyId" value="${reply.replyId}"/>
+									<div>
+										<div>
+											<input type="text" name="content" class="myform-control" value="${reply.content}" required/>
+											<input type="button" class="updateBtn mybtn btn-primary" value="write" />
+										</div>
+										<form:errors class="updateContentError" path="content"></form:errors>
+									</div>
+								</form:form>
+							</c:if>
+						</div>
 				        <c:if test="${qnaVO.email eq sessionScope._USER_.email}">
 							<div class="reply-right" style="display:none;">
 								<div class="dropup">
@@ -248,7 +297,7 @@
 								    	<span class="glyphicon glyphicon-option-vertical"></span>
 								    </button>
 								    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-									      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">댓글 수정</a></li>							
+									      <li role="presentation"><a class="update-click" role="menuitem" tabindex="-1" href="#">댓글 수정</a></li>							
 									      <li role="presentation"><a role="menuitem" tabindex="-1" href="/AdvanceBooking/reply/delete/${reply.replyId}?token=${sessionScope._CSRF_TOKEN_}">댓글 삭제</a></li>
 								    </ul>
 								</div>
