@@ -265,11 +265,20 @@
 				<div class="reply-rel">
 					<div class="for-travelsing"> 
 						<div class="replies reply-left">
-							<div>
-								<div class="inline">${reply.memberVO.name}</div>
-								<div class="inline">${reply.crtDate}</div>
-							</div>						
-							<div class="replyEvent">${reply.content}</div>
+							<c:choose>
+								<c:when test="${reply.isDelete eq 'Y'}">
+									<div>
+										삭제된 댓글입니다.
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div>
+										<div class="inline">${reply.memberVO.name}</div>
+										<div class="inline">${reply.crtDate}</div>
+									</div>						
+									<div class="replyEvent">${reply.content}</div>								
+								</c:otherwise>
+							</c:choose>
 						</div>
 						<div class="replyUpdateDiv form-group" style="display:none;">
 							<c:if test="${qnaVO.email eq sessionScope._USER_.email || sessionScope._USER_.authority eq 'ADMIN'}">
@@ -290,18 +299,20 @@
 								</form:form>
 							</c:if>
 						</div>
-				        <c:if test="${qnaVO.email eq sessionScope._USER_.email}">
-							<div class="reply-right" style="display:none;">
-								<div class="dropup">
-								    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-								    	<span class="glyphicon glyphicon-option-vertical"></span>
-								    </button>
-								    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-									      <li role="presentation"><a class="update-click" role="menuitem" tabindex="-1" href="#">댓글 수정</a></li>							
-									      <li role="presentation"><a role="menuitem" tabindex="-1" href="/AdvanceBooking/reply/delete/${reply.replyId}?token=${sessionScope._CSRF_TOKEN_}">댓글 삭제</a></li>
-								    </ul>
+				        <c:if test="${qnaVO.email eq sessionScope._USER_.email || sessionScope._USER_.authority eq 'ADMIN'}">
+				        	<c:if test="${reply.isDelete eq 'N'}">
+								<div class="reply-right" style="display:none;">
+									<div class="dropup">
+									    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+									    	<span class="glyphicon glyphicon-option-vertical"></span>
+									    </button>
+									    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+										      <li role="presentation"><a class="update-click" role="menuitem" tabindex="-1" href="#">댓글 수정</a></li>							
+										      <li role="presentation"><a role="menuitem" tabindex="-1" href="/AdvanceBooking/reply/delete/${reply.replyId}?token=${sessionScope._CSRF_TOKEN_}">댓글 삭제</a></li>
+									    </ul>
+									</div>
 								</div>
-							</div>
+							</c:if>
 					    </c:if>
 					</div>
 				</div>

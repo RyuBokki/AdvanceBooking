@@ -23,6 +23,8 @@ public class QnAReplyVO {
 	private MemberVO memberVO;
 	
 	private String token;
+	
+	private String isDelete;
 		
 	public String getReplyId() {
 		return replyId;
@@ -71,5 +73,11 @@ public class QnAReplyVO {
 	}
 	public void setToken(String token) {
 		this.token = token;
+	}
+	public String getIsDelete() {
+		return isDelete;
+	}
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
 	}
 }

@@ -114,9 +114,18 @@
 					    <tbody>
 					      <tr>
 					        <td>
-					        	<a href="/AdvanceBooking/qna/detail/${qnaVO.id}?token=${sessionScope._CSRF_TOKEN_}">
-						 			${qnaVO.subject}
-						 		</a>
+					        	<c:choose>
+					        		<c:when test="${qnaVO.isDelete eq 'Y'}">
+					        			<div>
+					        				삭제된 게시글입니다.
+					        			</div>
+					        		</c:when>
+					        		<c:otherwise>
+							        	<a href="/AdvanceBooking/qna/detail/${qnaVO.id}?token=${sessionScope._CSRF_TOKEN_}">
+								 			${qnaVO.subject}
+								 		</a>
+					        		</c:otherwise>
+					        	</c:choose>
 					        </td>
 					        <td>
 					        	${qnaVO.memberVO.name} (${qnaVO.email})

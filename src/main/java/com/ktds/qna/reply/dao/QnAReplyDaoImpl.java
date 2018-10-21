@@ -29,8 +29,8 @@ public class QnAReplyDaoImpl extends SqlSessionDaoSupport implements QnAReplyDao
 	}
 
 	@Override
-	public int deleteOneReply(String replyId) {
-		return this.getSqlSession().delete("QnAReplyDao.deleteOneReply", replyId);
+	public int updateDeleteOneReply(String replyId) {
+		return this.getSqlSession().delete("QnAReplyDao.updateDeleteOneReply", replyId);
 	}
 
 	@Override

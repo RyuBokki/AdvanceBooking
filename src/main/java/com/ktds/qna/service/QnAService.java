@@ -15,5 +15,5 @@ public interface QnAService {
 	
 	public boolean updateOneQnA(QnAVO qnaVO);
 	
-	public boolean deleteOneQnA(String id);
+	public boolean updateDeleteOneQnA(String id);
 }

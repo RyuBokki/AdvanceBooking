@@ -15,7 +15,7 @@ public interface QnADao {
 	
 	public int updateOneQnA(QnAVO qnaVO);
 	
-	public int deleteOneQnA(String id);
+	public int updateDeleteOneQnA(String id);
 	
 	public int selectAllQnAsCount(QnASearchVO qnaSearchVO);
 }

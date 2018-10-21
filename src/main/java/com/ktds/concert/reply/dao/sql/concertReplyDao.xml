@@ -13,6 +13,7 @@
 	   							, CONTENT
 	   							, CRT_DATE
 	   							, EMAIL
+	   							, PARENT_REPLY_ID
    							) 
 		VALUES ( 
 					 'CR-' || TO_CHAR(SYSDATE, 'YYYYMMDDHH24') || '-' || LPAD(CONCERT_REPLY_ID_SEQ.NEXTVAL, 6, '0')
@@ -20,6 +21,7 @@
 					 , #{content}
 					 , SYSDATE
 					 , #{email} 
+					 , '0'
 				)
   	</insert>
   	
@@ -29,6 +31,8 @@
   		<result property="content" column="CONTENT"/>
   		<result property="crtDate" column="crtDate"/>
   		<result property="email" column="EMAIL"/>
+  		<result property="parentReplyId" column="parentReplyId"/>
+  		<result property="isDelete" column="isDelete"/>
   		<association property="concertVO" javaType="ConcertVO">
   			<id property="concertId" column="CONCERT_ID"/>
 			<result property="subject" column="SUBJECT"/>
@@ -48,11 +52,14 @@
   	
   	<select id="selectAllReplies"
   			resultMap="concertReplyResultMap">
-  		SELECT	R.REPLY_ID replyId
+  		SELECT	LEVEL
+  				, R.REPLY_ID replyId
 				, R.CONCERT_ID concertId
 				, R.CONTENT
 				, R.CRT_DATE crtDate
 				, R.EMAIL
+				, R.PARENT_REPLY_ID parentReplyId
+				, R.IS_DELETE isDelete
 				, C.CONCERT_ID 
 				, C.SUBJECT
 				, C.CONTENTS
@@ -69,6 +76,8 @@
 		WHERE	R.EMAIL = R_M.EMAIL
 		AND		R.CONCERT_ID = C.CONCERT_ID
 		AND		C.CONCERT_ID = #{concertId}
+		START	WITH R.PARENT_REPLY_ID = '0'
+		CONNECT BY PRIOR R.REPLY_ID = R.PARENT_REPLY_ID
   	</select>
   	
   	<select id="selectOneReply"
@@ -90,10 +99,17 @@
 		WHERE	REPLY_ID = #{replyId}
   	</update>
   	  	
-  	<delete id="deleteOneReply"
+  	<update id="updateDeleteOneReply"
   			parameterType="string">
-  		DELETE
-  		FROM	CONCERT_REPLY
+		UPDATE	CONCERT_REPLY
+		SET		IS_DELETE = 'Y'
   		WHERE	REPLY_ID = #{replyId}
-  	</delete>
+  	</update>
+  	
+  	<update id="updateParentReplyId"
+  			parameterType="ConcertReplyVO">
+  		UPDATE	CONCERT_REPLY
+  		SET		PARENT_REPLY_ID = #{parentReplyId}
+  		WHERE	REPLY_ID = #{replyId}
+  	</update>
   </mapper>

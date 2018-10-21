@@ -11,7 +11,9 @@ public int insertOneReply(ConcertReplyVO concertReplyVO);
 	
 	public List<ConcertReplyVO> selectAllReplies(String concertId);
 	
-	public int deleteOneReply(String replyId);
+	public int updateDeleteOneReply(String replyId);
 	
 	public int updateOneReply(ConcertReplyVO concertReplyVO);
+	
+	public int updateParentReplyId(ConcertReplyVO concertReplyVO);
 }

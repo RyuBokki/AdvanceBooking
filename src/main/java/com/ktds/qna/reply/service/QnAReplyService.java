@@ -12,5 +12,5 @@ public interface QnAReplyService {
 	
 	public boolean updateOneReply(QnAReplyVO qnaReplyVO);
 		
-	public boolean deleteOneReply(String replyId);
+	public boolean updateDeleteOneReply(String replyId);
 }

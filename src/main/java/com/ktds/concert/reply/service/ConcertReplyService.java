@@ -10,5 +10,7 @@ public interface ConcertReplyService {
 	
 	public boolean updateOneReply(ConcertReplyVO concertReplyVO);
 		
-	public boolean deleteOneReply(String replyId);
+	public boolean updateDeleteOneReply(String replyId);
+	
+	public boolean updateParentReplyId(ConcertReplyVO concertReplyVO);
 }

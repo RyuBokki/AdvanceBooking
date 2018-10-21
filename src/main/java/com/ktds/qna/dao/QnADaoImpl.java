@@ -46,8 +46,8 @@ public class QnADaoImpl extends SqlSessionDaoSupport
 	}
 
 	@Override
-	public int deleteOneQnA(String id) {
-		return this.getSqlSession().delete("QnADao.deleteOneQnA", id);
+	public int updateDeleteOneQnA(String id) {
+		return this.getSqlSession().delete("QnADao.updateDeleteOneQnA", id);
 	}
 
 	@Override

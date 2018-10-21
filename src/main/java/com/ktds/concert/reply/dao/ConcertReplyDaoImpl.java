@@ -34,13 +34,18 @@ public class ConcertReplyDaoImpl extends SqlSessionDaoSupport implements Concert
 	}
 
 	@Override
-	public int deleteOneReply(String replyId) {
-		return this.getSqlSession().delete("ConcertReplyDao.deleteOneReply", replyId);
+	public int updateDeleteOneReply(String replyId) {
+		return this.getSqlSession().delete("ConcertReplyDao.updateDeleteOneReply", replyId);
 	}
 
 	@Override
 	public int updateOneReply(ConcertReplyVO concertReplyVO) {
 		return this.getSqlSession().update("ConcertReplyDao.updateOneReply", concertReplyVO);
+	}
+
+	@Override
+	public int updateParentReplyId(ConcertReplyVO concertReplyVO) {
+		return this.getSqlSession().update("ConcertReplyDao.updateParentReplyId", concertReplyVO);
 	}
 
 }

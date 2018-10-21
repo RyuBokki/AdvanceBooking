@@ -63,7 +63,7 @@ public class QnAReplyController {
 		
 		String qnaId = this.qnaReplyService.readOneReply(replyId).getQnaId();
 		
-		boolean isDeleteSuccess = this.qnaReplyService.deleteOneReply(replyId);
+		boolean isUpdateDeleteSuccess = this.qnaReplyService.updateDeleteOneReply(replyId);
 		
 		return "redirect:/qna/detail/" + qnaId + "?token=" + sessionToken;
 	}

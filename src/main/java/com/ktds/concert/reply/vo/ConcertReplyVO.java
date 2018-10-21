@@ -23,6 +23,12 @@ public class ConcertReplyVO {
 	private MemberVO memberVO;
 	
 	private String token;
+	
+	private String isDelete;
+	
+	private String parentReplyId;
+	
+	private int level;
 		
 	public String getReplyId() {
 		return replyId;
@@ -72,5 +78,22 @@ public class ConcertReplyVO {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	
+	public String getIsDelete() {
+		return isDelete;
+	}
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
+	}
+	public String getParentReplyId() {
+		return parentReplyId;
+	}
+	public void setParentReplyId(String parentReplyId) {
+		this.parentReplyId = parentReplyId;
+	}
+	public int getLevel() {
+		return level;
+	}
+	public void setLevel(int level) {
+		this.level = level;
+	}
 }

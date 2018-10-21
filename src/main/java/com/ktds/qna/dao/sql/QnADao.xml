@@ -40,6 +40,7 @@
 		<result property="fileName" column="FILE_NAME"/>
 		<result property="originFileName" column="ORIGIN_FILE_NAME"/>
 		<result property="email" column="Q_EMAIL"/>
+		<result property="isDelete" column="isDelete"/>
 		<association property="memberVO" javaType="MemberVO" >
 			<id property="email" column="M_EMAIL"/>
 			<result property="name" column="NAME"/>
@@ -88,6 +89,7 @@
 										, Q.FILE_NAME
 										, Q.ORIGIN_FILE_NAME
 										, Q.EMAIL Q_EMAIL
+										, Q.IS_DELETE isDelete
 										, M.EMAIL M_EMAIL
 										, M.NAME
 										, M.LOGIN_FAIL_COUNT
@@ -118,12 +120,12 @@
 		</if>
 	</select>
 	
-	<delete id="deleteOneQnA"
+	<update id="updateDeleteOneQnA"
 			parameterType="string">
-		DELETE	
-		FROM	QNA
+		UPDATE	QNA
+		SET		IS_DELETE = 'Y'
 		WHERE	ID = #{id}
-	</delete>
+	</update>
 	
 	<update id="updateOneQnA"
 			parameterType="QnAVO">

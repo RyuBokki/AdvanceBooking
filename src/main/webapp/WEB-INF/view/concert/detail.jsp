@@ -81,6 +81,17 @@
 			
 		});
 		
+		$('.repl-click').closest('.dropdown-menu').find('.repl-click').click(function(){
+			$(this).closest('.reply-rel').find('.replyReplDiv').show();
+		});
+		
+		$('.replBtn').closest('.replyReplDiv').find('.replBtn').click(function(){
+			
+			$(this).closest('.replyReplDiv').hide();
+			$(this).closest('.replyReplForm').submit();
+			
+		});
+		
 	})
 </script>
 <style type="text/css">
@@ -187,6 +198,7 @@
 	
 	.for-travelsing {
 		position: relative;	
+		height: 40px;
 	}
 	
 	.reply-left {
@@ -205,6 +217,10 @@
 		right:0px;
 		display: inline-block;
 		height:100%;
+	}
+	
+	.replyReplDiv {
+		margin-top: 10px;
 	}
 </style>
 </head>
@@ -252,12 +268,21 @@
 			<c:forEach items="${concertVO.replyList}" var="reply">
 				<div class="reply-rel">
 					<div class="for-travelsing">
-						<div class="replies reply-left">
-							<div>
-								<div class="inline">${reply.memberVO.name}</div>
-								<div class="inline">${reply.crtDate}</div>
-							</div>
-							<div class="replyEvent">${reply.content}</div>
+						<div class="replies reply-left" style="margin-left: ${(reply.level - 1 ) * 30}px;">
+							<c:choose>
+								<c:when test="${reply.isDelete eq 'Y'}">
+									<div>
+										삭제된 댓글입니다.
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div>
+										<div class="inline">${reply.memberVO.name}</div>
+										<div class="inline">${reply.crtDate}</div>
+									</div>
+									<div class="replyEvent">${reply.content}</div>
+								</c:otherwise>
+							</c:choose>
 						</div>	
 						<div class="replyUpdateDiv form-group" style="display:none;">
 							<c:if test="${reply.email eq sessionScope._USER_.email || sessionScope._USER_.authority eq 'ADMIN'}">
@@ -278,19 +303,41 @@
 								</form:form>
 							</c:if>
 						</div>
-						<c:if test="${reply.email eq sessionScope._USER_.email || sessionScope._USER_.authority eq 'ADMIN'}">
+				    	<c:if test="${reply.isDelete eq 'N'}">
 							<div class="reply-right" style="display:none;">
 								<div class="dropup">
 								    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
 								    	<span class="glyphicon glyphicon-option-vertical"></span>
 								    </button>
 								    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+									      <li role="presentation"><a class="repl-click" role="menuitem" tabindex="-1" href="#">답글 작성</a></li>							
+									<c:if test="${reply.email eq sessionScope._USER_.email || sessionScope._USER_.authority eq 'ADMIN'}">
 									      <li role="presentation"><a class="update-click" role="menuitem" tabindex="-1" href="#">댓글 수정</a></li>							
 									      <li role="presentation"><a role="menuitem" tabindex="-1" href="/AdvanceBooking/concert/reply/delete/${reply.replyId}?token=${sessionScope._CSRF_TOKEN_}">댓글 삭제</a></li>
+								    </c:if>					
 								    </ul>
 								</div>
 							</div>
-					    </c:if>					
+				    	</c:if>
+					</div>
+					<div class="replyReplDiv form-group" style="display:none;">
+						<c:if test="${reply.isDelete eq 'N'}">
+							<form:form class="replyReplForm"
+									   modelAttribute="replyVO" 
+									   method="post"
+									   action="/AdvanceBooking/concert/reply/repl/${reply.replyId}">
+								<input type="hidden" name="concertId" value="${concertVO.concertId}"/>
+								<input type="hidden" name="token" value="${sessionScope._CSRF_TOKEN_}"/>
+								<input type="hidden" name="email" value="${sessionScope._USER_.email}"/>
+								<div>
+									<div>
+										<input type="text" name="content" class="myform-control" value="${replConcertReplyVO.content}" required/>
+										<input type="button" class="replBtn mybtn btn-primary" value="write" />
+									</div>
+									<form:errors class="replContentError" path="content"></form:errors>
+								</div>
+							</form:form>
+						</c:if>
 					</div>
 				</div>	
 			</c:forEach>

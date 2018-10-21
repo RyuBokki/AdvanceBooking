@@ -233,7 +233,7 @@ public class QnAController {
 			throw new RuntimeException("잘못된 접근입니다.");
 		}
 		
-		boolean isDeleteSuccess = this.qnaService.deleteOneQnA(id);
+		boolean isUpdateDeleteSuccess = this.qnaService.updateDeleteOneQnA(id);
 		
 		return "redirect:/qna/list" + "?token=" + sessionToken;
 	}

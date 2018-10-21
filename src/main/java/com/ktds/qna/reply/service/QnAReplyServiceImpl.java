@@ -20,8 +20,8 @@ public class QnAReplyServiceImpl implements QnAReplyService{
 	}
 
 	@Override
-	public boolean deleteOneReply(String replyId) {
-		return this.qnaReplyDao.deleteOneReply(replyId) > 0;
+	public boolean updateDeleteOneReply(String replyId) {
+		return this.qnaReplyDao.updateDeleteOneReply(replyId) > 0;
 	}
 
 	@Override

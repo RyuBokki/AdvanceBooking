@@ -1,10 +1,13 @@
 package com.ktds.concert.reply.web;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -61,7 +64,7 @@ public class ConcertReplyController {
 		
 		String concertId = this.concertReplyService.readOneReply(replyId).getConcertId();
 		
-		boolean isDeleteSuccess = this.concertReplyService.deleteOneReply(replyId);
+		boolean isDeleteSuccess = this.concertReplyService.updateDeleteOneReply(replyId);
 		
 		return "redirect:/concert/detail/" + concertId + "?token=" + sessionToken;
 	}
@@ -91,6 +94,34 @@ public class ConcertReplyController {
 		}
 		
 		boolean isUpdateSuccess = this.concertReplyService.updateOneReply(concertReplyVO);
+		
+		return view;
+	}
+	
+	@PostMapping("concert/reply/repl/{replyId}")
+	public ModelAndView doCreateChildReplyAction(@PathVariable String replyId
+												, @Valid@ModelAttribute ConcertReplyVO concertReplyVO
+												, Errors errors
+												, @SessionAttribute(Session.CSRF_TOKEN) String sessionToken) {
+		
+		if ( !sessionToken.equals(concertReplyVO.getToken()) ) {
+			throw new RuntimeException("잘못된 인증");
+		}
+		
+		String concertId = concertReplyVO.getConcertId();
+		
+		ModelAndView view = new ModelAndView("redirect:/concert/detail/" + concertId + "?token=" + sessionToken);
+		
+		if ( errors.hasErrors() ) {
+			view.setViewName("concert/detail");
+			view.addObject("replConcertReplyVO", concertReplyVO);
+		}
+		
+		boolean isSuccessCreateChildReply = this.concertReplyService.createOneReply(concertReplyVO);
+		
+		concertReplyVO.setParentReplyId(replyId);
+		
+		boolean isSuccessUpdateParentReplyId = this.concertReplyService.updateParentReplyId(concertReplyVO);
 		
 		return view;
 	}

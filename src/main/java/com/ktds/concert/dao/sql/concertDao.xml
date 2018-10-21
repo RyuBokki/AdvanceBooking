@@ -44,7 +44,7 @@
 								            WHERE   ADVANCE_BOOKING_DAY NOT LIKE '티켓오픈일추후공지'
 								        ) D
 								WHERE   C.CONCERT_ID = D.concertId
-								AND		advanceBookingDay >= SYSDATE
+								AND		TO_DATE(D.advanceBookingDay) <![CDATA[>=]]> SYSDATE - 1
 								<if test="searchKeyword != null and searchKeyword != ''">
 								AND		D.SUBJECT LIKE '%' || '${searchKeyword}' || '%'
 								</if>
@@ -52,7 +52,7 @@
 							) B
 					WHERE	ROWNUM <![CDATA[<=]]> #{endRow}
 				) 
-		WHERE	RNUM >= #{startRow}
+		WHERE	RNUM <![CDATA[>=]]> #{startRow}
   	</select>
   	
   	<select id="selectAllConcertsCount"

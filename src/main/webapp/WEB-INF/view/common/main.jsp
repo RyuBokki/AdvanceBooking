@@ -279,7 +279,7 @@
 	        	<div class="modal-footer">
          			<div class="behindLogin left">
 						<a id="registMove" href="#" >회원 가입</a>
-					</div>
+					</div> 
 					<div class="behindLogin right">
 						<a href="/AdvanceBooking/member/findPassword" >Password 찾기</a>
 					</div>

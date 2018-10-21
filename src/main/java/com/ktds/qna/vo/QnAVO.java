@@ -37,6 +37,8 @@ public class QnAVO {
 	
 	private List<QnAReplyVO> replyList;
 	
+	private String isDelete;
+	
 	public String getId() {
 		return id;
 	}
@@ -132,5 +134,14 @@ public class QnAVO {
 	public void setReplyList(List<QnAReplyVO> replyList) {
 		this.replyList = replyList;
 	}
+
+	public String getIsDelete() {
+		return isDelete;
+	}
+
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
+	}
+	
 	
 }

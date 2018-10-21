@@ -29,6 +29,7 @@
   		<result property="content" column="CONTENT"/>
   		<result property="crtDate" column="CRT_DATE"/>
   		<result property="email" column="EMAIL"/>
+  		<result property="isDelete" column="isDelete"/>
   		<association property="qnaVO" javaType="QnAVO">
   			<id property="id" column="ID"/>
 			<result property="subject" column="SUBJECT"/>
@@ -56,6 +57,7 @@
 				, R.CONTENT
 				, R.CRT_DATE
 				, R.EMAIL
+				, R.IS_DELETE isDelete
 				, Q.ID
 				, Q.SUBJECT
 				, Q.CONTENT
@@ -98,10 +100,10 @@
 		WHERE	REPLY_ID = #{replyId}
   	</update>
   	  	
-  	<delete id="deleteOneReply"
+  	<update id="updateDeleteOneReply"
   			parameterType="string">
-  		DELETE
-  		FROM	REPLY
+		UPDATE	REPLY
+  		SET		IS_DELETE = 'Y'
   		WHERE	REPLY_ID = #{replyId}
-  	</delete>
+  	</update>
   </mapper>

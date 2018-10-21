@@ -12,7 +12,7 @@ public interface QnAReplyDao {
 	
 	public List<QnAReplyVO> selectAllReplies(String qnaId);
 	
-	public int deleteOneReply(String replyId);
+	public int updateDeleteOneReply(String replyId);
 	
 	public int updateOneReply(QnAReplyVO qnaReplyVO);
 	

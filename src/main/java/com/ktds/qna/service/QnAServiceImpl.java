@@ -68,8 +68,8 @@ public class QnAServiceImpl implements QnAService {
 	}
 
 	@Override
-	public boolean deleteOneQnA(String id) {
-		return this.qnaDao.deleteOneQnA(id) > 0;
+	public boolean updateDeleteOneQnA(String id) {
+		return this.qnaDao.updateDeleteOneQnA(id) > 0;
 	}
 
 }
