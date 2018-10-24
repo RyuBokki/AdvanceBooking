@@ -41,7 +41,7 @@ public class ConcertController {
 			}
 		}
 		
-		PageExplorer pageExplorer = this.concertService.readAllConcerts(concertSearchVO);
+		PageExplorer pageExplorer = this.concertService.readAllConcerts(concertSearchVO, session);
  		
 		session.setAttribute(Session.CONCERTSEARCH, concertSearchVO);
 		

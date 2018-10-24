@@ -15,5 +15,5 @@ public interface ConcertDao {
 	
 	public int deleteOneConcert(String concertId);
 	
-	public List<String> selectAllPreferConcerts();
+	public List<String> selectAllPreferConcerts(String email);
 }

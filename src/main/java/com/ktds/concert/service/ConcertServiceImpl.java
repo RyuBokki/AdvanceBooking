@@ -2,14 +2,18 @@ package com.ktds.concert.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ktds.common.session.Session;
 import com.ktds.concert.dao.ConcertDao;
 import com.ktds.concert.reply.dao.ConcertReplyDao;
 import com.ktds.concert.reply.vo.ConcertReplyVO;
 import com.ktds.concert.vo.ConcertSearchVO;
 import com.ktds.concert.vo.ConcertVO;
+import com.ktds.member.vo.MemberVO;
 
 import io.github.seccoding.web.pager.Pager;
 import io.github.seccoding.web.pager.PagerFactory;
@@ -27,7 +31,7 @@ public class ConcertServiceImpl implements ConcertService {
 	
 
 	@Override
-	public PageExplorer readAllConcerts(ConcertSearchVO concertSearchVO) {
+	public PageExplorer readAllConcerts(ConcertSearchVO concertSearchVO, HttpSession session) {
 		
 		int totalCount = this.concertDao.selectAllConcertsCount(concertSearchVO);
 		
@@ -38,7 +42,9 @@ public class ConcertServiceImpl implements ConcertService {
 		
 		PageExplorer pageExplorer = pager.makePageExplorer(ClassicPageExplorer.class, concertSearchVO);
 		
-		List<String> preferConcertIdList = this.concertDao.selectAllPreferConcerts();
+		MemberVO memberVO = (MemberVO) session.getAttribute(Session.USER);
+		
+		List<String> preferConcertIdList = this.concertDao.selectAllPreferConcerts(memberVO.getEmail());
 		
 		List<ConcertVO> concertVOList = this.concertDao.selectAllConcerts(concertSearchVO);
 		
@@ -46,18 +52,8 @@ public class ConcertServiceImpl implements ConcertService {
 			
 			for (ConcertVO concertVO : concertVOList) {
 				
-				String concertId = concertVO.getConcertId();
+				concertVO.setRegisteredPrefer(checkPreferConcert(concertVO,preferConcertIdList));
 				
-				for (String preferConcertId : preferConcertIdList) {
-					if ( preferConcertId.equals(concertId) ) {
-						System.out.println("비교성공");
-						System.out.println(preferConcertId);
-						concertVO.setRegisteredPrefer(true);
-					}
-					else {
-						concertVO.setRegisteredPrefer(false);
-					}
-				}
 			}
 		}
 		
@@ -66,6 +62,18 @@ public class ConcertServiceImpl implements ConcertService {
 		return pageExplorer;
 	}
 
+	private boolean checkPreferConcert(ConcertVO concertVO, List<String> preferConcertIdList) {
+		
+		for (String preferConcertId : preferConcertIdList) {
+			
+			if ( preferConcertId.equals(concertVO.getConcertId()) ) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 
 	@Override
 	public ConcertVO readOneConcert(String concertId) {
@@ -89,11 +97,11 @@ public class ConcertServiceImpl implements ConcertService {
 		
 		return concertVO;
 	}
-
-
+	
 	@Override
-	public List<String> readAllPreferConcerts() {
-		return this.concertDao.selectAllPreferConcerts();
+	public List<String> readAllPreferConcerts(String email) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

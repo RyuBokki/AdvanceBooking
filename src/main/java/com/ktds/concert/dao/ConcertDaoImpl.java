@@ -40,8 +40,8 @@ public class ConcertDaoImpl extends SqlSessionDaoSupport implements ConcertDao {
 	}
 
 	@Override
-	public List<String> selectAllPreferConcerts() {
-		return this.getSqlSession().selectList("ConcertDao.selectAllPreferConcerts");
+	public List<String> selectAllPreferConcerts(String email) {
+		return this.getSqlSession().selectList("ConcertDao.selectAllPreferConcerts",email);
 	}
 
 }

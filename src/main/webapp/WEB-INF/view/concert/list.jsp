@@ -60,6 +60,13 @@
 			});  			
   		});
   		
+  		$('.replace').closest('.likeClosest').find('.replace').click(function() {
+	  		var isvalue = $(this).closest('.likeClosest').find('.val').val();
+	  		alert(isvalue);
+  			
+  		})
+  		
+  		
   	})
   </script>
   <style type="text/css">
@@ -136,28 +143,22 @@
 						 			${concertVO.subject}
 						 		</a>
 					        </td>
-					        <td id="replace">
+					        <td class="replace">
 					        	${concertVO.advanceBookingDay}
 					        </td>
 					        <td>
 					        	<a href="${concertVO.advanceBookingUrl}">사전예매</a>
 					        </td>
 					        <td>
-				        		<c:choose>
-				        			<c:when test="${not empty preferConcertIdList}">
-				        				<c:choose>
-				        					<c:when test="${concertVO.isRegisteredPrefer()}">
-				        						<a class="like" href="#"><span class="glyphicon glyphicon-heart"></span></a>
-				        					</c:when>
-				        					<c:otherwise>
-				        						<a class="like" href="#"><span class="glyphicon glyphicon-heart-empty"></span></a>
-				        					</c:otherwise>
-				        				</c:choose>
-				        			</c:when>
-				        			<c:otherwise>
-										<a class="like" href="#"><span class="glyphicon glyphicon-heart-empty"></span></a>
-				        			</c:otherwise>
-				        		</c:choose>
+	        					<input class="val" type="hidden" value="${concertVO.isRegisteredPrefer()}">
+		        				<c:choose>
+		        					<c:when test="${concertVO.isRegisteredPrefer()}">
+		        						<a class="like" href="#"><span class="glyphicon glyphicon-heart"></span></a>
+		        					</c:when>
+		        					<c:otherwise>
+		        						<a class="like" href="#"><span class="glyphicon glyphicon-heart-empty"></span></a>
+		        					</c:otherwise>
+		        				</c:choose>
 					        	<div>
 					        		<form class="likeForm"
 					        			  method="post"

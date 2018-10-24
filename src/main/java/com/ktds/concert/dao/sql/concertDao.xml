@@ -59,13 +59,23 @@
   			parameterType="ConcertSearchVO"
   			resultType="_int">
   		SELECT	COUNT(1)
-  		FROM	CONCERT
+  		FROM	(
+		            SELECT  SUBJECT
+		                    , CONTENTS
+		                    , CONCERT_ID concertId
+		                    , ADVANCE_BOOKING_URL advanceBookingUrl
+		                    , TO_DATE(ADVANCE_BOOKING_DAY,'YYYY/MM/DD/HH24') advanceBookingDay
+		            FROM    CONCERT
+		            WHERE   ADVANCE_BOOKING_DAY NOT LIKE '티켓오픈일추후공지'
+		         ) D
+        WHERE	TO_DATE(D.advanceBookingDay) <![CDATA[>=]]> SYSDATE - 1
   		<if test="searchKeyword != null and searchKeyword != ''">
-  		WHERE	SUBJECT LIKE '%' || '${searchKeyword}' || '%'
+  		AND		SUBJECT LIKE '%' || '${searchKeyword}' || '%'
   		</if>
   	</select>
   	
   	<select id="selectAllPreferConcerts"
+  			parameterType="string"
   			resultType="string">
   		SELECT	C.CONCERT_ID concertId
   		FROM	CONCERT	C
@@ -73,6 +83,7 @@
   				, MEMBERS M
 		WHERE	C.CONCERT_ID = P.CONCERT_ID
 		AND		P.EMAIL = M.EMAIL
+		AND		M.EMAIL = #{email}
   	</select>
   	
   </mapper>
