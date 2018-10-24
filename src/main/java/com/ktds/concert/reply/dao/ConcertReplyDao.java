@@ -15,5 +15,6 @@ public int insertOneReply(ConcertReplyVO concertReplyVO);
 	
 	public int updateOneReply(ConcertReplyVO concertReplyVO);
 	
-	public int updateParentReplyId(ConcertReplyVO concertReplyVO);
+	public ConcertReplyVO isChildReplyExist(ConcertReplyVO concertReplyVO);
+	
 }

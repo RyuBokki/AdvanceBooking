@@ -66,6 +66,7 @@ public class ConcertReplyController {
 		
 		boolean isDeleteSuccess = this.concertReplyService.updateDeleteOneReply(replyId);
 		
+		
 		return "redirect:/concert/detail/" + concertId + "?token=" + sessionToken;
 	}
 	
@@ -98,32 +99,5 @@ public class ConcertReplyController {
 		return view;
 	}
 	
-	@PostMapping("concert/reply/repl/{replyId}")
-	public ModelAndView doCreateChildReplyAction(@PathVariable String replyId
-												, @Valid@ModelAttribute ConcertReplyVO concertReplyVO
-												, Errors errors
-												, @SessionAttribute(Session.CSRF_TOKEN) String sessionToken) {
-		
-		if ( !sessionToken.equals(concertReplyVO.getToken()) ) {
-			throw new RuntimeException("잘못된 인증");
-		}
-		
-		String concertId = concertReplyVO.getConcertId();
-		
-		ModelAndView view = new ModelAndView("redirect:/concert/detail/" + concertId + "?token=" + sessionToken);
-		
-		if ( errors.hasErrors() ) {
-			view.setViewName("concert/detail");
-			view.addObject("replConcertReplyVO", concertReplyVO);
-		}
-		
-		boolean isSuccessCreateChildReply = this.concertReplyService.createOneReply(concertReplyVO);
-		
-		concertReplyVO.setParentReplyId(replyId);
-		
-		boolean isSuccessUpdateParentReplyId = this.concertReplyService.updateParentReplyId(concertReplyVO);
-		
-		return view;
-	}
 	
 }

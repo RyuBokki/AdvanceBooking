@@ -29,6 +29,8 @@ public class ConcertReplyVO {
 	private String parentReplyId;
 	
 	private int level;
+	
+	private boolean isChildReplyExist;
 		
 	public String getReplyId() {
 		return replyId;
@@ -96,4 +98,11 @@ public class ConcertReplyVO {
 	public void setLevel(int level) {
 		this.level = level;
 	}
+	public boolean isChildReplyExist() {
+		return isChildReplyExist;
+	}
+	public void setChildReplyExist(boolean isChildReplyExist) {
+		this.isChildReplyExist = isChildReplyExist;
+	}
+	
 }

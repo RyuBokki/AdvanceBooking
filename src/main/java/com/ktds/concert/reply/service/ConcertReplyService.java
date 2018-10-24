@@ -12,5 +12,4 @@ public interface ConcertReplyService {
 		
 	public boolean updateDeleteOneReply(String replyId);
 	
-	public boolean updateParentReplyId(ConcertReplyVO concertReplyVO);
 }

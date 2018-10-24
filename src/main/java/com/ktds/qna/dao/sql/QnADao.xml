@@ -98,6 +98,7 @@
 								FROM 	QNA Q
 										, MEMBERS M
 								WHERE	Q.EMAIL = M.EMAIL
+								AND		Q.IS_DELETE = 'N'
 								<if test="searchKeyword != null and searchKeyword != ''">
 								AND		SUBJECT LIKE '%' || '${searchKeyword}' || '%'
 								</if>

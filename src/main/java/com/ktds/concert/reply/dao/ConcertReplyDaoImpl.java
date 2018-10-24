@@ -44,8 +44,9 @@ public class ConcertReplyDaoImpl extends SqlSessionDaoSupport implements Concert
 	}
 
 	@Override
-	public int updateParentReplyId(ConcertReplyVO concertReplyVO) {
-		return this.getSqlSession().update("ConcertReplyDao.updateParentReplyId", concertReplyVO);
+	public ConcertReplyVO isChildReplyExist(ConcertReplyVO concertReplyVO) {
+		return this.getSqlSession().selectOne("ConcertReplyDao.isChildReplyExist", concertReplyVO);
 	}
+
 
 }

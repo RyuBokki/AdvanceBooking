@@ -74,6 +74,17 @@ public class ConcertServiceImpl implements ConcertService {
 		
 		List<ConcertReplyVO> replyList = this.concertReplyDao.selectAllReplies(concertId);
 		
+		for (ConcertReplyVO concertReplyVO : replyList) {
+			boolean isChildReplyExist = this.concertReplyDao.isChildReplyExist(concertReplyVO) != null;
+			
+			if ( isChildReplyExist ) {
+				concertReplyVO.setChildReplyExist(true);
+			}
+			else {
+				concertReplyVO.setChildReplyExist(false);
+			}
+		}
+		
 		concertVO.setReplyList(replyList);
 		
 		return concertVO;

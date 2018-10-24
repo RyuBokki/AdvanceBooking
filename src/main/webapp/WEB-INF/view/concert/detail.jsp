@@ -82,6 +82,9 @@
 		});
 		
 		$('.repl-click').closest('.dropdown-menu').find('.repl-click').click(function(){
+			$('.replyReplDiv').hide();
+			$('.reply-rel').removeClass("reply-rel-active");
+			$(this).closest('.reply-rel').addClass("reply-rel-active");
 			$(this).closest('.reply-rel').find('.replyReplDiv').show();
 		});
 		
@@ -91,6 +94,8 @@
 			$(this).closest('.replyReplForm').submit();
 			
 		});
+		
+		$('.deleted-reply').closest('.reply-rel').addClass("reply-rel-del-active");
 		
 	})
 </script>
@@ -196,6 +201,14 @@
 		width:100%;
 	}
 	
+	.reply-rel-active {
+		height: 80px;
+	}
+	
+	.reply-rel-del-active {
+		height: 0px;
+	}
+	
 	.for-travelsing {
 		position: relative;	
 		height: 40px;
@@ -255,6 +268,7 @@
 					   action="/AdvanceBooking/concert/reply/write">
 				<input type="hidden" name="concertId" value="${concertVO.concertId}"/>
 				<input type="hidden" name="token" value="${sessionScope._CSRF_TOKEN_}"/>
+				<input type="hidden" name="parentReplyId" value="0"/>
 				<div>
 					<div>
 						<input type="text" name="content" class="myform-control" value="${concertReplyVO.content}" required/>
@@ -267,9 +281,13 @@
 		<div class="form-group">
 			<c:forEach items="${concertVO.replyList}" var="reply">
 				<div class="reply-rel">
-					<div class="for-travelsing">
-						<div class="replies reply-left" style="margin-left: ${(reply.level - 1 ) * 30}px;">
+					<div class="for-travelsing" style="margin-left: ${(reply.level - 1) * 30}px;">
+						<div class="replies reply-left">
 							<c:choose>
+								<c:when test="${reply.isDelete eq 'Y' and reply.isChildReplyExist() eq false }">
+									<div class="deleted-reply">
+									</div>							
+								</c:when>
 								<c:when test="${reply.isDelete eq 'Y'}">
 									<div>
 										삭제된 댓글입니다.
@@ -313,7 +331,7 @@
 									      <li role="presentation"><a class="repl-click" role="menuitem" tabindex="-1" href="#">답글 작성</a></li>							
 									<c:if test="${reply.email eq sessionScope._USER_.email || sessionScope._USER_.authority eq 'ADMIN'}">
 									      <li role="presentation"><a class="update-click" role="menuitem" tabindex="-1" href="#">댓글 수정</a></li>							
-									      <li role="presentation"><a role="menuitem" tabindex="-1" href="/AdvanceBooking/concert/reply/delete/${reply.replyId}?token=${sessionScope._CSRF_TOKEN_}">댓글 삭제</a></li>
+									      <li role="presentation"><a class="delete-click" role="menuitem" tabindex="-1" href="/AdvanceBooking/concert/reply/delete/${reply.replyId}?token=${sessionScope._CSRF_TOKEN_}">댓글 삭제</a></li>
 								    </c:if>					
 								    </ul>
 								</div>
@@ -325,10 +343,11 @@
 							<form:form class="replyReplForm"
 									   modelAttribute="replyVO" 
 									   method="post"
-									   action="/AdvanceBooking/concert/reply/repl/${reply.replyId}">
+									   action="/AdvanceBooking/concert/reply/write">
 								<input type="hidden" name="concertId" value="${concertVO.concertId}"/>
 								<input type="hidden" name="token" value="${sessionScope._CSRF_TOKEN_}"/>
 								<input type="hidden" name="email" value="${sessionScope._USER_.email}"/>
+								<input type="hidden" name="parentReplyId" value="${reply.replyId}"/>
 								<div>
 									<div>
 										<input type="text" name="content" class="myform-control" value="${replConcertReplyVO.content}" required/>

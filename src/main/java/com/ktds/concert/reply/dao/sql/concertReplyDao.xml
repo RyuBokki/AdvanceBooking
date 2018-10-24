@@ -21,12 +21,13 @@
 					 , #{content}
 					 , SYSDATE
 					 , #{email} 
-					 , '0'
+					 , #{parentReplyId}
 				)
   	</insert>
   	
   	<resultMap type="ConcertReplyVO" id="concertReplyResultMap">
   		<id property="replyId" column="replyId"/>
+  		<result property="level" column="LEVEL"/>
   		<result property="concertId" column="concertId"/>
   		<result property="content" column="CONTENT"/>
   		<result property="crtDate" column="crtDate"/>
@@ -80,6 +81,37 @@
 		CONNECT BY PRIOR R.REPLY_ID = R.PARENT_REPLY_ID
   	</select>
   	
+  	<select id="isChildReplyExist"
+  			parameterType="ConcertReplyVO"
+  			resultMap="concertReplyResultMap">
+  		SELECT	LEVEL
+  				, R.REPLY_ID replyId
+				, R.CONCERT_ID concertId
+				, R.CONTENT
+				, R.CRT_DATE crtDate
+				, R.EMAIL
+				, R.PARENT_REPLY_ID parentReplyId
+				, R.IS_DELETE isDelete
+				, C.CONCERT_ID 
+				, C.SUBJECT
+				, C.CONTENTS
+				, C.ADVANCE_BOOKING_URL advanceBookingUrl
+				, C.ADVANCE_BOOKING_DAY advanceBookingDay
+				, R_M.EMAIL M_EMAIL
+				, R_M.NAME
+				, R_M.LOGIN_FAIL_COUNT
+				, R_M.LATEST_LOGIN
+				, R_M.AUTHORITY
+		FROM 	CONCERT_REPLY R
+				, CONCERT C
+				, MEMBERS R_M
+		WHERE	R.EMAIL = R_M.EMAIL
+		AND		R.CONCERT_ID = C.CONCERT_ID
+		AND		C.CONCERT_ID = #{concertId}
+		START	WITH R.PARENT_REPLY_ID = #{replyId}
+		CONNECT BY PRIOR R.REPLY_ID = R.PARENT_REPLY_ID
+  	</select>
+  	
   	<select id="selectOneReply"
   			parameterType="string"
   			resultType="ConcertReplyVO">
@@ -103,13 +135,6 @@
   			parameterType="string">
 		UPDATE	CONCERT_REPLY
 		SET		IS_DELETE = 'Y'
-  		WHERE	REPLY_ID = #{replyId}
-  	</update>
-  	
-  	<update id="updateParentReplyId"
-  			parameterType="ConcertReplyVO">
-  		UPDATE	CONCERT_REPLY
-  		SET		PARENT_REPLY_ID = #{parentReplyId}
   		WHERE	REPLY_ID = #{replyId}
   	</update>
   </mapper>

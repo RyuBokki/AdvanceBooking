@@ -32,9 +32,5 @@ public class ConcertReplyServiceImpl implements ConcertReplyService {
 		return this.concertReplyDao.updateDeleteOneReply(replyId) > 0;
 	}
 
-	@Override
-	public boolean updateParentReplyId(ConcertReplyVO concertReplyVO) {
-		return this.concertReplyDao.updateParentReplyId(concertReplyVO) > 0;
-	}
 
 }
